@@ -46,16 +46,16 @@ namespace Praktikumsverwaltung_DesktopApp
                     }
                     else
                     {
-                        lblErrorPassword.Content = "mind. 1 Zeichen";
+                        lblErrorPassword.Content = "min. 1 letter";
                     }
                 }
                 else
                 {
-                    lblErrorUsername.Content = "mind. 1 Zeichen";                    
+                    lblErrorUsername.Content = "min. 1 letter";                    
 
                     if (txtPassword.Password.Length == 0)
                     {
-                        lblErrorPassword.Content = "mind. 1 Zeichen";
+                        lblErrorPassword.Content = "min. 1 letter";
                     }
                     else
                     {
@@ -67,6 +67,18 @@ namespace Praktikumsverwaltung_DesktopApp
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+
+        private void btnRegister_Click(object sender, RoutedEventArgs e)
+        {
+            Registration reg = new Registration();
+            reg.Show();
+            this.Close();
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

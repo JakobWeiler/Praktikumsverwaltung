@@ -5,16 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Praktikumsverwaltung_DesktopApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="291.989" Width="551.105">
     <Grid>
-        <Label x:Name="lblUsername" Content="Username:" HorizontalAlignment="Left" Height="23" Margin="35,138,0,0" VerticalAlignment="Top" Width="95"/>
-        <Label x:Name="lblPassword" Content="Password:" HorizontalAlignment="Left" Height="23" Margin="35,166,0,0" VerticalAlignment="Top" Width="95"/>
-        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="23" Margin="135,138,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="165"/>
-        <Label x:Name="lblRegistration" Content="Not registered? Click here." HorizontalAlignment="Left" Height="38" Margin="35,194,0,0" VerticalAlignment="Top" Width="265" FontSize="9.333"/>
-        <Button x:Name="btnLogin" Content="SIGN IN" HorizontalAlignment="Left" Height="22" Margin="35,237,0,0" VerticalAlignment="Top" Width="265" Click="btnLogin_Click"/>
-        <Label x:Name="lblErrorUsername" Content="" HorizontalAlignment="Left" Margin="305,138,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
-        <Label x:Name="lblErrorPassword" Content="" HorizontalAlignment="Left" Margin="305,166,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
-        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="135,166,0,0" VerticalAlignment="Top" Width="165" Height="23"/>
+        <Label x:Name="lblUsername" Content="Username:" HorizontalAlignment="Left" Height="23" Margin="35,33,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label x:Name="lblPassword" Content="Password:" HorizontalAlignment="Left" Height="23" Margin="35,61,0,0" VerticalAlignment="Top" Width="95"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="23" Margin="135,33,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="165"/>
+        <Button x:Name="btnLogin" Content="SIGN IN" HorizontalAlignment="Left" Height="22" Margin="35,116,0,0" VerticalAlignment="Top" Width="265" Click="btnLogin_Click"/>
+        <Label x:Name="lblErrorUsername" Content="" HorizontalAlignment="Left" Margin="305,33,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
+        <Label x:Name="lblErrorPassword" Content="" HorizontalAlignment="Left" Margin="305,61,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="135,61,0,0" VerticalAlignment="Top" Width="165" Height="23"/>
+        <Button x:Name="btnRegister" Content="Not registered? Click here." HorizontalAlignment="Left" Margin="35,143,0,0" VerticalAlignment="Top" Width="265" Height="22" FontSize="9.333" Click="btnRegister_Click"/>
+        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" Margin="419,215,0,0" VerticalAlignment="Top" Width="100" Height="23" Click="btnClose_Click"/>
 
     </Grid>
 </Window>
