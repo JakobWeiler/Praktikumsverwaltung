@@ -10,7 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Praktikumsverwaltung_DesktopApp
@@ -25,60 +24,17 @@ namespace Praktikumsverwaltung_DesktopApp
             InitializeComponent();
         }
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void mItemEntryAdd_Click(object sender, RoutedEventArgs e)
         {
-            String username = "", password = "";
-
             try
             {
-                lblErrorPassword.Foreground = Brushes.Red;
-                lblErrorUsername.Foreground = Brushes.Red;
-
-                if (txtUsername.Text.Length > 0)
-                {
-                    username = txtUsername.Text;
-                    lblErrorUsername.Content = "";          //to "delete" previous errors
-
-                    if (txtPassword.Password.Length > 0)
-                    {
-                        password = txtPassword.Password;
-                        lblErrorPassword.Content = "";          //to "delete" previous errors
-                    }
-                    else
-                    {
-                        lblErrorPassword.Content = "min. 1 letter";
-                    }
-                }
-                else
-                {
-                    lblErrorUsername.Content = "min. 1 letter";                    
-
-                    if (txtPassword.Password.Length == 0)
-                    {
-                        lblErrorPassword.Content = "min. 1 letter";
-                    }
-                    else
-                    {
-                        lblErrorPassword.Content = "";          //to "delete" previous errors
-                    }
-                }
+                AddEntryWindow addEntryWindow = new AddEntryWindow();
+                addEntryWindow.Show();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-        }
-
-        private void btnRegister_Click(object sender, RoutedEventArgs e)
-        {
-            Registration reg = new Registration();
-            reg.Show();
-            this.Close();
-        }
-
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }
