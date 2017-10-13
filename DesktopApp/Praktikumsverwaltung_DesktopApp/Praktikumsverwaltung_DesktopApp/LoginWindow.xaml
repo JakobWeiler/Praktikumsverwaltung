@@ -1,0 +1,20 @@
+﻿<Window x:Class="Praktikumsverwaltung_DesktopApp.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Praktikumsverwaltung_DesktopApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="291.989" Width="551.105">
+    <Grid>
+        <Label x:Name="lblUsername" Content="Username:" HorizontalAlignment="Left" Height="23" Margin="35,33,0,0" VerticalAlignment="Top" Width="95"/>
+        <Label x:Name="lblPassword" Content="Password:" HorizontalAlignment="Left" Height="23" Margin="35,61,0,0" VerticalAlignment="Top" Width="95"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="23" Margin="135,33,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="165"/>
+        <Button x:Name="btnLogin" Content="SIGN IN" HorizontalAlignment="Left" Height="22" Margin="35,116,0,0" VerticalAlignment="Top" Width="265" Click="btnLogin_Click"/>
+        <Label x:Name="lblErrorUsername" Content="" HorizontalAlignment="Left" Margin="305,33,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
+        <Label x:Name="lblErrorPassword" Content="" HorizontalAlignment="Left" Margin="305,61,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="135,61,0,0" VerticalAlignment="Top" Width="165" Height="23"/>
+        <Button x:Name="btnRegister" Content="Not registered? Click here." HorizontalAlignment="Left" Margin="35,143,0,0" VerticalAlignment="Top" Width="265" Height="22" FontSize="9.333" Click="btnRegister_Click"/>
+
+    </Grid>
+</Window>
