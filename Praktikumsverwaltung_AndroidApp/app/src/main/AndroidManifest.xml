@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoginActivity"
+            android:name=".pkgGUI.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +24,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignUpActivity"
-            android:label="@string/title_activity_sign_up"></activity>
-
+            android:name=".pkgGUI.SignUpActivity"
+            android:label="@string/title_activity_sign_up" />
+        <activity
+            android:name=".pkgGUI.MainActivity"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>
