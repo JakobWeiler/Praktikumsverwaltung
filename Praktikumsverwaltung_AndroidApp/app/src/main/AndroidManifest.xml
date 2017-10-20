@@ -28,8 +28,12 @@
             android:label="@string/title_activity_sign_up" />
         <activity
             android:name=".pkgGUI.MainActivity"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name" />
+        <activity android:name=".pkgGUI.AddEntryActivity" />
+        <activity android:name=".pkgGUI.EntryStartDateActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
+        <activity android:name=".pkgGUI.EntryEndDateActivity"
+            android:theme="@android:style/Theme.Dialog"/>
     </application>
 
 </manifest>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.obercoder.praktikumsverwaltung_androidapp.pkgGUI.AddEntryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="11dp"
+            android:hint="@string/title"
+            android:imeActionId="@+id/login"
+            android:imeOptions="actionUnspecified"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="25dp" />
+
+        <EditText
+            android:id="@+id/txtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtTitle"
+            android:layout_marginTop="9dp"
+            android:layout_weight="0.47"
+            android:ems="10"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="75dp" />
+
+        <EditText
+            android:id="@+id/txtSalary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtDescription"
+            android:layout_marginTop="7dp"
+            android:layout_weight="0.09"
+            android:ems="10"
+            android:hint="@string/salary"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onBtnStartDate"
+                android:text="@string/start_date" />
+
+            <Button
+                android:id="@+id/btnEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onBtnEndDate"
+                android:text="@string/end_date" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/txtForm"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignLeft="@+id/btnStartDate"
+            android:layout_alignStart="@+id/btnStartDate"
+            android:layout_below="@+id/btnStartDate"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/form"
+            android:inputType="textPersonName"
+            android:layout_weight="0.45" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="21dp"
+            android:orientation="horizontal"
+            android:layout_weight="0.38">
+
+            <Button
+                android:id="@+id/btnAddEntry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onBtnAddEntry"
+                android:text="@string/add_entry" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

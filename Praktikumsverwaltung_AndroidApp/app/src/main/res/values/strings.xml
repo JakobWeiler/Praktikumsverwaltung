@@ -9,6 +9,14 @@
     <string name="firstname">First name</string>
     <string name="lastname">Last name</string>
     <string name="email">Email</string>
+    <string name="title">Title</string>
+    <string name="form">Form of Intern</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="add_entry">Add Entry</string>
+    <string name="save">Save</string>
+    <string name="description">Description</string>
+    <string name="salary">Salary(optional)</string>
     <string name="currentform">Current Form</string>
     <string name="password_repeat">Repeat Password</string>
     <string name="password">Password</string>
