@@ -1,5 +1,6 @@
 package com.obercoder.praktikumsverwaltung_androidapp.pkgGUI;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,7 +8,7 @@ import android.view.View;
 
 import com.obercoder.praktikumsverwaltung_androidapp.R;
 
-public class EntryStartDateActivity extends AppCompatActivity {
+public class EntryStartDateActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
