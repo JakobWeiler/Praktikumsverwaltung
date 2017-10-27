@@ -19,5 +19,13 @@
                 <MenuItem x:Name="mItemProfileShow" Header="Show" />
             </MenuItem>
         </Menu>
+        <ListView x:Name="lvEntries" HorizontalAlignment="Left" Height="351" Margin="0,48,-0.2,0" VerticalAlignment="Top" Width="585">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Description" Width="350"/>
+                    <GridViewColumn Header="Location" Width="100"/>
+                </GridView>
+            </ListView.View>            
+        </ListView>
     </Grid>
 </Window>

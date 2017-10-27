@@ -28,8 +28,11 @@ namespace Praktikumsverwaltung_DesktopApp
         {
             try
             {
+                String street, city, state, zip;
+                StringBuilder strBuilder = new StringBuilder();
+
                 AddEntryWindow addEntryWindow = new AddEntryWindow();
-                addEntryWindow.Show();
+                addEntryWindow.Show();                
             }
             catch (Exception ex)
             {
