@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_addEntry) {
             startActivity(new Intent(MainActivity.this, AddEntryActivity.class));
-        } else if (id == R.id.nav_removeEntry) {
-
         } else if (id == R.id.nav_editEntry) {
 
         } else if (id == R.id.nav_showEntry) {

@@ -1,12 +1,13 @@
 package com.obercoder.praktikumsverwaltung_androidapp.pkgGUI;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.obercoder.praktikumsverwaltung_androidapp.R;
 
-public class EntryEndDateActivity extends AppCompatActivity {
+public class EntryEndDateActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
