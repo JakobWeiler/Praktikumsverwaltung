@@ -30,10 +30,15 @@
             android:name=".pkgGUI.MainActivity"
             android:label="@string/app_name" />
         <activity android:name=".pkgGUI.AddEntryActivity" />
-        <activity android:name=".pkgGUI.EntryStartDateActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"/>
-        <activity android:name=".pkgGUI.EntryEndDateActivity"
-            android:theme="@android:style/Theme.Dialog"/>
+        <activity
+            android:name=".pkgGUI.EntryStartDateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".pkgGUI.EntryEndDateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".pkgGUI.EditEntryActivity"></activity>
     </application>
 
 </manifest>
