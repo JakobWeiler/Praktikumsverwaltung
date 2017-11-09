@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;         //!!
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,12 @@ namespace Praktikumsverwaltung_DesktopApp
         {
             String title = null, description = null, formOfIntern = null, dpStart = null, dpEnd = null;
             int salary = -1;
+
+            //private static IMongoClient client;
+            //private static IMongoDatabase database;
+            //static IMongoCollection<BsonDocument> collection;
+            //test
+
 
             try
             {
@@ -106,6 +113,12 @@ namespace Praktikumsverwaltung_DesktopApp
                 else
                 {
                     lblErrorFormOfIntern.Content = "mind. 1 letter";
+                }
+
+                // salary > -1, because it can be 0
+                if (title != null && description != null && formOfIntern != null && salary > -1 && dpStart != null && dpEnd != null)
+                {
+                    
                 }
             }
             catch (Exception ex)
