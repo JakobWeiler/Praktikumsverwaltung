@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Praktikumsverwaltung_DesktopApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="428.819" Width="591.13">
+        Title="MainWindow" Height="1061.49" Width="1666.83">
     <Grid>
         <Menu x:Name="menuBar" DockPanel.Dock="Top" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="583">
             <MenuItem Header="Entry" >
@@ -19,13 +19,7 @@
                 <MenuItem x:Name="mItemProfileShow" Header="Show" />
             </MenuItem>
         </Menu>
-        <ListView x:Name="lvEntries" HorizontalAlignment="Left" Height="351" Margin="0,48,-0.2,0" VerticalAlignment="Top" Width="585">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Description" Width="350"/>
-                    <GridViewColumn Header="Location" Width="200"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <DataGrid x:Name="dataGrid" ItemsSource="{Binding}" HorizontalAlignment="Left" Margin="42,96,0,0" VerticalAlignment="Top" Height="265" Width="810"/>
+
     </Grid>
 </Window>
