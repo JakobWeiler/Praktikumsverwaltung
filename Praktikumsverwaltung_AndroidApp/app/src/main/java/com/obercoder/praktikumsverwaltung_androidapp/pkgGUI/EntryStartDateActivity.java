@@ -14,6 +14,7 @@ public class EntryStartDateActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_start_date);
+
     }
 
     public void onBtnSaveStartDate(View view) {
