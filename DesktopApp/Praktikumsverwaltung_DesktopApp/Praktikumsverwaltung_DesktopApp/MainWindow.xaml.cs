@@ -30,18 +30,21 @@ namespace Praktikumsverwaltung_DesktopApp
                 strBuilder.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
 
                 WebBrowser myWebBrowser = new WebBrowser();
+                myWebBrowser.Height = 300;
+                myWebBrowser.Width = 700;
                 myWebBrowser.Navigate(strBuilder.ToString());
 
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Description", typeof(string));
-                dt.Columns.Add("Location", typeof(WebBrowser));
+                //Label lbl = new Label();
+                //lbl.Content = "dsfkadslfjlsd";
 
-                DataRow myRow = dt.NewRow();
-                myRow[0] = "some description";
-                myRow[1] = myWebBrowser;
+                //object[] myRow = new object[] { lbl, myWebBrowser};
 
-                dt.Rows.Add(myRow);
-                this.dataGrid.DataContext = dt.DefaultView;
+                ListViewItem lv = new ListViewItem();
+                
+                lv.Content = myWebBrowser;
+
+                this.lvEntries.Items.Add(lv);
+                
             }
             catch (Exception ex)
             {
