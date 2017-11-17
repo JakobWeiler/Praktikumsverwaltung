@@ -15,6 +15,7 @@
         <Label x:Name="lblErrorPassword" Content="" HorizontalAlignment="Left" Margin="305,61,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
         <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="135,61,0,0" VerticalAlignment="Top" Width="165" Height="23"/>
         <Button x:Name="btnRegister" Content="Not registered? Click here." HorizontalAlignment="Left" Margin="35,143,0,0" VerticalAlignment="Top" Width="265" Height="22" FontSize="9.333" Click="btnRegister_Click"/>
+        <Label x:Name="lblMessageLogin" Content="" HorizontalAlignment="Left" Margin="35,225,0,0" VerticalAlignment="Top" Width="265"/>
 
     </Grid>
 </Window>
