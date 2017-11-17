@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         txtUser = (EditText) findViewById(R.id.txtUser);
         txtPasswd = (EditText) findViewById(R.id.txtPassword);
         try {
+            db.connect();
             db.addPupil(new Pupil("Sasa", "sasa"));
             Log.d("hallihallo","HU>kjcdan.");
         } catch(Exception ex) {
@@ -74,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onBtnSignUp(View view) {
         try {
             startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+
         } catch(Exception ex) {
             ex.printStackTrace();
         }

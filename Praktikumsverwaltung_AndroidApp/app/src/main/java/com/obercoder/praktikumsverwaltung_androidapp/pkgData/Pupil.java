@@ -3,12 +3,14 @@ package com.obercoder.praktikumsverwaltung_androidapp.pkgData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.bson.types.ObjectId;
+
 /**
  * Created by Sasa on 01.10.2017.
  */
 
 public class Pupil implements Comparable<Pupil>{
-    private int id;
+    private ObjectId id;
     private String username;
     private String password;
     private String firstName;
@@ -21,7 +23,7 @@ public class Pupil implements Comparable<Pupil>{
         this.password=password;
     }
 
-    public Pupil(int id, String username, String password, String firstName, String lastname, String currentForm, String email) {
+    public Pupil(ObjectId id, String username, String password, String firstName, String lastname, String currentForm, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,7 +35,6 @@ public class Pupil implements Comparable<Pupil>{
 
     @Override
     public boolean equals(Object o) {
-        Log.d("equals","dasdsa");
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -51,6 +52,62 @@ public class Pupil implements Comparable<Pupil>{
 
     @Override
     public int compareTo(@NonNull Pupil o) {
-        Log.d("comp","dasdsa"); return this.username.compareTo(o.username);
+       return this.username.compareTo(o.username);
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getCurrentForm() {
+        return currentForm;
+    }
+
+    public void setCurrentForm(String currentForm) {
+        this.currentForm = currentForm;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

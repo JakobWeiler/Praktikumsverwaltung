@@ -4,9 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
 import com.obercoder.praktikumsverwaltung_androidapp.R;
+import com.obercoder.praktikumsverwaltung_androidapp.pkgData.Database;
 
 public class EditEntryActivity extends AppCompatActivity {
 
@@ -16,9 +19,5 @@ public class EditEntryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_entry);
     }
 
-    /*
-    MongoClientURI mongoUri  = new MongoClientURI("");
-    MongoClient mongoClient = new MongoClient(mongoUri);
-    MongoDatabase db = mongoClient.getDatabase(uri.getDatabase());
-    */
+
 }
