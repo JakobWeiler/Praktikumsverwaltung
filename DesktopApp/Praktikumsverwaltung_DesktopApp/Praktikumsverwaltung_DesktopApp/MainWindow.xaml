@@ -19,8 +19,8 @@
                 <MenuItem x:Name="mItemProfileShow" Header="Show" />
             </MenuItem>
         </Menu>
-        <ListView x:Name="lvEntries" HorizontalAlignment="Left" Height="578" Margin="0,48,0,0" VerticalAlignment="Top" Width="1536">
-
-        </ListView>
+        <DataGrid x:Name="dgEntries" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Height="446" Width="1060" >
+            
+        </DataGrid>
     </Grid>
 </Window>

@@ -23,7 +23,7 @@ namespace Praktikumsverwaltung_DesktopApp
         public MainWindow()
         {
             InitializeComponent();
-            
+
             try
             {
                 StringBuilder strBuilder = new StringBuilder();
@@ -39,12 +39,20 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 //object[] myRow = new object[] { lbl, myWebBrowser};
 
-                ListViewItem lv = new ListViewItem();
-                
-                lv.Content = myWebBrowser;
+                //ListViewItem lv = new ListViewItem();
 
-                this.lvEntries.Items.Add(lv);
+                //lv.Content = myWebBrowser;
+
+                //this.lvEntries.Items.Add(lv);
+                DataTable dt = new DataTable();
+                dt.Columns.Add("Description");
+                dt.Columns.Add("Location");
+                DataRow dr = dt.NewRow();
+                dr["Description"] = "klllk";
+                dr["Location"] = myWebBrowser;
                 
+                dt.Rows.Add(dr);
+                this.dgEntries.DataContext = dt.DefaultView;
             }
             catch (Exception ex)
             {
