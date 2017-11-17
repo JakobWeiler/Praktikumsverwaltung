@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Praktikumsverwaltung_DesktopApp.pkgData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 lblErrorUsername.Foreground = Brushes.Red;
                 lblErrorPassword1.Foreground = Brushes.Red;
                 lblErrorPassword2.Foreground = Brushes.Red;
+                lblMessageRegistration.Foreground = Brushes.Red;
 
                 if (txtFirstname.Text.Length > 0)
                 {
@@ -114,8 +116,20 @@ namespace Praktikumsverwaltung_DesktopApp
                 // Opens MainWindow if all fields are filled with proper values
                 if (passwordsEqual == true && firstname.Length > 0 && lastname.Length > 0 && email.Length > 0 && username.Length > 0)
                 {
-                    MainWindow myMain = new MainWindow();
-                    myMain.Show();
+                    //Pupil pupil = new Pupil(firstname, lastname, email, username, password1);
+                    //GatewayDatabase gatewayDb = GatewayDatabase.newInstance();      // Singleton
+
+                    //bool successful = gatewayDb.AddPupil(pupil);
+
+                    //if (successful)
+                    //{
+                        MainWindow myMain = new MainWindow();
+                        myMain.Show();
+                    //}
+                    //else
+                    //{
+                    //    this.lblMessageRegistration.Content = "Registration not successful.";
+                    //}                    
                 }
             }
             catch (Exception ex)
