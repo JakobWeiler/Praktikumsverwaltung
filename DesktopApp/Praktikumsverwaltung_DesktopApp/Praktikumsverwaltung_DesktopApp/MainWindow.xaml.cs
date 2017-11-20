@@ -34,25 +34,10 @@ namespace Praktikumsverwaltung_DesktopApp
                 myWebBrowser.Width = 700;
                 myWebBrowser.Navigate(strBuilder.ToString());
 
-                //Label lbl = new Label();
-                //lbl.Content = "dsfkadslfjlsd";
+                Label lbl = new Label();
+                lbl.Content = "dsfkadslfjlsd";
 
-                //object[] myRow = new object[] { lbl, myWebBrowser};
-
-                //ListViewItem lv = new ListViewItem();
-
-                //lv.Content = myWebBrowser;
-
-                //this.lvEntries.Items.Add(lv);
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Description");
-                dt.Columns.Add("Location");
-                DataRow dr = dt.NewRow();
-                dr["Description"] = "klllk";
-                dr["Location"] = myWebBrowser;
                 
-                dt.Rows.Add(dr);
-                this.dgEntries.DataContext = dt.DefaultView;
             }
             catch (Exception ex)
             {

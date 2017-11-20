@@ -2,6 +2,7 @@
 using MongoDB.Driver;       // !!!
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -104,5 +105,29 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             return successful;
 
         }
+
+        public DataTable GetAllEntries()
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                collection = database.GetCollection<BsonDocument>("Entry");              //collection name
+
+                var builder = Builders<BsonDocument>.Filter;
+                var filter = builder.Eq("allowedTeacher", true) & builder.Eq("allowedAV", true);
+                
+                // Loop to convert from var to datatable
+                foreach (var post in collection.Find(filter).ToListAsync().Result)
+                {
+                    dt.Rows.Add(post);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GetAllEntries: " + ex.Message);
+            }
+
+            return dt;
+        }        
     }
 }
