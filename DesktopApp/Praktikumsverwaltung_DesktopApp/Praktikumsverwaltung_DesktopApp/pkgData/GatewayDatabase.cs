@@ -116,7 +116,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 var builder = Builders<BsonDocument>.Filter;
                 var filter = builder.Eq("allowedTeacher", true) & builder.Eq("allowedAV", true);
                 
-                // Loop to convert from var to datatable
+                // Loop to convert from var to datatable in order to display data
                 foreach (var post in collection.Find(filter).ToListAsync().Result)
                 {
                     dt.Rows.Add(post);
