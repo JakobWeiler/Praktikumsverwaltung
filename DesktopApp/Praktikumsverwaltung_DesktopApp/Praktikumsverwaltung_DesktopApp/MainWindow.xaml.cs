@@ -31,13 +31,20 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 WebBrowser myWebBrowser = new WebBrowser();
                 myWebBrowser.Height = 300;
-                myWebBrowser.Width = 700;
+                myWebBrowser.Width = 300;
                 myWebBrowser.Navigate(strBuilder.ToString());
 
-                Label lbl = new Label();
-                lbl.Content = "dsfkadslfjlsd";
+                Label lblEntry = new Label();
+                lblEntry.Content = "dsfkadslfjlsd";
 
-                
+                ListViewItem lvItem = new ListViewItem();
+                lvItem.Content = lblEntry;
+
+                ListViewItem lvItem2 = new ListViewItem();
+                lvItem2.Content = myWebBrowser;
+
+                this.lvEntries.Items.Add(lvItem);
+                this.lvEntries.Items.Add(lvItem2);
             }
             catch (Exception ex)
             {
