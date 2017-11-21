@@ -1,0 +1,125 @@
+--Creates
+db.createCollection( "Company",
+   {
+      validator: { $and:
+         [
+            { name: { $type: "string" } },
+            { location: { $type: "string" } },
+			{ numberOfEmployees: { $type: "int" } },
+            { contactPerson: { $type: "string" } }
+         ]
+      }
+   }
+)
+db.createCollection( "Teacher",
+   {
+      validator: { $and:
+         [
+            { username: { $type: "string" } },
+			{ password: { $type: "string" } },
+            { firstName: { $type: "string" } },
+			{ lastName: { $type: "string" } },
+			{ email: { $regex: ".*@.*" } },
+            { isAdmin: { $type: "bool" } },
+			{ isActive: { $type: "bool" } }
+         ]
+      }
+   }
+)
+db.createCollection( "Department",
+   {
+      validator: { $and:
+         [
+            { name: { $type: "string" } },
+            { description: { $type: "string" } },
+            { idAV: { $type: "objectId" } }
+         ]
+      }
+   }
+)
+db.createCollection( "TeachesIn",
+   {
+      validator: { $and:
+         [
+            {_id: [ { idDepartment: { $type: "objectId" } },
+            { idTeacher: { $type: "objectId" } } ] }
+         ]
+      }
+   }
+)
+db.createCollection( "Class",
+   {
+      validator: { $and:
+         [
+            { description: { $type: "string" } },
+            { idKV: { $type: "objectId" } }
+         ]
+      }
+   }
+)
+db.createCollection( "Pupil",
+   {
+      validator: { $and:
+         [
+            { username: { $type: "string" } },
+			{ password: { $type: "string" } },
+            { firstName: { $type: "string" } },
+			{ lastName: { $type: "string" } },
+			{ email: { $regex: ".*@.*" } },
+            { isActive: { $type: "bool" } },
+			{ idDepartment: { $type: "objectId" } },
+			{ idClass: { $type: "objectId" } }
+         ]
+      }
+   }
+)
+db.createCollection( "Entry",
+   {
+      validator: { $and:
+         [
+            { startDate: { $type: "date" } },
+			{ endDate: { $type: "date" } },
+            { salary: { $type: "double" } },
+			{ title: { $type: "string" } },
+			{ description: { $type: "string" } },
+            { allowedTeacher: { $type: "bool" } },
+			{ allowedAV: { $type: "bool" } },
+			{ idPupil: { $type: "objectId" } },
+			{ idCompany: { $type: "objectId" } },
+			{ idClass: { $type: "objectId" } }
+         ]
+      }
+   }
+)
+
+--Inserts
+db.Company.insert({"name":"Knapp AG","location":"Graz","numberOfEmployees":NumberInt("1000"),"contactPerson":"Norbert Liebhart"})
+db.Company.insert({"name":"SimpliFlow","location":"Klagenfurt","numberOfEmployees":NumberInt("10"),"contactPerson":"Tom"})
+db.Company.insert({"name":"Bitmovin","location":"Klagenfurt","numberOfEmployees":NumberInt("25"),"contactPerson":"Martin Smole"})
+
+db.Teacher.insert({"username":"org","password":"org","firstName":"Gerald","lastName":"Ortner","email":"org@htl-villach.at","isAdmin":true,"isActive":true})
+db.Teacher.insert({"username":"rel","password":"rel","firstName":"Ludwig","lastName":"Reichmann","email":"rel@htl-villach.at","isAdmin":true,"isActive":true})
+db.Teacher.insert({"username":"obg","password":"obg","firstName":"Gernot","lastName":"Oberlercher","email":"obg@htl-villach.at","isAdmin":false,"isActive":true})
+db.Teacher.insert({"username":"edk","password":"edk","firstName":"Karl-Heinz","lastName":"Eder","email":"edk@htl-villach.at","isAdmin":false,"isActive":true})
+db.Teacher.insert({"username":"zig","password":"zig","firstName":"Georg","lastName":"Zimmermann","email":"zig@htl-villach.at","isAdmin":false,"isActive":true})
+
+db.Department.insert({"name":"Informatik","description":"Best department ever!","idAV":ObjectId("5a0ebf2672a5a34fbcb455ff")})
+db.Department.insert({"name":"Innenarchitektur","description":"","idAV":ObjectId("5a0ec44772a5a34fbcb45601")})
+
+db.TeachesIn.insert({"_id":[ObjectId("5a0ec2f172a5a34fbcb45600"),ObjectId("5a0ebd0572a5a34fbcb455fc")]})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeacher":ObjectId("5a0ebde872a5a34fbcb455fd")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeacher":ObjectId("5a0ebde972a5a34fbcb455fe")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeacher":ObjectId("5a0ebf2672a5a34fbcb455ff")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec4be72a5a34fbcb45602"),"idTeacher":ObjectId("5a0ec44772a5a34fbcb45601")})
+
+db.Pupil.insert({"username":"lenze","password":"lenze","firstName":"Lorenz","lastName":"Fritz","email":"lenze@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a0ec2f172a5a34fbcb45600")})
+db.Pupil.insert({"username":"sasa","password":"sasa","firstName":"Sasa","lastName":"Sarkovic","email":"sasa@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a0ec2f172a5a34fbcb45600")})
+db.Pupil.insert({"username":"jakob","password":"jakob","firstName":"Jakob","lastName":"Weiler","email":"jakob@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a0ec2f172a5a34fbcb45600")})
+
+--Allgemein
+use 5BHIFS_BSD_Praktikumsverwaltung
+db.getCollectionNames()
+db.COLLECTION_NAME.remove({})   --delete documents
+db.COLLECTION_NAME.drop()	--delete collection
+db.Company.find({"name":{$regex: ".*AG.*"}})
+db.Teacher.find({"_id":ObjectId("5a0ebf2672a5a34fbcb455ff")}) //edk
