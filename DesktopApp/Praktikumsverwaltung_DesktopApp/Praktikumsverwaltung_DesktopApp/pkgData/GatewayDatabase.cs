@@ -29,17 +29,21 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             return instance;
         }
 
-        public void ConnectMongoDB()
+        public bool ConnectMongoDB()
         {
+            bool successful = false;
             try
             {
                 client = new MongoClient(mongoUrl);
-                database = client.GetDatabase("5BHIFS_BSD_Praktikumsverwaltung");            // database of mongoDb                
+                database = client.GetDatabase("5BHIFS_BSD_Praktikumsverwaltung");            // database of mongoDb
+                successful = true;
             }
             catch (Exception ex)
             {
                 throw new Exception("Error in ConnectMongoDB: " + ex.Message);
-            }            
+            }
+
+            return successful;     
         }
 
         private void CheckConnectionMongoDB()
