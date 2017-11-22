@@ -24,7 +24,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             if (instance == null)
             {
                 instance = new GatewayDatabase();
-                mongoUrl = new MongoUrl("mongodb://192.168.196.38");     // aphrodite
+                mongoUrl = new MongoUrl("mongodb://212.152.179.118");     // aphrodite. intern: 192.168.196.38       extern: 212.152.179.118
             }
             return instance;
         }
@@ -94,8 +94,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 var builder = Builders<BsonDocument>.Filter;
                 var filter = builder.Eq("username", usernamePupil) & builder.Eq("password", passwordPupil);
                 var cursor = collection.Find(filter, null);
-                Console.WriteLine("Anzahl der Elemente die dem Username und Password entsprechen: {0}" + cursor.Count());
-
+                
                 if (cursor.Count() == 1)
                 {
                     successful = true;
@@ -110,9 +109,9 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
 
         }
 
-        public DataTable GetAllEntries()
+        public List<string> GetAllEntries()
         {
-            DataTable dt = new DataTable();
+            List<string> listMongoDBEntries = new List<string>();
             try
             {
                 collection = database.GetCollection<BsonDocument>("Entry");              //collection name
@@ -123,7 +122,8 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 // Loop to convert from var to datatable in order to display data
                 foreach (var post in collection.Find(filter).ToListAsync().Result)
                 {
-                    dt.Rows.Add(post);
+                    Console.WriteLine("Elemente: {0}", post.ToString());
+                    listMongoDBEntries.Add(post.ToString());
                 }
             }
             catch (Exception ex)
@@ -131,7 +131,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 throw new Exception("Error in GetAllEntries: " + ex.Message);
             }
 
-            return dt;
+            return listMongoDBEntries;
         }        
     }
 }
