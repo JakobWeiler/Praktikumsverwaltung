@@ -102,6 +102,7 @@ db.Teacher.insert({"username":"rel","password":"rel","firstName":"Ludwig","lastN
 db.Teacher.insert({"username":"obg","password":"obg","firstName":"Gernot","lastName":"Oberlercher","email":"obg@htl-villach.at","isAdmin":false,"isActive":true})
 db.Teacher.insert({"username":"edk","password":"edk","firstName":"Karl-Heinz","lastName":"Eder","email":"edk@htl-villach.at","isAdmin":false,"isActive":true})
 db.Teacher.insert({"username":"zig","password":"zig","firstName":"Georg","lastName":"Zimmermann","email":"zig@htl-villach.at","isAdmin":false,"isActive":true})
+db.Teacher.insert({"username":"pew","password":"pew","firstName":"Walter","lastName":"Petritsch","email":"pew@htl-villach.at","isAdmin":false,"isActive":true})
 
 db.Department.insert({"name":"Informatik","description":"Best department ever!","idAV":ObjectId("5a0ebf2672a5a34fbcb455ff")})
 db.Department.insert({"name":"Innenarchitektur","description":"","idAV":ObjectId("5a0ec44772a5a34fbcb45601")})
@@ -112,9 +113,15 @@ db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeac
 db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeacher":ObjectId("5a0ebf2672a5a34fbcb455ff")})
 db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec4be72a5a34fbcb45602"),"idTeacher":ObjectId("5a0ec44772a5a34fbcb45601")})
 
-db.Pupil.insert({"username":"lenze","password":"lenze","firstName":"Lorenz","lastName":"Fritz","email":"lenze@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a0ec2f172a5a34fbcb45600")})
-db.Pupil.insert({"username":"sasa","password":"sasa","firstName":"Sasa","lastName":"Sarkovic","email":"sasa@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a0ec2f172a5a34fbcb45600")})
-db.Pupil.insert({"username":"jakob","password":"jakob","firstName":"Jakob","lastName":"Weiler","email":"jakob@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a0ec2f172a5a34fbcb45600")})
+db.Class.insert({"description":"5BHIFS","idKV":ObjectId("5a153c2c081721444bfd6186")})
+db.Class.insert({"description":"4BHIFS","idKV":ObjectId("5a0ebd0572a5a34fbcb455fc")})
+
+db.Pupil.insert({"username":"lenze","password":"lenze","firstName":"Lorenz","lastName":"Fritz","email":"lenze@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
+db.Pupil.insert({"username":"sasa","password":"sasa","firstName":"Sasa","lastName":"Sarkovic","email":"sasa@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
+db.Pupil.insert({"username":"jakob","password":"jakob","firstName":"Jakob","lastName":"Weiler","email":"jakob@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
+
+db.Entry.insert({"startDate":new Date("2017-07-10"),"endDate":new Date("2017-09-01"),"salary":1300,"title":"Diplomarbeit:KSB-Workflow-Generator","description":"Java-App für interne Zwecke","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a153ce82e311334d39bae00"),"idCompany":ObjectId("5a096829f23798ea76fd83e7"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
+db.Entry.insert({"startDate":new Date("2017-07-3"),"endDate":new Date("2017-08-25"),"salary":800,"title":"Diplomarbeit","description":"Testen verschiedener Frameworks","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a153ce82e311334d39badfe"),"idCompany":ObjectId("5a0eb9c3c244b40193041323"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
 
 --Allgemein
 use 5BHIFS_BSD_Praktikumsverwaltung
