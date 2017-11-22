@@ -1,5 +1,10 @@
+Intern:
 cd C:\Program Files\MongoDB\Server\3.4\bin
 
 mongo.exe 192.168.196.38:27017
 
 use 5BHIFS_BSD_Praktikumsverwaltung
+
+
+Extern:
+mongo.exe 212.152.179.118:27017
