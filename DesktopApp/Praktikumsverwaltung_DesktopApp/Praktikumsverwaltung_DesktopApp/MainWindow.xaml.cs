@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Praktikumsverwaltung_DesktopApp.pkgData;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace Praktikumsverwaltung_DesktopApp
 
             try
             {
+                GatewayDatabase db = GatewayDatabase.newInstance();
+
                 StringBuilder strBuilder = new StringBuilder();
                 strBuilder.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
 
@@ -34,22 +37,55 @@ namespace Praktikumsverwaltung_DesktopApp
                 myWebBrowser.Width = 300;
                 myWebBrowser.Navigate(strBuilder.ToString());
 
-                Label lblEntry = new Label();
-                lblEntry.Content = "dsfkadslfjlsd";
+                List<string> listMongoDBEntries = db.GetAllEntries();          // mongoDB
 
-                ListViewItem lvItem = new ListViewItem();
-                lvItem.Content = lblEntry;
+                Console.WriteLine(listMongoDBEntries);
 
-                ListViewItem lvItem2 = new ListViewItem();
-                lvItem2.Content = myWebBrowser;
 
-                this.lvEntries.Items.Add(lvItem);
-                this.lvEntries.Items.Add(lvItem2);
+
+                //Label lblEntry = new Label();
+                //lblEntry.Content = "dsfkadslfjlsd";
+
+                //ListViewItem lvItem = new ListViewItem();
+                //lvItem.Content = lblEntry;
+
+                //ListViewItem lvItem2 = new ListViewItem();
+                //lvItem2.Content = myWebBrowser;
+
+                //this.lvEntries.Items.Add(lvItem);
+                //this.lvEntries.Items.Add(lvItem2);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+
+        private List<Entry> SplitMongoDBEntry(List<string> listMongoDBEntries)
+        {
+            List<Entry> listSplittedEntries = null;
+            Entry myEntry = null;
+            string mongoDBString = "";
+            string[] mongoDBEntryFields = null;
+            try
+            {
+                foreach (string entryMongoDB in listMongoDBEntries)
+                {
+                    mongoDBString = entryMongoDB;
+                    mongoDBString.Replace('{', ' ');        // Ist am Anfang
+                    mongoDBString.Replace('}', ' ');        // Ist am Ende
+                    mongoDBString.TrimStart();
+                    mongoDBString.TrimEnd();
+                    mongoDBEntryFields = mongoDBString.Split(',');
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+
+            return listSplittedEntries;
         }
 
         private void mItemEntryAdd_Click(object sender, RoutedEventArgs e)
