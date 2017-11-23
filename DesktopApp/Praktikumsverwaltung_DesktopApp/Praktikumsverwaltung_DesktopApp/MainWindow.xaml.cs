@@ -25,67 +25,52 @@ namespace Praktikumsverwaltung_DesktopApp
         {
             InitializeComponent();
 
+            this.LoadEntries();
+        }
+
+        private void LoadEntries()
+        {
+            StringBuilder strBuilderEntry = new StringBuilder();
             try
             {
                 GatewayDatabase db = GatewayDatabase.newInstance();
+                List<Entry> listEntries = db.GetAllEntries();          // mongoDB get all entries
 
-                StringBuilder strBuilder = new StringBuilder();
-                strBuilder.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
+                foreach (Entry entry in listEntries)
+                {
+                    strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append("Dauer: " + entry.StartDate + " bis " + entry.EndDate + Environment.NewLine);
+                    strBuilderEntry.Append("Gehalt: " + entry.Salary + Environment.NewLine);
+                    strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append("---------------------------------------------------------------------------");
 
-                WebBrowser myWebBrowser = new WebBrowser();
-                myWebBrowser.Height = 300;
-                myWebBrowser.Width = 300;
-                myWebBrowser.Navigate(strBuilder.ToString());
+                    Label lblEntry = new Label();
+                    lblEntry.Content = strBuilderEntry;
 
-                List<string> listMongoDBEntries = db.GetAllEntries();          // mongoDB
+                    ListViewItem lvItem = new ListViewItem();
+                    lvItem.Content = lblEntry;
 
-                Console.WriteLine(listMongoDBEntries);
+                    this.lvEntries.Items.Add(lvItem);
+                }             
 
 
+                //StringBuilder strBuilderAddress = new StringBuilder();
+                //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
 
-                //Label lblEntry = new Label();
-                //lblEntry.Content = "dsfkadslfjlsd";
-
-                //ListViewItem lvItem = new ListViewItem();
-                //lvItem.Content = lblEntry;
+                //WebBrowser myWebBrowser = new WebBrowser();
+                //myWebBrowser.Height = 300;
+                //myWebBrowser.Width = 300;
+                //myWebBrowser.Navigate(strBuilder.ToString());
 
                 //ListViewItem lvItem2 = new ListViewItem();
                 //lvItem2.Content = myWebBrowser;
-
-                //this.lvEntries.Items.Add(lvItem);
-                //this.lvEntries.Items.Add(lvItem2);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-        }
-
-        private List<Entry> SplitMongoDBEntry(List<string> listMongoDBEntries)
-        {
-            List<Entry> listSplittedEntries = null;
-            Entry myEntry = null;
-            string mongoDBString = "";
-            string[] mongoDBEntryFields = null;
-            try
-            {
-                foreach (string entryMongoDB in listMongoDBEntries)
-                {
-                    mongoDBString = entryMongoDB;
-                    mongoDBString.Replace('{', ' ');        // Ist am Anfang
-                    mongoDBString.Replace('}', ' ');        // Ist am Ende
-                    mongoDBString.TrimStart();
-                    mongoDBString.TrimEnd();
-                    mongoDBEntryFields = mongoDBString.Split(',');
-                    
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message);
-            }
-
-            return listSplittedEntries;
         }
 
         private void mItemEntryAdd_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;         // !!!
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;       // !!!
 using System;
 using System.Collections.Generic;
@@ -109,9 +110,10 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
 
         }
 
-        public List<string> GetAllEntries()
+        public List<Entry> GetAllEntries()
         {
-            List<string> listMongoDBEntries = new List<string>();
+            List<Entry> listEntries = new List<Entry>();
+            Entry currentEntry = null;
             try
             {
                 collection = database.GetCollection<BsonDocument>("Entry");              //collection name
@@ -119,11 +121,11 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 var builder = Builders<BsonDocument>.Filter;
                 var filter = builder.Eq("allowedTeacher", true) & builder.Eq("allowedAV", true);
                 
-                // Loop to convert from var to datatable in order to display data
-                foreach (var post in collection.Find(filter).ToListAsync().Result)
+                // foreach loop through all serialized Entries (bson (binary json) - format)
+                foreach (var serializedEntry in collection.Find(filter).ToListAsync().Result)
                 {
-                    Console.WriteLine("Elemente: {0}", post.ToString());
-                    listMongoDBEntries.Add(post.ToString());
+                    currentEntry = BsonSerializer.Deserialize<Entry>(serializedEntry);              // !!! Deserialize the entry of mongoDB
+                    listEntries.Add(currentEntry);
                 }
             }
             catch (Exception ex)
@@ -131,7 +133,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 throw new Exception("Error in GetAllEntries: " + ex.Message);
             }
 
-            return listMongoDBEntries;
+            return listEntries;
         }        
     }
 }
