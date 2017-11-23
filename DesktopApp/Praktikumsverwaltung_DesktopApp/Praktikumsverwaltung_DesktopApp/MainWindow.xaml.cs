@@ -41,18 +41,19 @@ namespace Praktikumsverwaltung_DesktopApp
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
-                    strBuilderEntry.Append("Dauer: " + entry.StartDate + " bis " + entry.EndDate + Environment.NewLine);
+                    strBuilderEntry.Append("Dauer: " + entry.StartDate.ToString("dd.MM.yyyy") + " bis " + entry.EndDate.ToString("dd.MM.yyyy") + Environment.NewLine);
                     strBuilderEntry.Append("Gehalt: " + entry.Salary + Environment.NewLine);
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("---------------------------------------------------------------------------");
 
                     Label lblEntry = new Label();
+                    lblEntry.FontSize = 14;
                     lblEntry.Content = strBuilderEntry;
 
                     ListViewItem lvItem = new ListViewItem();
                     lvItem.Content = lblEntry;
 
-                    this.lvEntries.Items.Add(lvItem);
+                    this.lbEntries.Items.Add(lvItem);
                 }             
 
 

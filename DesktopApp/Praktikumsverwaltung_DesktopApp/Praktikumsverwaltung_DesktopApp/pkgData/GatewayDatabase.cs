@@ -25,7 +25,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             if (instance == null)
             {
                 instance = new GatewayDatabase();
-                mongoUrl = new MongoUrl("mongodb://212.152.179.118");     // aphrodite. intern: 192.168.196.38       extern: 212.152.179.118
+                mongoUrl = new MongoUrl("mongodb://192.168.196.38");     // aphrodite. intern: 192.168.196.38       extern: 212.152.179.118
             }
             return instance;
         }
@@ -45,33 +45,17 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
 
             return successful;     
-        }
+        }        
 
-        private void CheckConnectionMongoDB()
-        {
-            try
-            {
-                collection = database.GetCollection<BsonDocument>("Company");              //collection name
-
-                var filter = new BsonDocument();
-                var cursor = collection.Find(filter, null);
-                Console.WriteLine("Anzahl der Elemente von Company: {0}", cursor.Count());
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in CheckConnectionMongoDB: " + ex.Message);
-            }
-        }
-
-        public bool AddPupil(Pupil pupil)
+        public bool AddEntry(Entry entry)
         {
             bool successful = false;
             try
             {
-                collection = database.GetCollection<BsonDocument>("Pupil");              //collection name
-
-                var document = new BsonDocument { new BsonElement("username", pupil.Username), new BsonElement("password", pupil.Password), new BsonElement("firstName", pupil.Firstname), new BsonElement("lastName", pupil.Lastname), new BsonElement("email", pupil.Email), new BsonElement("isActive", true) };
+                collection = database.GetCollection<BsonDocument>("Entry");              //collection name
+                var document = entry.ToBsonDocument<Entry>();
+                
+                //var document = new BsonDocument { new BsonElement("startDate", pupil.Username), new BsonElement("password", pupil.Password), new BsonElement("firstName", pupil.Firstname), new BsonElement("lastName", pupil.Lastname), new BsonElement("email", pupil.Email), new BsonElement("isActive", true) };
                 collection.InsertOneAsync(document).Wait();
                 successful = true;
 
