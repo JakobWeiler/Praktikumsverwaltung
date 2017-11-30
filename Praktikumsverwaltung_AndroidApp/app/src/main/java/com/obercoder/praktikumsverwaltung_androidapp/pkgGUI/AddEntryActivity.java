@@ -30,4 +30,12 @@ public class AddEntryActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
     }
+
+    public void onBtnAddEntry(View view) {
+        try {
+            startActivity(new Intent(AddEntryActivity.this, EntryStartDateActivity.class));
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

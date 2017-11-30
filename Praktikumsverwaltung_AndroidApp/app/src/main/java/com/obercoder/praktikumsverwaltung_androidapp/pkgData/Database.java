@@ -17,6 +17,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Sasa on 01.10.2017.
@@ -26,7 +27,7 @@ public class Database{
 
     private TreeSet<Pupil> tsPupil = new TreeSet<Pupil>();
     private static Database singletonDB = null;
-    MongoCollection<Document> collection;
+    //MongoCollection<Document> collection;
 
     public static Database newInstance() {
         if (singletonDB == null) {
@@ -46,12 +47,17 @@ public class Database{
 
     //1.VERSUCH LIST zu füllen
     public List<Document> getAllCompanies(MongoCollection<Document> c) {
-        FindIterable<Document> cur = c.find();
+        Log.d("Test222", "fdfada");
+        //ArrayList<Document> cur = new ArrayList<Document>();
+        //c.find().into(cur);
+        ArrayList<Document> cur = (ArrayList<Document>) c.find().into(new ArrayList<Document>());
+        Log.d("Test111", cur.toString());
         List<Document> companies = new ArrayList<>();
-        Log.d("WHILEAUSGABE2", "Test");
+        Log.d("Test1", "Test");
         for (Document d : cur) {
-            Log.d("WHILEAUSGABE", d.toString());
-            companies.add(d);
+            Log.d("Test2Json", d.toJson());
+            //String jsonString = d.toJson();
+            //companies.add(d);
         }
         return companies;
     }
