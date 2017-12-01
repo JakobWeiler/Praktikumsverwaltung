@@ -96,6 +96,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void mItemShow_Click(object sender, EventArgs e)
         {
+            // Load new entries which have to be accepted or rejected
             MessageBox.Show("ON CLICK");
         }
 
