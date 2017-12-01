@@ -77,20 +77,26 @@ namespace Praktikumsverwaltung_DesktopApp
             }
         }
 
-        // if user is an admin, there are some "special" window elements
+        // if user is an admin, there are some additional "special" window elements
         private void LoadAdminGuiElements()
         {
             if (db.IsAdmin())
             {
                 MenuItem mItemNewEntries = new MenuItem();
                 mItemNewEntries.Header = "New Entries";
-                MenuItem mItemAccept = new MenuItem();
-                mItemAccept.Header = "Accept";
+                MenuItem mItemShow = new MenuItem();
+                mItemShow.Header = "Show";
+                mItemShow.Click += (s, e) => { mItemShow_Click(s, e); };
 
-                mItemNewEntries.Items.Add(mItemAccept);
+                mItemNewEntries.Items.Add(mItemShow);
 
                 this.menuBar.Items.Add(mItemNewEntries);
             }
+        }
+
+        private void mItemShow_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("ON CLICK");
         }
 
         private void mItemEntryAdd_Click(object sender, RoutedEventArgs e)
