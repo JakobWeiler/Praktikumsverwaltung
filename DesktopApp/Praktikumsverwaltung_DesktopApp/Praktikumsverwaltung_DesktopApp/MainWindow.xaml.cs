@@ -57,7 +57,7 @@ namespace Praktikumsverwaltung_DesktopApp
                     lvItem.Content = lblEntry;
 
                     this.lbEntries.Items.Add(lvItem);
-                }             
+                }
 
 
                 //StringBuilder strBuilderAddress = new StringBuilder();
@@ -84,12 +84,12 @@ namespace Praktikumsverwaltung_DesktopApp
             {
                 MenuItem mItemNewEntries = new MenuItem();
                 mItemNewEntries.Header = "New Entries";
+
                 MenuItem mItemShow = new MenuItem();
                 mItemShow.Header = "Show";
                 mItemShow.Click += (s, e) => { mItemShow_Click(s, e); };
 
                 mItemNewEntries.Items.Add(mItemShow);
-
                 this.menuBar.Items.Add(mItemNewEntries);
             }
         }
@@ -98,6 +98,8 @@ namespace Praktikumsverwaltung_DesktopApp
         {
             // Load new entries which have to be accepted or rejected
             MessageBox.Show("ON CLICK");
+            NewEntriesWindow newEntries = new NewEntriesWindow();
+            newEntries.Show();
         }
 
         private void mItemEntryAdd_Click(object sender, RoutedEventArgs e)
