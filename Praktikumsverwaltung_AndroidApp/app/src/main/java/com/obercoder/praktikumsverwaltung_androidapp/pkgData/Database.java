@@ -17,6 +17,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Sasa on 01.10.2017.
@@ -26,7 +27,7 @@ public class Database{
 
     private TreeSet<Pupil> tsPupil = new TreeSet<Pupil>();
     private static Database singletonDB = null;
-    MongoCollection<Document> collection;
+    //MongoCollection<Document> collection;
 
     public static Database newInstance() {
         if (singletonDB == null) {
@@ -44,27 +45,41 @@ public class Database{
     }
 
 
-    //1.VERSUCH Collection zu LIST zu converten
-    public List<Document> getAllCompanies() {
-        FindIterable<Document> cur = collection.find();
+    //1.VERSUCH LIST zu füllen
+    public List<Document> getAllCompanies(MongoCollection<Document> c) {
+        Log.d("Test222", "fdfada");
+        //ArrayList<Document> cur = new ArrayList<Document>();
+        //c.find().into(cur);
+        ArrayList<Document> cur = (ArrayList<Document>) c.find().into(new ArrayList<Document>());
+        Log.d("Test111", cur.toString());
         List<Document> companies = new ArrayList<>();
-        while(cur.iterator().hasNext()) {
-            companies.add(cur.iterator().next());
+        Log.d("Test1", "Test");
+        for (Document d : cur) {
+            Log.d("Test2Json", d.toJson());
+            //String jsonString = d.toJson();
+            //companies.add(d);
         }
         return companies;
     }
 
     public void connect() {
-        MongoClientURI mongoUri = new MongoClientURI("mongodb://192.168.196.38");
+        MongoConnect mc = new MongoConnect();
+        mc.execute();
+
+       /* MongoClientURI mongoUri = new MongoClientURI("mongodb://192.168.196.38");
         MongoClient mongoClient = new MongoClient(mongoUri);
         Log.d("ABCDFGH", "Connected to the database successfully");
         MongoDatabase db = mongoClient.getDatabase("5BHIFS_BSD_Praktikumsverwaltung");
 
-        collection = db.getCollection("Company");
-       //BIS HIERHIN FUNKTIONIERTS
+        collection = db.getCollection("Pupil");
+        List<Document> listCompany = this.getAllCompanies();
+        Log.d("SELECTCOLLECTION", "Collection myCollection selected successfully");      //1. VERSUCH mit List<Document>
 
+        for(Document c : listCompany) {
+            Log.d("LISTCOMP", c.toString());
+        }
 
-
+/*
         MongoCursor<Document> iterator = collection.find().iterator();
 
         BasicDBList list = new BasicDBList();                   //2.VERSUCH WEIL MONGOCOLLECTION IN NORMALE LISTE NICHT MÖGLICH
@@ -73,14 +88,6 @@ public class Database{
             list.add(doc);
         }
         System.out.println(JSON.serialize(list));
-
-        /*
-
-        List<Document> listCompany = this.getAllCompanies();
-        Log.d("SASAISAKING", "Collection myCollection selected successfully");      //1. VERSUCH mit List<Document>
-
-        for(Document c : listCompany) {
-            Log.d("LISTCOMP", c.toString()); */
-
+*/
     }
 }
