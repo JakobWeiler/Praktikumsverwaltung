@@ -21,11 +21,15 @@ namespace Praktikumsverwaltung_DesktopApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private GatewayDatabase db = null;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            db = GatewayDatabase.newInstance();
             this.LoadEntries();
+            this.LoadAdminGuiElements();
         }
 
         private void LoadEntries()
@@ -33,7 +37,6 @@ namespace Praktikumsverwaltung_DesktopApp
             StringBuilder strBuilderEntry = new StringBuilder();
             try
             {
-                GatewayDatabase db = GatewayDatabase.newInstance();
                 List<Entry> listEntries = db.GetAllEntries();          // mongoDB get all entries
 
                 foreach (Entry entry in listEntries)
@@ -71,6 +74,22 @@ namespace Praktikumsverwaltung_DesktopApp
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        // if user is an admin, there are some "special" window elements
+        private void LoadAdminGuiElements()
+        {
+            if (db.IsAdmin())
+            {
+                MenuItem mItemNewEntries = new MenuItem();
+                mItemNewEntries.Header = "New Entries";
+                MenuItem mItemAccept = new MenuItem();
+                mItemAccept.Header = "Accept";
+
+                mItemNewEntries.Items.Add(mItemAccept);
+
+                this.menuBar.Items.Add(mItemNewEntries);
             }
         }
 
