@@ -74,6 +74,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="pkgData\Company.cs" />
     <Compile Include="pkgData\Entry.cs" />
     <Compile Include="pkgData\GatewayDatabase.cs" />
     <Compile Include="pkgData\Pupil.cs" />

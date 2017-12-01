@@ -66,7 +66,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     if (successful == true)
                     {
-                        successful = gatewayDb.CheckPupilLogin(username, password);
+                        successful = gatewayDb.CheckLogin(username, password);
 
                         if (successful)
                         {
@@ -95,7 +95,6 @@ namespace Praktikumsverwaltung_DesktopApp
         {
             Registration reg = new Registration();
             reg.Show();
-            this.Close();
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Praktikumsverwaltung_DesktopApp.pkgData
-{    
+{
     class GatewayDatabase
     {
         private static GatewayDatabase instance = null;
@@ -18,6 +18,19 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         private IMongoClient client;
         private IMongoDatabase database;
         private IMongoCollection<BsonDocument> collection;
+
+        // user
+        private string username = null;
+        private string password = null;
+        // Required for generating "special" main window for teacher (accepting entries)
+        private bool isAdmin = false;
+        
+
+
+        public bool IsAdmin()
+        {
+            return this.isAdmin;
+        }
 
         // Singleton
         public static GatewayDatabase newInstance()
@@ -68,7 +81,23 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             return successful;
         }
 
-        public bool CheckPupilLogin(string usernamePupil, string passwordPupil)
+        public bool CheckLogin(string _username, string _password)
+        {
+            bool isOk = false;
+
+            isOk = CheckPupilLogin(_username, _password);
+
+            // if it is no pupil, check if it is a teacher
+            //if (isOk == false)
+            //{
+            //    isOk = CheckTeacherLogin(_username, _password);
+            //}
+            this.isAdmin = true;
+
+            return isOk;
+        }
+
+        private bool CheckPupilLogin(string usernamePupil, string passwordPupil)
         {
             bool successful = false;
             try
@@ -83,6 +112,8 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 if (cursor.Count() == 1)
                 {
                     successful = true;
+                    this.username = usernamePupil;
+                    this.password = password;
                 }
             }
             catch (Exception ex)
@@ -91,8 +122,42 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
 
             return successful;
-
         }
+
+        //private bool CheckTeacherLogin(string usernameTeacher, string passwordTeacher)
+        //{
+        //    bool successful = false;
+        //    try
+        //    {
+        //        collection = database.GetCollection<BsonDocument>("Teacher");              //collection name
+
+        //        // Filter for username and password (they must be found "together" in the MongoDB)
+        //        var builder = Builders<BsonDocument>.Filter;
+        //        var filter = builder.Eq("username", usernameTeacher) & builder.Eq("password", passwordTeacher);
+        //        var cursor = collection.Find(filter, null);
+
+        //        if (cursor.Count() == 1)
+        //        {
+        //            successful = true;
+        //            this.username = usernameTeacher;
+        //            this.password = passwordTeacher;
+                    
+        //            filter = builder.Eq("isAdmin", true);
+        //            cursor = collection.Find(filter, null);
+
+        //            if (cursor.Count() == 1)
+        //            {
+        //                this.isAdmin = true;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception("Error in CheckTeacherLogin: " + ex.Message);
+        //    }
+
+        //    return successful;
+        //}
 
         public List<Entry> GetAllEntries()
         {
@@ -102,9 +167,21 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             {
                 collection = database.GetCollection<BsonDocument>("Entry");              //collection name
 
+                //var collection = database.GetCollection<BsonDocument>("Entry");
+                //var aggregate = collection.Aggregate()
+                //    .Match(new BsonDocument { { "allowedTeacher", true }, { "allowedAV", true } })
+                //    .Lookup( "Company", "idCompany", "id", "docs_company" );
+                //var results = aggregate.ToListAsync();
+
+                //foreach (var serializedEntry in results.Result)
+                //{
+                //    currentEntry = BsonSerializer.Deserialize<Entry>(serializedEntry);              // !!! Deserialize the entry of mongoDB
+                //    listEntries.Add(currentEntry);
+                //}
+
                 var builder = Builders<BsonDocument>.Filter;
                 var filter = builder.Eq("allowedTeacher", true) & builder.Eq("allowedAV", true);
-                
+
                 // foreach loop through all serialized Entries (bson (binary json) - format)
                 foreach (var serializedEntry in collection.Find(filter).ToListAsync().Result)
                 {

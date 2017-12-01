@@ -26,7 +26,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            String title = null, description = null, formOfIntern = null, dpStart = null, dpEnd = null;
+            String title = "", description = "", formOfIntern = "", dpStart = "", dpEnd = "";
             int salary = -1;
 
             
