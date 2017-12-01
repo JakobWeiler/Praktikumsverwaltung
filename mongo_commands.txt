@@ -1,4 +1,4 @@
---Creates
+﻿--Creates
 db.createCollection( "Company",
    {
       validator: { $and:
@@ -41,8 +41,8 @@ db.createCollection( "TeachesIn",
    {
       validator: { $and:
          [
-            {_id: [ { idDepartment: { $type: "objectId" } },
-            { idTeacher: { $type: "objectId" } } ] }
+            { idDepartment: { $type: "objectId" } },
+            { idTeacher: { $type: "objectId" } }
          ]
       }
    }
@@ -104,29 +104,37 @@ db.Teacher.insert({"username":"edk","password":"edk","firstName":"Karl-Heinz","l
 db.Teacher.insert({"username":"zig","password":"zig","firstName":"Georg","lastName":"Zimmermann","email":"zig@htl-villach.at","isAdmin":false,"isActive":true})
 db.Teacher.insert({"username":"pew","password":"pew","firstName":"Walter","lastName":"Petritsch","email":"pew@htl-villach.at","isAdmin":false,"isActive":true})
 
-db.Department.insert({"name":"Informatik","description":"Best department ever!","idAV":ObjectId("5a0ebf2672a5a34fbcb455ff")})
-db.Department.insert({"name":"Innenarchitektur","description":"","idAV":ObjectId("5a0ec44772a5a34fbcb45601")})
+db.Department.insert({"name":"Informatik","description":"Best department ever!","idAV":ObjectId("5a1d38922d19782a01d75db2")})
+db.Department.insert({"name":"Innenarchitektur","description":"","idAV":ObjectId("5a1d38922d19782a01d75db3")})
 
-db.TeachesIn.insert({"_id":[ObjectId("5a0ec2f172a5a34fbcb45600"),ObjectId("5a0ebd0572a5a34fbcb455fc")]})
-db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeacher":ObjectId("5a0ebde872a5a34fbcb455fd")})
-db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeacher":ObjectId("5a0ebde972a5a34fbcb455fe")})
-db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idTeacher":ObjectId("5a0ebf2672a5a34fbcb455ff")})
-db.TeachesIn.insert({"idDepartment":ObjectId("5a0ec4be72a5a34fbcb45602"),"idTeacher":ObjectId("5a0ec44772a5a34fbcb45601")})
+db.TeachesIn.createIndex( { idDepartment: 1, idTeacher: 1 }, { unique : true } )
+db.TeachesIn.insert({"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idTeacher":ObjectId("5a1d38912d19782a01d75daf")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idTeacher":ObjectId("5a1d38912d19782a01d75db0")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idTeacher":ObjectId("5a1d38922d19782a01d75db1")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idTeacher":ObjectId("5a1d38922d19782a01d75db2")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a1d39152d19782a01d75db6"),"idTeacher":ObjectId("5a1d38922d19782a01d75db3")})
+db.TeachesIn.insert({"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idTeacher":ObjectId("5a1d38932d19782a01d75db4")})
 
-db.Class.insert({"description":"5BHIFS","idKV":ObjectId("5a153c2c081721444bfd6186")})
-db.Class.insert({"description":"4BHIFS","idKV":ObjectId("5a0ebd0572a5a34fbcb455fc")})
+db.Class.insert({"description":"5BHIFS","idKV":ObjectId("5a1d38932d19782a01d75db4")})
+db.Class.insert({"description":"4BHIFS","idKV":ObjectId("5a1d38912d19782a01d75daf")})
 
-db.Pupil.insert({"username":"lenze","password":"lenze","firstName":"Lorenz","lastName":"Fritz","email":"lenze@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
-db.Pupil.insert({"username":"sasa","password":"sasa","firstName":"Sasa","lastName":"Sarkovic","email":"sasa@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
-db.Pupil.insert({"username":"jakob","password":"jakob","firstName":"Jakob","lastName":"Weiler","email":"jakob@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a0ec2f172a5a34fbcb45600"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
+db.Pupil.createIndex( { username: 1, password: 1 }, { unique : true } )
+db.Pupil.insert({"username":"lenze","password":"lenze","firstName":"Lorenz","lastName":"Fritz","email":"lenze@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
+db.Pupil.insert({"username":"sasa","password":"sasa","firstName":"Sasa","lastName":"Sarkovic","email":"sasa@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
+db.Pupil.insert({"username":"jakob","password":"jakob","firstName":"Jakob","lastName":"Weiler","email":"jakob@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
 
-db.Entry.insert({"startDate":new Date("2017-07-10"),"endDate":new Date("2017-09-01"),"salary":1300,"title":"Diplomarbeit:KSB-Workflow-Generator","description":"Java-App für interne Zwecke","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a153ce82e311334d39bae00"),"idCompany":ObjectId("5a096829f23798ea76fd83e7"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
-db.Entry.insert({"startDate":new Date("2017-07-3"),"endDate":new Date("2017-08-25"),"salary":800,"title":"Diplomarbeit","description":"Testen verschiedener Frameworks","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a153ce82e311334d39badfe"),"idCompany":ObjectId("5a0eb9c3c244b40193041323"),"idClass":ObjectId("5a153c6a2e311334d39badfc")})
+db.Entry.insert({"startDate":new Date("2017-07-10"),"endDate":new Date("2017-09-01"),"salary":1300,"title":"Diplomarbeit:KSB-Workflow-Generator","description":"Java-App für interne Zwecke","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a1d3eba2d19782a01d75dc2"),"idCompany":ObjectId("5a1d38902d19782a01d75dac"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
+db.Entry.insert({"startDate":new Date("2017-07-3"),"endDate":new Date("2017-08-25"),"salary":800,"title":"Diplomarbeit","description":"Testen verschiedener Frameworks","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a1d3eba2d19782a01d75dc0"),"idCompany":ObjectId("5a1d38902d19782a01d75dad"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
 
 --Allgemein
 use 5BHIFS_BSD_Praktikumsverwaltung
 db.getCollectionNames()
 db.COLLECTION_NAME.remove({})   --delete documents
 db.COLLECTION_NAME.drop()	--delete collection
+db.COLLECTION_NAME.getIndexes()
 db.Company.find({"name":{$regex: ".*AG.*"}})
-db.Teacher.find({"_id":ObjectId("5a0ebf2672a5a34fbcb455ff")}) //edk
+db.Teacher.find({"_id":ObjectId("5a0ebf2672a5a34fbcb455ff")})
+
+--Backup
+Mit Putty auf Server: mongodb-linux-x86.... / mongodb-linux... / bin
+mongodump --db 5BHIFS_BSD_Praktikumsverwaltung
