@@ -38,7 +38,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             if (instance == null)
             {
                 instance = new GatewayDatabase();
-                mongoUrl = new MongoUrl("mongodb://192.168.196.38");     // aphrodite. intern: 192.168.196.38       extern: 212.152.179.118
+                mongoUrl = new MongoUrl("mongodb://212.152.179.118");     // aphrodite. intern: 192.168.196.38       extern: 212.152.179.118
             }
             return instance;
         }
