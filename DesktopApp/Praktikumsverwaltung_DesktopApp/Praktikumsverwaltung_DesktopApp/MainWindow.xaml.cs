@@ -30,6 +30,7 @@ namespace Praktikumsverwaltung_DesktopApp
             db = GatewayDatabase.newInstance();
             this.LoadEntries();
             this.LoadAdminGuiElements();
+            lvEntries.SelectionChanged += lvEntries_SelectionChanged;
         }
 
         private void LoadEntries()
@@ -48,28 +49,14 @@ namespace Praktikumsverwaltung_DesktopApp
                     strBuilderEntry.Append("Gehalt: " + entry.Salary + Environment.NewLine);
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("---------------------------------------------------------------------------");
+                    
+                    //StringBuilder strBuilderAddress = new StringBuilder();
+                    //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
 
-                    Label lblEntry = new Label();
-                    lblEntry.FontSize = 14;
-                    lblEntry.Content = strBuilderEntry;
+                    Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
 
-                    ListViewItem lvItem = new ListViewItem();
-                    lvItem.Content = lblEntry;
-
-                    this.lbEntries.Items.Add(lvItem);
+                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri });
                 }
-
-
-                //StringBuilder strBuilderAddress = new StringBuilder();
-                //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
-
-                //WebBrowser myWebBrowser = new WebBrowser();
-                //myWebBrowser.Height = 300;
-                //myWebBrowser.Width = 300;
-                //myWebBrowser.Navigate(strBuilder.ToString());
-
-                //ListViewItem lvItem2 = new ListViewItem();
-                //lvItem2.Content = myWebBrowser;
             }
             catch (Exception ex)
             {
@@ -94,10 +81,14 @@ namespace Praktikumsverwaltung_DesktopApp
             }
         }
 
+        private void lvEntries_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            lvEntries.SelectedValue = false;
+        }
+
         private void mItemShow_Click(object sender, EventArgs e)
         {
             // Load new entries which have to be accepted or rejected
-            MessageBox.Show("ON CLICK");
             NewEntriesWindow newEntries = new NewEntriesWindow();
             newEntries.Show();
         }
