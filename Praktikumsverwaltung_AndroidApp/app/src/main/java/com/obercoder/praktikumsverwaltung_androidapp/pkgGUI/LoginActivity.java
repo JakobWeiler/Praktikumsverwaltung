@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         Toast t = null;
         try {
             if (txtUser.getText().length() != 0 && txtPasswd.getText().length() != 0) {
-                if (db.getTsPupil().contains(new Pupil(txtUser.getText().toString(), txtPasswd.getText().toString()))) {
+                if (db.getListPupil().contains(new Pupil(txtUser.getText().toString(), txtPasswd.getText().toString()))) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
                     t = Toast.makeText(this, "Wrong username and/or password !", Toast.LENGTH_LONG);
