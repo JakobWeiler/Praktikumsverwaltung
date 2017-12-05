@@ -52,4 +52,22 @@ public class Database {
             }
             return allCompanies;
         }
+        
+        public ArrayList<Pupil> getListPupil() { 
+            ArrayList<Pupil> listPupil = new ArrayList<>();
+            mongoDb = connect();
+            Gson gson = new Gson();
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
+            for(Document d : collection.find()) {
+               listPupil.add(gson.fromJson(d.toJson(), Pupil.class));
+            }
+            return listPupil;
+        }
+        
+        public void addPupil(Pupil p) {
+            ArrayList<Pupil> listPupil = new ArrayList<>();
+            MongoDatabase mongoDb = connect();
+            listPupil.add(p);
+        }
 }
