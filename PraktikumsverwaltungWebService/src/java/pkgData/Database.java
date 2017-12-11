@@ -10,8 +10,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -25,7 +27,8 @@ public class Database {
         private String dbName;
  
         private Database() {
-         connStr = "mongodb://192.168.196.38:27017";
+         connStr = "mongodb://192.168.196.38:27017";  //intern
+         //connStr = "mongodb://212.152.179.118:27017";   //extern
          dbName = "5BHIFS_BSD_Praktikumsverwaltung";
         }
         
@@ -48,8 +51,29 @@ public class Database {
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
             for(Document d : collection.find()){
-                allCompanies.add(gson.fromJson(d.toJson(), Company.class));
+                Company c = gson.fromJson(d.toJson(), Company.class);
+                c.setId(d.getObjectId("_id"));
+                allCompanies.add(c);
             }
             return allCompanies;
+        }
+        
+        public Company getCompanyById(ObjectId id) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Company");
+            
+            return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Company.class);
+        }
+        
+        public Company addCompany(Company c) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Company");
+            
+            collection.insertOne(Document.parse(gson.toJson(c, Company.class)));
+            
+            //collection.find().sort()
+            return null;
         }
 }
