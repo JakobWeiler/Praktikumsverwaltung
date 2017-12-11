@@ -3,6 +3,8 @@ package com.obercoder.praktikumsverwaltung_androidapp.pkgData;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mongodb.BasicDBList;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -11,13 +13,22 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.multipart.impl.MultiPartWriter;
 
 import org.bson.Document;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
 
 /**
  * Created by Sasa on 01.10.2017.
@@ -25,69 +36,62 @@ import java.util.concurrent.ExecutionException;
 
 public class Database{
 
-    private TreeSet<Pupil> tsPupil = new TreeSet<Pupil>();
-    private static Database singletonDB = null;
-    //MongoCollection<Document> collection;
+    private ArrayList<Pupil> listPupil = new ArrayList<Pupil>();
+    private static Database db = null;
+    private String uri = null;
+    private ClientConfig config = null;
+    private Client client = null;
+    private WebResource service = null;
 
-    public static Database newInstance() {
-        if (singletonDB == null) {
-            singletonDB = new Database();
+    /*public Database(String _uri) throws Exception{
+        setUri(_uri);
+    }
+*/
+    public static Database newInstance(){
+        if (db == null) {
+            db = new Database();
         }
-        return  singletonDB;
+        return  db;
     }
 
     public void addPupil (Pupil p) {
-        tsPupil.add(p);
+        listPupil.add(p);
     }
 
-    public TreeSet<Pupil> getTsPupil (){
-        return tsPupil;
+    public ArrayList<Pupil> getListPupil (){
+        return listPupil;
     }
 
+    public void setUri(String uri) throws Exception {
+        this.uri = uri;
+        config = new DefaultClientConfig();
+        config.getClasses().add(MultiPartWriter.class);
 
-    //1.VERSUCH LIST zu füllen
-    public List<Document> getAllCompanies(MongoCollection<Document> c) {
-        Log.d("Test222", "fdfada");
-        //ArrayList<Document> cur = new ArrayList<Document>();
-        //c.find().into(cur);
-        ArrayList<Document> cur = (ArrayList<Document>) c.find().into(new ArrayList<Document>());
-        Log.d("Test111", cur.toString());
-        List<Document> companies = new ArrayList<>();
-        Log.d("Test1", "Test");
-        for (Document d : cur) {
-            Log.d("Test2Json", d.toJson());
-            //String jsonString = d.toJson();
-            //companies.add(d);
-        }
-        return companies;
+        client = Client.create(config);
+        service = client.resource(getBaseURI());
     }
 
-    public void connect() {
-        MongoConnect mc = new MongoConnect();
-        mc.execute();
+    public URI getBaseURI() {
+        return UriBuilder.fromUri(uri).build();
+    }
 
-       /* MongoClientURI mongoUri = new MongoClientURI("mongodb://192.168.196.38");
-        MongoClient mongoClient = new MongoClient(mongoUri);
-        Log.d("ABCDFGH", "Connected to the database successfully");
-        MongoDatabase db = mongoClient.getDatabase("5BHIFS_BSD_Praktikumsverwaltung");
+    public String getPupils() throws Exception{
+        String strFromServer = service.path("Pupil/").accept(MediaType.APPLICATION_JSON).get(String.class);
+        return strFromServer;
+    }
 
-        collection = db.getCollection("Pupil");
-        List<Document> listCompany = this.getAllCompanies();
-        Log.d("SELECTCOLLECTION", "Collection myCollection selected successfully");      //1. VERSUCH mit List<Document>
+    public void loadPupils() throws Exception {
+        Gson gson = new Gson();
+        listPupil = gson.fromJson(this.getPupils(), new TypeToken<ArrayList<Pupil>>(){}.getType());     //HIER ABBRUCH
+        Log.d("GSONTEST", "HALLO");
+    }
 
-        for(Document c : listCompany) {
-            Log.d("LISTCOMP", c.toString());
-        }
+    public void connect() throws Exception{
+        setUri("http://localhost:8080/PraktikumsverwaltungWebService/resources/");
+        Log.d("TestNEW11", "Hallo");
+        loadPupils();
 
-/*
-        MongoCursor<Document> iterator = collection.find().iterator();
-
-        BasicDBList list = new BasicDBList();                   //2.VERSUCH WEIL MONGOCOLLECTION IN NORMALE LISTE NICHT MÖGLICH
-        while (iterator.hasNext()) {
-            Document doc = iterator.next();
-            list.add(doc);
-        }
-        System.out.println(JSON.serialize(list));
-*/
+        for(Pupil p : listPupil)
+        Log.d("FINISHEDLIST", p.toString());
     }
 }

@@ -74,6 +74,9 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewEntriesWindow.xaml.cs">
+      <DependentUpon>NewEntriesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="pkgData\Company.cs" />
     <Compile Include="pkgData\Entry.cs" />
     <Compile Include="pkgData\GatewayDatabase.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WebBrowserUtility.cs" />
     <Page Include="AddEntryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -98,6 +102,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewEntriesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,6 +143,13 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pkgImages\GreenCheckMark.jpg" />
+    <Resource Include="pkgImages\RedCross.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="pkgMisc\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
