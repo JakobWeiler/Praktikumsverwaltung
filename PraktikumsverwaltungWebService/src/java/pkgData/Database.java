@@ -6,6 +6,7 @@
 package pkgData;
 
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -27,7 +28,7 @@ public class Database {
         private String dbName;
  
         private Database() {
-         connStr = "mongodb://192.168.196.38:27017";  //intern
+         connStr = "mongodb://192.168.142.144:27017";  //intern
          //connStr = "mongodb://212.152.179.118:27017";   //extern
          dbName = "5BHIFS_BSD_Praktikumsverwaltung";
         }
@@ -73,8 +74,7 @@ public class Database {
             
             collection.insertOne(Document.parse(gson.toJson(c, Company.class)));
             
-            //collection.find().sort()
-            return null;
+            return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Company.class);
         }
         
         public ArrayList<Pupil> getListPupil() { 
