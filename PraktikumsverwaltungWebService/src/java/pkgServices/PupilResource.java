@@ -51,7 +51,7 @@ public class PupilResource {
         }
         catch (Exception ex) {
             listPupils = new ArrayList<>();
-            listPupils.add(new Pupil(new ObjectId(), ex.getMessage(), "", "", "", "", ""));
+            listPupils.add(new Pupil(new ObjectId(), ex.getMessage(), "", "", "", "", "", new ObjectId(), new ObjectId(), false));
         }
         
         return listPupils;
