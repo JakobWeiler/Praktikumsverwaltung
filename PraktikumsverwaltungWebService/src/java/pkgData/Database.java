@@ -6,12 +6,15 @@
 package pkgData;
 
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -25,7 +28,8 @@ public class Database {
         private String dbName;
  
         private Database() {
-         connStr = "mongodb://192.168.196.38:27017";
+         connStr = "mongodb://192.168.142.144:27017";  //intern
+         //connStr = "mongodb://212.152.179.118:27017";   //extern
          dbName = "5BHIFS_BSD_Praktikumsverwaltung";
         }
         
@@ -48,8 +52,88 @@ public class Database {
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
             for(Document d : collection.find()){
-                allCompanies.add(gson.fromJson(d.toJson(), Company.class));
+                Company c = gson.fromJson(d.toJson(), Company.class);
+                c.setId(d.getObjectId("_id"));
+                allCompanies.add(c);
             }
             return allCompanies;
         }
+        
+        public Company getCompanyById(ObjectId id) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Company");
+            
+            return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Company.class);
+        }
+        
+        public Company addCompany(Company c) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Company");
+            
+            collection.insertOne(Document.parse(gson.toJson(c, Company.class)));
+            
+            return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Company.class);
+        }
+        
+        public ArrayList<Pupil> getListPupil() { 
+            ArrayList<Pupil> listPupil = new ArrayList<>();
+            mongoDb = connect();
+            Gson gson = new Gson();            
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
+            for(Document d : collection.find()) {
+               //listPupil.add(gson.fromJson(d.toJson(), Pupil.class));
+               Pupil p = gson.fromJson(d.toJson(), Pupil.class);
+                p.setId(d.getObjectId("_id"));
+                p.setId(d.getObjectId("idDepartment"));
+                p.setId(d.getObjectId("idClass"));
+                listPupil.add(p);
+            }
+            return listPupil;
+        }
+        
+        // checks if login of pupil is ok
+        public String getIsLoginOkPupil(String username, String password) {
+            String retVal = "false";
+            mongoDb = connect();
+            Gson gson = new Gson();
+            MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("username", username);
+            query.put("password", password);
+            
+            
+            for(Document d : collection.find(query)) {
+                retVal = "true";
+            }
+            return retVal;
+        }
+        
+        // checks if login of teacher is ok
+        public String getIsLoginOkTeacher(String username, String password) {
+            String retVal = "false";
+            mongoDb = connect();
+            Gson gson = new Gson();
+            MongoCollection<Document> collection = mongoDb.getCollection("Teacher");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("username", username);
+            query.put("password", password);
+            
+            
+            for(Document d : collection.find(query)) {
+                retVal = "true";
+            }
+            return retVal;
+        }
+        
+        public void addPupil(Pupil p) {
+            ArrayList<Pupil> listPupil = new ArrayList<>();
+            MongoDatabase mongoDb = connect();
+            listPupil.add(p);
+        }       
+        
 }
