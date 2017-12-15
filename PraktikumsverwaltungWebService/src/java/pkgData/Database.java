@@ -77,7 +77,7 @@ public class Database {
             return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Company.class);
         }
         
-        public ArrayList<Pupil> getListPupil() { 
+        public ArrayList<Pupil> getListPupil() throws Exception { 
             ArrayList<Pupil> listPupil = new ArrayList<>();
             mongoDb = connect();
             Gson gson = new Gson();            
@@ -90,7 +90,7 @@ public class Database {
         }
         
         // checks if login of pupil is ok
-        public String getIsLoginOkPupil(String username, String password) {
+        public String getIsLoginOkPupil(String username, String password) throws Exception {
             String retVal = "false";
             mongoDb = connect();
             Gson gson = new Gson();
@@ -108,7 +108,7 @@ public class Database {
         }
         
         // checks if login of teacher is ok
-        public String getIsLoginOkTeacher(String username, String password) {
+        public String getIsLoginOkTeacher(String username, String password) throws Exception {
             String retVal = "false";
             mongoDb = connect();
             Gson gson = new Gson();
@@ -116,8 +116,7 @@ public class Database {
             
             BasicDBObject query = new BasicDBObject();
             query.put("username", username);
-            query.put("password", password);
-            
+            query.put("password", password);            
             
             for(Document d : collection.find(query)) {
                 retVal = "true";
@@ -125,10 +124,28 @@ public class Database {
             return retVal;
         }
         
-        public void addPupil(Pupil p) {
+        public void addPupil(Pupil p) throws Exception {
             ArrayList<Pupil> listPupil = new ArrayList<>();
             MongoDatabase mongoDb = connect();
             listPupil.add(p);
-        }       
+        }
+        
+        // returns all accepted Entries
+        public ArrayList<Entry> getAllEntries() throws Exception {
+            ArrayList<Entry> listEntry = new ArrayList<>();
+            mongoDb = connect();
+            Gson gson = new Gson();
+            
+            // Delivers only Entries which are accepted by KV and AV
+            BasicDBObject query = new BasicDBObject();
+            query.put("allowedTeacher", true);
+            query.put("allowedAV", true);
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            for(Document d : collection.find()) {
+               listEntry.add(gson.fromJson(d.toJson(), Entry.class));
+            }
+            return listEntry;
+        }
         
 }

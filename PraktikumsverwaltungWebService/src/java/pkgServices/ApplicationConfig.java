@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author schueler
  */
-@javax.ws.rs.ApplicationPath("Resources")
+@javax.ws.rs.ApplicationPath("resources")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(pkgServices.CompanyResource.class);
+        resources.add(pkgServices.EntryResource.class);
         resources.add(pkgServices.LoginResource.class);
         resources.add(pkgServices.PupilResource.class);
     }

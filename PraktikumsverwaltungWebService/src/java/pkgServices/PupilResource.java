@@ -15,6 +15,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
+import org.bson.types.ObjectId;
 import pkgData.Database;
 import pkgData.Pupil;
 
@@ -42,8 +43,18 @@ public class PupilResource {
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML})
     public ArrayList<Pupil> getPupils() {
-        Database db = Database.newInstance();
-        return db.getListPupil();
+        ArrayList<Pupil> listPupils;
+        
+        try {
+            Database db = Database.newInstance();
+            listPupils = db.getListPupil();
+        }
+        catch (Exception ex) {
+            listPupils = new ArrayList<>();
+            listPupils.add(new Pupil(new ObjectId(), ex.getMessage(), "", "", "", "", ""));
+        }
+        
+        return listPupils;
     }
 
     @POST
