@@ -80,7 +80,7 @@ public class Database {
         public ArrayList<Pupil> getListPupil() { 
             ArrayList<Pupil> listPupil = new ArrayList<>();
             mongoDb = connect();
-            Gson gson = new Gson();
+            Gson gson = new Gson();            
             
             MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
             for(Document d : collection.find()) {
@@ -89,9 +89,46 @@ public class Database {
             return listPupil;
         }
         
+        // checks if login of pupil is ok
+        public String getIsLoginOkPupil(String username, String password) {
+            String retVal = "false";
+            mongoDb = connect();
+            Gson gson = new Gson();
+            MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("username", username);
+            query.put("password", password);
+            
+            
+            for(Document d : collection.find(query)) {
+                retVal = "true";
+            }
+            return retVal;
+        }
+        
+        // checks if login of teacher is ok
+        public String getIsLoginOkTeacher(String username, String password) {
+            String retVal = "false";
+            mongoDb = connect();
+            Gson gson = new Gson();
+            MongoCollection<Document> collection = mongoDb.getCollection("Teacher");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("username", username);
+            query.put("password", password);
+            
+            
+            for(Document d : collection.find(query)) {
+                retVal = "true";
+            }
+            return retVal;
+        }
+        
         public void addPupil(Pupil p) {
             ArrayList<Pupil> listPupil = new ArrayList<>();
             MongoDatabase mongoDb = connect();
             listPupil.add(p);
-        }
+        }       
+        
 }
