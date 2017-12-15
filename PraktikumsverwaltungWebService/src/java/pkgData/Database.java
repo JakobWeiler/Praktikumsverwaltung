@@ -84,7 +84,12 @@ public class Database {
             
             MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
             for(Document d : collection.find()) {
-               listPupil.add(gson.fromJson(d.toJson(), Pupil.class));
+               //listPupil.add(gson.fromJson(d.toJson(), Pupil.class));
+               Pupil p = gson.fromJson(d.toJson(), Pupil.class);
+                p.setId(d.getObjectId("_id"));
+                p.setId(d.getObjectId("idDepartment"));
+                p.setId(d.getObjectId("idClass"));
+                listPupil.add(p);
             }
             return listPupil;
         }
