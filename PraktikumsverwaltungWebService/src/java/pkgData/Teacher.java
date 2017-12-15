@@ -13,15 +13,13 @@ import org.bson.types.ObjectId;
  */
 public class Teacher extends Person {
     private boolean isAdmin;
-    private boolean isActive;
 
     public Teacher() {
     }
 
     public Teacher(ObjectId id, String username, String password, String firstName, String lastname, String email, boolean isAdmin, boolean isActive) {
-        super(id, username, password, firstName, lastname, email);
+        super(id, username, password, firstName, lastname, email, isActive);
         this.isAdmin = isAdmin;
-        this.isActive = isActive;
     }
 
     public boolean isIsAdmin() {
@@ -30,14 +28,6 @@ public class Teacher extends Person {
 
     public void setIsAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
-    }
-
-    public boolean isIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
     }
     
 }

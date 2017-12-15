@@ -20,18 +20,46 @@ public abstract class Person {
     private String firstName;
     private String lastname;
     private String email;
+    private boolean isActive;
 
     
     public Person() {
     }
 
-    public Person(ObjectId id, String username, String password, String firstName, String lastname, String email) {
+    public Person(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
+    public Person(ObjectId id, String username, String password, String firstName, String lastname, String email, boolean isActive) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastname = lastname;
         this.email = email;
+        this.isActive = isActive;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+        if (!username.equals(person.username) && (!email.equals(person.email))) return false;
+        return password.equals(person.password);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = username.hashCode();
+        result = 31 * result + password.hashCode();
+        return result;
+    }
+
+    public int compareTo(Person o) {
+       return this.username.compareTo(o.username);
     }
     
     public ObjectId getId() {
@@ -80,6 +108,14 @@ public abstract class Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
     
     

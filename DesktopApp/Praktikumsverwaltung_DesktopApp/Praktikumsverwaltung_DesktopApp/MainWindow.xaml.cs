@@ -22,6 +22,7 @@ namespace Praktikumsverwaltung_DesktopApp
     public partial class MainWindow : Window
     {
         private GatewayDatabase db = null;
+        private bool isAdmin = false;
 
         public MainWindow()
         {
@@ -55,7 +56,16 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
 
-                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri });
+                    BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
+                    BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
+
+                    if (isAdmin == false)
+                    {
+                        this.gvColumnEditAdmin.Width = 0;
+                        this.gvColumnRemoveAdmin.Width = 0;
+                    }
+
+                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
                 }
             }
             catch (Exception ex)
@@ -81,6 +91,7 @@ namespace Praktikumsverwaltung_DesktopApp
             }
         }
 
+        // to disable the selection of each item of the listview
         private void lvEntries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lvEntries.SelectedValue = false;
@@ -104,6 +115,22 @@ namespace Praktikumsverwaltung_DesktopApp
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
+        }
+
+        private void mItemEntryEdit_Click(object sender, RoutedEventArgs e)
+        {
+            EditEntry editEntry = new EditEntry();
+            editEntry.Show();
+        }
+
+        private void ClickBtnEditAdmin(object sender, EventArgs e)
+        {
+            MessageBox.Show("in edit");
+        }
+
+        private void ClickBtnRemoveAdmin(object sender, EventArgs e)
+        {
+            MessageBox.Show("in remove");
         }
     }
 }

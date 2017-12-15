@@ -71,6 +71,9 @@
     <Compile Include="AddEntryWindow.xaml.cs">
       <DependentUpon>AddEntryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditEntry.xaml.cs">
+      <DependentUpon>EditEntry.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -86,6 +89,10 @@
     </Compile>
     <Compile Include="WebBrowserUtility.cs" />
     <Page Include="AddEntryWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditEntry.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="pkgMisc\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="pkgImages\Pencil.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
