@@ -5,6 +5,7 @@
  */
 package pkgServices;
 
+import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -12,46 +13,40 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import org.bson.types.ObjectId;
 import pkgData.Database;
+import pkgData.Entry;
 
 /**
  * REST Web Service
  *
  * @author schueler
  */
-@Path("Login")
-public class LoginResource {
+@Path("Entry")
+public class EntryResource {
 
     @Context
     private UriInfo context;
 
     
-    public LoginResource() {
+    public EntryResource() {
     }
 
     
-    // checks pupil and teacher login
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getIsLoginOk(@QueryParam("username") String username, @QueryParam("password") String password) {
-        String retVal = "false";
-        
+    public ArrayList<Entry> getJson() {
+        ArrayList listEntries;
         try {
             Database db = Database.newInstance();
-        
-            retVal = db.getIsLoginOkPupil(username, password);
-
-            if (retVal.endsWith("false"))
-            {
-                retVal = db.getIsLoginOkTeacher(username, password);
-            }
+            listEntries = db.getAllEntries();
         }
         catch (Exception ex) {
-            retVal = ex.getMessage();
+            listEntries = new ArrayList<>();
+            listEntries.add(new Entry(new ObjectId(), null, null, 0.0, ex.getMessage(), "", false, false, new ObjectId(), new ObjectId(), new ObjectId()));
         }
         
-        return retVal;
+        return listEntries;
     }
 }

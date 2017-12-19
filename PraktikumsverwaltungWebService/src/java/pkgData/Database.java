@@ -77,7 +77,7 @@ public class Database {
             return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Company.class);
         }
         
-        public ArrayList<Pupil> getListPupil() { 
+        public ArrayList<Pupil> getListPupil() throws Exception { 
             ArrayList<Pupil> listPupil = new ArrayList<>();
             mongoDb = connect();
             Gson gson = new Gson();            
@@ -95,7 +95,7 @@ public class Database {
         }
         
         // checks if login of pupil is ok
-        public String getIsLoginOkPupil(String username, String password) {
+        public String getIsLoginOkPupil(String username, String password) throws Exception {
             String retVal = "false";
             mongoDb = connect();
             Gson gson = new Gson();
@@ -113,7 +113,7 @@ public class Database {
         }
         
         // checks if login of teacher is ok
-        public String getIsLoginOkTeacher(String username, String password) {
+        public String getIsLoginOkTeacher(String username, String password) throws Exception {
             String retVal = "false";
             mongoDb = connect();
             Gson gson = new Gson();
@@ -121,8 +121,7 @@ public class Database {
             
             BasicDBObject query = new BasicDBObject();
             query.put("username", username);
-            query.put("password", password);
-            
+            query.put("password", password);            
             
             for(Document d : collection.find(query)) {
                 retVal = "true";
@@ -130,10 +129,60 @@ public class Database {
             return retVal;
         }
         
-        public void addPupil(Pupil p) {
+        public void addPupil(Pupil p) throws Exception {
             ArrayList<Pupil> listPupil = new ArrayList<>();
             MongoDatabase mongoDb = connect();
             listPupil.add(p);
-        }       
+        }
+        
+        // returns all accepted Entries
+        public ArrayList<Entry> getAllEntries() throws Exception {
+            ArrayList<Entry> listEntry = new ArrayList<>();
+            mongoDb = connect();
+            Gson gson = new Gson();
+            
+            // Delivers only Entries which are accepted by KV and AV
+            BasicDBObject query = new BasicDBObject();
+            query.put("allowedTeacher", true);
+            query.put("allowedAV", true);
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            for(Document d : collection.find()) {
+               listEntry.add(gson.fromJson(d.toJson(), Entry.class));
+            }
+            return listEntry;
+        }
+        
+        public ArrayList<Department> getAllDepartments() throws Exception {
+            ArrayList<Department> allDepartments = new ArrayList<>();
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Department");
+            
+            for(Document d : collection.find()){
+                Department dep = gson.fromJson(d.toJson(), Department.class);
+                dep.setId(d.getObjectId("_id"));
+                allDepartments.add(dep);
+            }
+            return allDepartments;
+        }
+        
+        public Department getDepartmentById(ObjectId id) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Department");
+            
+            return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Department.class);
+        }
+        
+        public Department addDepartment(Department d) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Department");
+            
+            collection.insertOne(Document.parse(gson.toJson(d, Department.class)));
+            
+            return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Department.class);
+        }
         
 }

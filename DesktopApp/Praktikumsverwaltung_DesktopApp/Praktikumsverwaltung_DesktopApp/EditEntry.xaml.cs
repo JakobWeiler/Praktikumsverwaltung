@@ -15,40 +15,42 @@ using System.Windows.Shapes;
 namespace Praktikumsverwaltung_DesktopApp
 {
     /// <summary>
-    /// Interaction logic for NewEntriesWindow.xaml
+    /// Interaction logic for EditEntry.xaml
     /// </summary>
-    public partial class NewEntriesWindow : Window
+    public partial class EditEntry : Window
     {
-        public NewEntriesWindow()
+        public EditEntry()
         {
             InitializeComponent();
             this.LoadNewEntries();
-            lvNewEntries.SelectionChanged += lvNewEntries_SelectionChanged;
+            lvEntries.SelectionChanged += lvNewEntries_SelectionChanged;
         }
 
         private void LoadNewEntries()
         {
-            BitmapImage imgGreenCheckMark = new BitmapImage(new Uri("../pkgImages/GreenCheckMark.jpg", UriKind.Relative));
+            Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
+
+            BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
             BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
 
-            lvNewEntries.Items.Add(new { Col1 = "test1", Col2 = imgGreenCheckMark, Col3 = imgRedCross });
-            lvNewEntries.Items.Add(new { Col1 = "ahshdbsn", Col2 = imgGreenCheckMark, Col3 = imgRedCross });
+            lvEntries.Items.Add(new { Col1 = "test1", Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
+            lvEntries.Items.Add(new { Col1 = "ahshdbsn", Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
         }
 
         // to disable the selection of each item of the listview
         private void lvNewEntries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            lvNewEntries.SelectedValue = false;
+            lvEntries.SelectedValue = false;
         }
 
-        private void ClickBtnAccept(object sender, EventArgs e)
+        private void ClickBtnEdit(object sender, EventArgs e)
         {
-            MessageBox.Show("in accept");
+            MessageBox.Show("in edit");
         }
 
-        private void ClickBtnDecline(object sender, EventArgs e)
+        private void ClickBtnRemove(object sender, EventArgs e)
         {
-            MessageBox.Show("in decline");
+            MessageBox.Show("in remove");
         }
     }
 }
