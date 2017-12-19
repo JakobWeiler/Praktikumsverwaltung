@@ -40,7 +40,7 @@ public class PupilResource {
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON})
     public ArrayList<Pupil> getPupils() {
         Database db = Database.newInstance();
         return db.getListPupil();
