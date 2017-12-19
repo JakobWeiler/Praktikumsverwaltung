@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(pkgServices.CompanyResource.class);
+        resources.add(pkgServices.DepartmentResource.class);
         resources.add(pkgServices.EntryResource.class);
         resources.add(pkgServices.LoginResource.class);
         resources.add(pkgServices.PupilResource.class);

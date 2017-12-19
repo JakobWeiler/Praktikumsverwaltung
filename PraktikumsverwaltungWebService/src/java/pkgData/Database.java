@@ -153,4 +153,36 @@ public class Database {
             return listEntry;
         }
         
+        public ArrayList<Department> getAllDepartments() throws Exception {
+            ArrayList<Department> allDepartments = new ArrayList<>();
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Department");
+            
+            for(Document d : collection.find()){
+                Department dep = gson.fromJson(d.toJson(), Department.class);
+                dep.setId(d.getObjectId("_id"));
+                allDepartments.add(dep);
+            }
+            return allDepartments;
+        }
+        
+        public Department getDepartmentById(ObjectId id) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Department");
+            
+            return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Department.class);
+        }
+        
+        public Department addDepartment(Department d) throws Exception {
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Department");
+            
+            collection.insertOne(Document.parse(gson.toJson(d, Department.class)));
+            
+            return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Department.class);
+        }
+        
 }
