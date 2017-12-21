@@ -15,10 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.obercoder.praktikumsverwaltung_androidapp.R;
+import com.obercoder.praktikumsverwaltung_androidapp.pkgData.Database;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Database db = Database.newInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        try {
+            db.loadPupils();
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

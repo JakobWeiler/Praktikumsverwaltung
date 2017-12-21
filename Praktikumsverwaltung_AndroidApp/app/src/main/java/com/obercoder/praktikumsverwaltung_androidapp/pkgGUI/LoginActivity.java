@@ -36,13 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         txtUser = (EditText) findViewById(R.id.txtUser);
         txtPasswd = (EditText) findViewById(R.id.txtPassword);
-        try {
-            db.connect();
-            db.addPupil(new Pupil("Sasa", "sasa"));
-            Log.d("hallihallo","HU>kjcdan.");
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
 
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
@@ -54,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         Toast t = null;
         try {
             if (txtUser.getText().length() != 0 && txtPasswd.getText().length() != 0) {
-                if (db.getListPupil().contains(new Pupil(txtUser.getText().toString(), txtPasswd.getText().toString()))) {
+                //if (db.getListPupil().contains(new Pupil(txtUser.getText().toString(), txtPasswd.getText().toString()))) {
+                if(db.checkLogin(new Pupil(txtUser.getText().toString(), txtPasswd.getText().toString()))) {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
                     t = Toast.makeText(this, "Wrong username and/or password !", Toast.LENGTH_LONG);
@@ -75,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onBtnSignUp(View view) {
         try {
             startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-
         } catch(Exception ex) {
             ex.printStackTrace();
         }
