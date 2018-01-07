@@ -42,12 +42,12 @@ public class PupilResource {
      */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public ArrayList<Pupil> getPupils() {
+    public ArrayList<Pupil> getAllActivePupils() {
         ArrayList<Pupil> listPupils;
         
         try {
             Database db = Database.newInstance();
-            listPupils = db.getListPupil();
+            listPupils = db.getAllActivePupils();
         }
         catch (Exception ex) {
             listPupils = new ArrayList<>();

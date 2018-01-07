@@ -30,4 +30,22 @@ public class Pupil extends Person{
         this.idDepartment = idDepartment;
         this.idClass = idClass;
     }
+
+    public ObjectId getIdDepartment() {
+        return idDepartment;
+    }
+
+    public void setIdDepartment(ObjectId idDepartment) {
+        this.idDepartment = idDepartment;
+    }
+
+    public ObjectId getIdClass() {
+        return idClass;
+    }
+
+    public void setIdClass(ObjectId idClass) {
+        this.idClass = idClass;
+    }
+    
+    
 }
