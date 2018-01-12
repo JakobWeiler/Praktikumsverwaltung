@@ -44,7 +44,7 @@ public class TeacherResource {
         }
         catch (Exception ex) {
             listPupils = new ArrayList<>();
-            listPupils.add(new Teacher(new ObjectId(), ex.getMessage(), "", "", "", "", false, false));
+            listPupils.add(new Teacher("", ex.getMessage(), "", "", "", "", false, false));
         }
         
         return listPupils;

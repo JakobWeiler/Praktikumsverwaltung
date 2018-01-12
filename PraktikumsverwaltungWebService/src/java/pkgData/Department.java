@@ -14,24 +14,24 @@ import org.bson.types.ObjectId;
  */
 @XmlRootElement
 public class Department {
-    private ObjectId id;
+    private String id;
     private String name;
     private String description;
 
     public Department() {
     }
 
-    public Department(ObjectId id, String name, String description) {
+    public Department(String id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

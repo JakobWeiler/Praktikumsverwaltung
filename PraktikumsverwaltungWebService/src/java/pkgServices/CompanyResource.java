@@ -48,7 +48,7 @@ public class CompanyResource {
         } catch (Exception ex) {
             ex.printStackTrace();
             allCompanies = new ArrayList<>();
-            allCompanies.add(new Company(new ObjectId(),ex.getMessage(), "",0,""));
+            allCompanies.add(new Company("", ex.getMessage(), "",0,""));
         }
         return allCompanies;
     }
@@ -64,7 +64,7 @@ public class CompanyResource {
         }     
 	catch(Exception ex){ 
                 ex.printStackTrace();
-                company = new Company(new ObjectId(),ex.getMessage(), "",0,"");       
+                company = new Company("",ex.getMessage(), "",0,"");       
             }
         return company;
     }
@@ -77,7 +77,7 @@ public class CompanyResource {
         try {
             retCompany = Database.newInstance().addCompany(company);
         } catch (Exception ex) {
-            retCompany = new Company(new ObjectId(), ex.getMessage(), "", 0, "");
+            retCompany = new Company("", ex.getMessage(), "", 0, "");
         }
         
         return retCompany;

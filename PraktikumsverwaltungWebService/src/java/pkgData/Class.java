@@ -14,24 +14,24 @@ import org.bson.types.ObjectId;
  */
 @XmlRootElement
 public class Class {
-    private ObjectId id;
+    private String id;
     private String description;
-    private ObjectId idKV;
+    private String idKV;
 
     public Class() {
     }
 
-    public Class(ObjectId id, String description, ObjectId idKV) {
+    public Class(String id, String description, String idKV) {
         this.id = id;
         this.description = description;
         this.idKV = idKV;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -43,11 +43,11 @@ public class Class {
         this.description = description;
     }
 
-    public ObjectId getIdKV() {
+    public String getIdKV() {
         return idKV;
     }
 
-    public void setIdKV(ObjectId idKV) {
+    public void setIdKV(String idKV) {
         this.idKV = idKV;
     }
     

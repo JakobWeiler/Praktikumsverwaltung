@@ -17,7 +17,7 @@ public class Teacher extends Person {
     public Teacher() {
     }
 
-    public Teacher(ObjectId id, String username, String password, String firstName, String lastname, String email, boolean isAdmin, boolean isActive) {
+    public Teacher(String id, String username, String password, String firstName, String lastname, String email, boolean isAdmin, boolean isActive) {
         super(id, username, password, firstName, lastname, email, isActive);
         this.isAdmin = isAdmin;
     }

@@ -5,7 +5,6 @@
  */
 package pkgData;
 
-import org.bson.types.ObjectId;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Company {
-    private ObjectId id;
+    private String id;
     private String name;
     private String location;
     private int numberOfEmployees;
@@ -24,7 +23,7 @@ public class Company {
         
     }
     
-    public Company(ObjectId id, String name, String location, int numberOfEmployees, String contactPerson) {
+    public Company(String id, String name, String location, int numberOfEmployees, String contactPerson) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -32,11 +31,11 @@ public class Company {
         this.contactPerson = contactPerson;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -26,8 +26,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import pkgMisc.LocalDateDeserializer;
-import pkgMisc.LocalDateSerializer;
 
 /**
  *
@@ -66,7 +64,7 @@ public class Database {
             
             for(Document d : collection.find()){
                 Company c = gson.fromJson(d.toJson(), Company.class);
-                c.setId(d.getObjectId("_id"));
+                c.setId(d.getObjectId("_id").toString());
                 allCompanies.add(c);
             }
             return allCompanies;
@@ -101,10 +99,16 @@ public class Database {
             MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
             for(Document d : collection.find(query)) {                
                 //listPupil.add(gson.fromJson(d.toJson(), Pupil.class));
-                Pupil p = gson.fromJson(d.toJson(), Pupil.class);
-                p.setId(d.getObjectId("_id"));            // to make the id's "visible"
-                p.setIdDepartment(d.getObjectId("idDepartment"));
-                p.setIdClass(d.getObjectId("idClass"));
+                Pupil p = new Pupil();//gson.fromJson(d.toJson(), Pupil.class); //funktioniert nicht mehr wegen ids als string
+                p.setUsername(d.getString("username"));
+                p.setPassword(d.getString("password"));
+                p.setFirstName(d.getString("firstName"));
+                p.setLastname(d.getString("lastName"));
+                p.setEmail(d.getString("email"));
+                p.setIsActive(d.getBoolean("isActive"));
+                p.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
+                p.setIdDepartment(d.getObjectId("idDepartment").toString());
+                p.setIdClass(d.getObjectId("idClass").toString());
                 listPupil.add(p);
             }
             return listPupil;
@@ -161,7 +165,7 @@ public class Database {
             MongoCollection<Document> collection = mongoDb.getCollection("Teacher");
             for(Document d : collection.find(query)) {
                 Teacher t = gson.fromJson(d.toJson(), Teacher.class);
-                t.setId(d.getObjectId("_id"));            // to make the id "visible"
+                t.setId(d.getObjectId("_id").toString());            // to make the id "visible"
                 listTeacher.add(t);
             }
             return listTeacher;
@@ -171,15 +175,6 @@ public class Database {
         public ArrayList<Entry> getAllEntries() throws Exception {
             ArrayList<Entry> listEntry = new ArrayList<>();
             mongoDb = connect();
-            //Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
-            Gson gson = new Gson();
-//            GsonBuilder gsonBuilder = new GsonBuilder();
-//            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
-//            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-//            Gson gson = gsonBuilder.create();
-
-
-            
 
             // Delivers only Entries which are accepted by KV and AV
             BasicDBObject query = new BasicDBObject();
@@ -189,11 +184,18 @@ public class Database {
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             for(Document d : collection.find(query)) {
                 System.out.println(d.toJson());
-                Entry e = gson.fromJson(d.toJson(), Entry.class);
-                e.setId(d.getObjectId("_id"));            // to make the id's "visible"
-                e.setIdPupil(d.getObjectId("idPupil"));
-                e.setIdCompany(d.getObjectId("idCompany"));
-                e.setIdClass(d.getObjectId("idClass"));
+                Entry e = new Entry(); //gson.fromJson(d.toJson(), Entry.class);
+                e.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                e.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                e.setSalary(d.getDouble("salary"));
+                e.setTitle(d.getString("title"));
+                e.setDescription(d.getString("description"));
+                e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
+                e.setAllowedAV(d.getBoolean("allowedAV"));
+                e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
+                e.setIdPupil(d.getObjectId("idPupil").toString());
+                e.setIdCompany(d.getObjectId("idCompany").toString());
+                e.setIdClass(d.getObjectId("idClass").toString());
                 System.out.println(e.getId());
                 listEntry.add(e);
             }
@@ -216,7 +218,7 @@ public class Database {
             
             for(Document d : collection.find()){
                 Department dep = gson.fromJson(d.toJson(), Department.class);
-                dep.setId(d.getObjectId("_id"));
+                dep.setId(d.getObjectId("_id").toString());
                 allDepartments.add(dep);
             }
             return allDepartments;

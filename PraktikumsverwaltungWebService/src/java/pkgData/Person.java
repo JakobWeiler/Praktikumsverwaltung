@@ -14,7 +14,7 @@ import org.bson.types.ObjectId;
  */
 @XmlRootElement
 public abstract class Person {
-    private ObjectId id;
+    private String id;
     private String username;
     private String password;
     private String firstName;
@@ -31,7 +31,7 @@ public abstract class Person {
         this.password = password;
     }
     
-    public Person(ObjectId id, String username, String password, String firstName, String lastname, String email, boolean isActive) {
+    public Person(String id, String username, String password, String firstName, String lastname, String email, boolean isActive) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -62,11 +62,11 @@ public abstract class Person {
        return this.username.compareTo(o.username);
     }
     
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
