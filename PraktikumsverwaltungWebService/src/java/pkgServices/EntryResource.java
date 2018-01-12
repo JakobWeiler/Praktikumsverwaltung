@@ -46,7 +46,7 @@ public class EntryResource {
         }
         catch (Exception ex) {
             listEntries = new ArrayList<>();
-            listEntries.add(new Entry(new ObjectId(), null, null, 0.0, ex.getMessage(), "", false, false, new ObjectId(), new ObjectId(), new ObjectId()));
+            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));
         }
         
         return listEntries;

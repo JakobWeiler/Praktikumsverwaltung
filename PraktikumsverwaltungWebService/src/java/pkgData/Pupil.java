@@ -14,8 +14,8 @@ import org.bson.types.ObjectId;
  */
 @XmlRootElement
 public class Pupil extends Person{
-    private ObjectId idDepartment;
-    private ObjectId idClass;
+    private String idDepartment;
+    private String idClass;
 
     public Pupil() {
         
@@ -25,25 +25,25 @@ public class Pupil extends Person{
         super(username, password);
     }
 
-    public Pupil(ObjectId id, String username, String password, String firstName, String lastname, String currentForm, String email, ObjectId idDepartment, ObjectId idClass, boolean isActive) {
+    public Pupil(String id, String username, String password, String firstName, String lastname, String currentForm, String email, String idDepartment, String idClass, boolean isActive) {
         super(id, username, password, firstName, lastname, email, isActive);
         this.idDepartment = idDepartment;
         this.idClass = idClass;
     }
 
-    public ObjectId getIdDepartment() {
+    public String getIdDepartment() {
         return idDepartment;
     }
 
-    public void setIdDepartment(ObjectId idDepartment) {
+    public void setIdDepartment(String idDepartment) {
         this.idDepartment = idDepartment;
     }
 
-    public ObjectId getIdClass() {
+    public String getIdClass() {
         return idClass;
     }
 
-    public void setIdClass(ObjectId idClass) {
+    public void setIdClass(String idClass) {
         this.idClass = idClass;
     }
     

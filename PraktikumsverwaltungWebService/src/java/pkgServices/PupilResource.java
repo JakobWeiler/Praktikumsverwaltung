@@ -50,8 +50,9 @@ public class PupilResource {
             listPupils = db.getAllActivePupils();
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             listPupils = new ArrayList<>();
-            listPupils.add(new Pupil(new ObjectId(), ex.getMessage(), "", "", "", "", "", new ObjectId(), new ObjectId(), false));
+            listPupils.add(new Pupil("", ex.getMessage(), "", "", "", "", "", "", "", false));
         }
         
         return listPupils;

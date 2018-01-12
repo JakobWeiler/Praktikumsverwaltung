@@ -15,7 +15,7 @@ import org.bson.types.ObjectId;
  */
 @XmlRootElement
 public class Entry {
-    private ObjectId id;
+    private String id;
     private LocalDate startDate;
     private LocalDate endDate;
     private double salary;
@@ -23,14 +23,14 @@ public class Entry {
     private String description;
     private boolean allowedTeacher;
     private boolean allowedAV;
-    private ObjectId idPupil;
-    private ObjectId idCompany;
-    private ObjectId idClass;
+    private String idPupil;
+    private String idCompany;
+    private String idClass;
 
     public Entry() {
     }
 
-    public Entry(ObjectId id, LocalDate startDate, LocalDate endDate, double salary, String title, String description, boolean allowedTeacher, boolean allowedAV, ObjectId idPupil, ObjectId idCompany, ObjectId idClass) {
+    public Entry(String id, LocalDate startDate, LocalDate endDate, double salary, String title, String description, boolean allowedTeacher, boolean allowedAV, String idPupil, String idCompany, String idClass) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -44,11 +44,11 @@ public class Entry {
         this.idClass = idClass;
     }
 
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -108,27 +108,27 @@ public class Entry {
         this.allowedAV = allowedAV;
     }
 
-    public ObjectId getIdPupil() {
+    public String getIdPupil() {
         return idPupil;
     }
 
-    public void setIdPupil(ObjectId idPupil) {
+    public void setIdPupil(String idPupil) {
         this.idPupil = idPupil;
     }
 
-    public ObjectId getIdCompany() {
+    public String getIdCompany() {
         return idCompany;
     }
 
-    public void setIdCompany(ObjectId idCompany) {
+    public void setIdCompany(String idCompany) {
         this.idCompany = idCompany;
     }
 
-    public ObjectId getIdClass() {
+    public String getIdClass() {
         return idClass;
     }
 
-    public void setIdClass(ObjectId idClass) {
+    public void setIdClass(String idClass) {
         this.idClass = idClass;
     }
     

@@ -48,7 +48,7 @@ public class DepartmentResource {
         } catch (Exception ex) {
             ex.printStackTrace();
             allDepartments = new ArrayList<>();
-            allDepartments.add(new Department(new ObjectId(),ex.getMessage(), ""));
+            allDepartments.add(new Department("",ex.getMessage(), ""));
         }
         return allDepartments;
     }
@@ -64,7 +64,7 @@ public class DepartmentResource {
         }     
 	catch(Exception ex){ 
                 ex.printStackTrace();
-                department = new Department(new ObjectId(),ex.getMessage(), "");       
+                department = new Department("",ex.getMessage(), "");       
             }
         return department;
     }
@@ -77,7 +77,7 @@ public class DepartmentResource {
         try {
             retDepartment = Database.newInstance().addDepartment(department);
         } catch (Exception ex) {
-            retDepartment = new Department(new ObjectId(), ex.getMessage(), "");
+            retDepartment = new Department("", ex.getMessage(), "");
         }
         
         return retDepartment;
