@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,14 +14,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.obercoder.praktikumsverwaltung_androidapp.R;
 import com.obercoder.praktikumsverwaltung_androidapp.pkgData.Database;
+import com.obercoder.praktikumsverwaltung_androidapp.pkgData.Entry;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private ListView myListView ;
+    private ArrayAdapter<String> listAdapter ;
     Database db = Database.newInstance();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +51,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        try {
-            db.loadPupils();
-        } catch(Exception ex) {
-            ex.printStackTrace();
-        }
+        getView();
+        fillListEntries();
+    }
+
+    public void getView() {
+        myListView = (ListView) findViewById(R.id.listViewEntries);
+    }
+
+    public void fillListEntries() {
+        listAdapter = new ArrayAdapter<String>(this, R.layout.myrow, db.getEntriesAsStrings());
+
+        myListView.setAdapter( listAdapter );
     }
 
     @Override
@@ -85,13 +106,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_addEntry) {
             startActivity(new Intent(MainActivity.this, AddEntryActivity.class));
         } else if (id == R.id.nav_editEntry) {
-
-        } else if (id == R.id.nav_showEntry) {
-
+            startActivity(new Intent(MainActivity.this, EditEntryActivity.class));
         } else if (id == R.id.nav_editProfile) {
-
-        } else if (id == R.id.nav_showProfile) {
-
+            startActivity(new Intent(MainActivity.this, EditProfileActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -41,8 +41,6 @@
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".pkgGUI.EditEntryActivity" />
         <activity android:name=".pkgGUI.EditProfileActivity" />
-        <activity android:name=".pkgGUI.ShowEntryActivity" />
-        <activity android:name=".pkgGUI.ShowProfileActivity"></activity>
     </application>
 
 </manifest>

@@ -33,14 +33,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         // Set up the login form.
         setContentView(R.layout.activity_login);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        txtUser = (EditText) findViewById(R.id.txtUser);
-        txtPasswd = (EditText) findViewById(R.id.txtPassword);
-
+        getAllViews();
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
+    }
+
+    public void getAllViews() {
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        txtUser = (EditText) findViewById(R.id.txtUser);
+        txtPasswd = (EditText) findViewById(R.id.txtPassword);
     }
 
     public void onBtnLogin(View view) {

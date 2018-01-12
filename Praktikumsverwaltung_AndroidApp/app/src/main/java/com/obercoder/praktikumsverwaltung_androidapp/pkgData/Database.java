@@ -13,6 +13,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.util.JSON;
+import com.obercoder.praktikumsverwaltung_androidapp.pkgController.ControllerEntry;
 import com.obercoder.praktikumsverwaltung_androidapp.pkgController.ControllerPupil;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
@@ -39,20 +40,20 @@ import javax.ws.rs.core.UriBuilder;
 public class Database{
 
     private ArrayList<Pupil> listPupil = new ArrayList<Pupil>();
+    public ArrayList<Entry> listEntries = new ArrayList<>();
+    public ArrayList<Class> listClass = new ArrayList<>();
+
     private static Database db = null;
     private String uri = null;
     private ClientConfig config = null;
     private Client client = null;
     private WebResource service = null;
-    private static final String URL = "http://192.168.195.112:8080/PraktikumsverwaltungWebService/resources/";
+    private static final String URL = "http://10.0.0.178:8080/PraktikumsverwaltungWebService/resources/";
     private static final String ContentType = "application/json";
     private ControllerPupil controllerPupil;
+    private ControllerEntry controllerEntry;
     private Gson gson;
 
-    /*public Database(String _uri) throws Exception{
-        setUri(_uri);
-    }
-*/
     public static Database newInstance(){
         if (db == null) {
             db = new Database();
@@ -64,32 +65,30 @@ public class Database{
         listPupil.add(p);
     }
 
-    public ArrayList<Pupil> getListPupil (){
+    public ArrayList<Pupil> getListPupil(){
         return listPupil;
     }
 
-    public void setUri(String uri) throws Exception {
-        this.uri = uri;
-        config = new DefaultClientConfig();
-        config.getClasses().add(MultiPartWriter.class);
-
-        client = Client.create(config);
-        service = client.resource(getBaseURI());
+    public ArrayList<Entry> getListEntries(){
+        return listEntries;
     }
 
-    public URI getBaseURI() {
-        return UriBuilder.fromUri(uri).build();
+    public ArrayList<String> getEntriesAsStrings() {
+        ArrayList<String> listEntriesAsStrings = new ArrayList<>();
+        for (Entry e : listEntries) {
+            String entry = e.getTitle() + "\n\n" + e.getStartDate().toString() + "   -   " +
+                    e.getEndDate().toString() + "\n\n" +
+                    listClass.get(listClass.indexOf(new Class(e.getIdClass()))) + "     " + e.getSalary();
+
+            listEntriesAsStrings.add(entry);
+        }
+        return listEntriesAsStrings;
     }
 
     public static String getContentType(){
         return ContentType;
     }
 
-    /*public String getPupils() throws Exception{
-        String strFromServer = service.path("Pupil/").accept(MediaType.APPLICATION_JSON).get(String.class);
-        return strFromServer;
-    }
-*/
     public void loadPupils() throws Exception {
             controllerPupil = new ControllerPupil();
 
@@ -104,16 +103,38 @@ public class Database{
 
             Thread t = new Thread(new Runnable() {
                 public void run() {
-                    Type playerListType = new TypeToken<ArrayList<Pupil>>(){}.getType();
+                    Type pupilListType = new TypeToken<ArrayList<Pupil>>(){}.getType();
                     gson = new Gson();
-                    listPupil = gson.fromJson(result, playerListType);
+                    listPupil = gson.fromJson(result, pupilListType);
                 }
             });
             t.start();
             t.join();
     }
 
-    // "Use host GPU" UNCHECK FOR EXCEPTION LOGIN
+    public void loadEntries() throws Exception{
+        controllerEntry = new ControllerEntry();
+
+        String paras[] = new String[2];
+        paras[0] = "GET";
+        paras[1] = "Entry";
+        controllerEntry.execute(paras);
+        final String result = controllerEntry.get();
+        if(result == null){
+            throw new Exception("webservice problem --getEntries");
+        }
+
+        Thread t = new Thread(new Runnable() {
+            public void run() {
+                Type entryListType = new TypeToken<ArrayList<Entry>>(){}.getType();
+                gson = new Gson();
+                listEntries = gson.fromJson(result, entryListType);
+            }
+        });
+        t.start();
+        t.join();
+    }
+
     public boolean checkLogin(Pupil p) throws Exception {
         controllerPupil = new ControllerPupil();
 
@@ -130,6 +151,13 @@ public class Database{
         }
 
         return Boolean.valueOf(result);
+    }
+
+    public void signUp() throws Exception {
+        controllerPupil = new ControllerPupil();
+
+        String paras[] = new String[2];
+        paras[0] = "POST";
     }
     public static String getUrl(){
         return URL;
