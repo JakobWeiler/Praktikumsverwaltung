@@ -13,7 +13,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         [BsonId]
         public ObjectId Id { get; set; }
         [BsonElement("startDate")]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; }           // DateTime as String because otherwise deserialization causes problems
         [BsonElement("endDate")]
         public DateTime EndDate { get; set; }
         [BsonElement("salary")]
@@ -33,15 +33,15 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         [BsonElement("idClass")]
         public ObjectId IdClass { get; set; }
 
-        public Entry(DateTime startDate, DateTime endDate, string title, string description, int salary)
+        public Entry(DateTime startDate, DateTime endDate, string title, string description, int salary, bool allowedTeacher, bool allowedAV)
         {
             StartDate = startDate;
             EndDate = endDate;
             Title = title;
             Description = description;
             Salary = salary;
-            AllowedTeacher = true;
-            AllowedAV = true;
+            AllowedTeacher = allowedTeacher;
+            AllowedAV = allowedAV;
         }
     }
 }
