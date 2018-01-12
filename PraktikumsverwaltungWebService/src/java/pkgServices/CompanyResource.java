@@ -38,7 +38,7 @@ public class CompanyResource {
     }
 
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML})
+    @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Company> getCompanies() {
         ArrayList<Company> allCompanies;
         Database db = Database.newInstance();

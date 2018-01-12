@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(pkgServices.EntryResource.class);
         resources.add(pkgServices.LoginResource.class);
         resources.add(pkgServices.PupilResource.class);
+        resources.add(pkgServices.TeacherResource.class);
     }
     
 }

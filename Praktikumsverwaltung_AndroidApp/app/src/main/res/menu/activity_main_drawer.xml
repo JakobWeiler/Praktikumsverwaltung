@@ -11,10 +11,6 @@
             android:id="@+id/nav_editEntry"
             android:icon="@mipmap/ic_menu_edit"
             android:title="@string/edit" />
-        <item
-            android:id="@+id/nav_showEntry"
-            android:icon="@mipmap/ic_menu_show"
-            android:title="@string/show" />
     </menu>
     </item>
 
@@ -24,10 +20,6 @@
                 android:id="@+id/nav_editProfile"
                 android:icon="@mipmap/ic_menu_edit"
                 android:title="@string/edit" />
-            <item
-                android:id="@+id/nav_showProfile"
-                android:icon="@mipmap/ic_menu_show"
-                android:title="@string/show" />
         </menu>
     </item>
 
