@@ -21,11 +21,11 @@
                     <GridViewColumn Header="Location" Width="400" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <WebBrowser local:WebBrowserUtility.BindableSource="{Binding Col2}" Height="200" Width="400" />
+                                <WebBrowser local:WebBrowserUtility.BindableSource="{Binding Col2}" Height="200" Width="380" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="50" >
+                    <GridViewColumn Width="60" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Height="40" Width="40" Click="ClickBtnEdit" >
@@ -34,7 +34,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="50" >
+                    <GridViewColumn Width="60" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Height="40" Width="40" Click="ClickBtnRemove" >
@@ -45,6 +45,13 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="FontSize" Value="18" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="BorderThickness" Value="0,0,0,1" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
 
     </Grid>
