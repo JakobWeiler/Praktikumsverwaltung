@@ -298,6 +298,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonString = JsonConvert.SerializeObject(entry);
 
                 jsonStringResponse = this.POSTWebService(myPath, jsonString);
+
                 string result = JsonConvert.DeserializeObject<String>(jsonStringResponse);
 
                 if (result.Equals("ok"))
