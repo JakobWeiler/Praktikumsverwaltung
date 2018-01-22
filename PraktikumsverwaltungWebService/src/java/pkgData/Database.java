@@ -39,8 +39,8 @@ public class Database {
         private String dbName;
  
         private Database() {
-         connStr = "mongodb://192.168.142.144:27017";  //intern
-         //connStr = "mongodb://212.152.179.118:27017";   //extern
+         //connStr = "mongodb://192.168.142.144:27017";  //intern
+         connStr = "mongodb://212.152.179.118:27017";   //extern
          dbName = "5BHIFS_BSD_Praktikumsverwaltung";
         }
         
@@ -241,4 +241,20 @@ public class Database {
             
             return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Department.class);
         }        
+        
+        public ArrayList<Class> getAllClasses() throws Exception {
+            ArrayList<Class> allClasses = new ArrayList<>();
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Class");
+            
+            for(Document d : collection.find()){
+                Class c = new Class();
+                c.setId(d.getObjectId("_id").toString());
+                c.setDescription(d.getString("description"));
+                c.setIdKV(d.getObjectId("idKV").toString());
+                allClasses.add(c);
+            }
+            return allClasses;
+        }
 }
