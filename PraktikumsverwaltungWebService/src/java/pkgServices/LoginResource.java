@@ -5,6 +5,7 @@
  */
 package pkgServices;
 
+import com.google.gson.Gson;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -15,6 +16,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import pkgData.Database;
+import pkgData.Person;
 
 /**
  * REST Web Service
@@ -36,22 +38,22 @@ public class LoginResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getIsLoginOk(@QueryParam("username") String username, @QueryParam("password") String password) {
-        String retVal = "false";
+        Person p = null;
         
         try {
             Database db = Database.newInstance();
         
-            retVal = db.getIsLoginOkPupil(username, password);
+            p = db.getIsLoginOkPupil(username, password);
 
-            if (retVal.endsWith("false"))
+            if (p == null)
             {
-                retVal = db.getIsLoginOkTeacher(username, password);
+                p = db.getIsLoginOkTeacher(username, password);
             }
         }
         catch (Exception ex) {
-            retVal = ex.getMessage();
+            System.out.println("error in login: " + ex.getMessage());
         }
         
-        return retVal;
+        return new Gson().toJson(p, Person.class);
     }
 }
