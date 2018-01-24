@@ -39,8 +39,8 @@ public class Database {
         private String dbName;
  
         private Database() {
-         //connStr = "mongodb://192.168.142.144:27017";  //intern
-         connStr = "mongodb://212.152.179.118:27017";   //extern
+         connStr = "mongodb://192.168.142.144:27017";  //intern
+         //connStr = "mongodb://212.152.179.118:27017";   //extern
          dbName = "5BHIFS_BSD_Praktikumsverwaltung";
         }
         
@@ -115,8 +115,8 @@ public class Database {
         }
         
         // checks if login of pupil is ok
-        public String getIsLoginOkPupil(String username, String password) throws Exception {
-            String retVal = "false";
+        public Pupil getIsLoginOkPupil(String username, String password) throws Exception {
+            Pupil p = null;
             mongoDb = connect();
             Gson gson = new Gson();
             MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
@@ -126,14 +126,23 @@ public class Database {
             query.put("password", password);            
             
             for(Document d : collection.find(query)) {
-                retVal = "true";
+                p = new Pupil();
+                p.setUsername(d.getString("username"));
+                p.setPassword(d.getString("password"));
+                p.setFirstName(d.getString("firstName"));
+                p.setLastname(d.getString("lastName"));
+                p.setEmail(d.getString("email"));
+                p.setIsActive(d.getBoolean("isActive"));
+                p.setId(d.getObjectId("_id").toString());
+                p.setIdDepartment(d.getObjectId("idDepartment").toString());
+                p.setIdClass(d.getObjectId("idClass").toString());
             }
-            return retVal;
+            return p;
         }
         
         // checks if login of teacher is ok
-        public String getIsLoginOkTeacher(String username, String password) throws Exception {
-            String retVal = "false";
+        public Teacher getIsLoginOkTeacher(String username, String password) throws Exception {
+            Teacher t = null;
             mongoDb = connect();
             Gson gson = new Gson();
             MongoCollection<Document> collection = mongoDb.getCollection("Teacher");
@@ -143,9 +152,10 @@ public class Database {
             query.put("password", password);            
             
             for(Document d : collection.find(query)) {
-                retVal = "true";
+                t = gson.fromJson(d.toJson(), Teacher.class);
+                t.setId(d.getObjectId("_id").toString());
             }
-            return retVal;
+            return t;
         }
         
         public void addPupil(Pupil p) throws Exception {
