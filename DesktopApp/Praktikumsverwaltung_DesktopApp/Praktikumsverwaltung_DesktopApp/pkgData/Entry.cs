@@ -10,31 +10,21 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
 {    
     class Entry
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
-        [BsonElement("startDate")]
+        public string Id { get; set; }
         public DateTime StartDate { get; set; }           // DateTime as String because otherwise deserialization causes problems
-        [BsonElement("endDate")]
         public DateTime EndDate { get; set; }
-        [BsonElement("salary")]
         public float Salary { get; set; }
-        [BsonElement("title")]
         public string Title { get; set; }
-        [BsonElement("description")]
         public string Description { get; set; }
-        [BsonElement("allowedTeacher")]
         public bool AllowedTeacher { get; set; }
-        [BsonElement("allowedAV")]
         public bool AllowedAV { get; set; }
-        [BsonElement("idPupil")]
-        public ObjectId IdPupil { get; set; }
-        [BsonElement("idCompany")]
-        public ObjectId IdCompany { get; set; }
-        [BsonElement("idClass")]
-        public ObjectId IdClass { get; set; }
+        public string IdPupil { get; set; }
+        public string IdCompany { get; set; }
+        public string IdClass { get; set; }
 
-        public Entry(DateTime startDate, DateTime endDate, string title, string description, int salary, bool allowedTeacher, bool allowedAV)
+        public Entry(string id, DateTime startDate, DateTime endDate, string title, string description, float salary, bool allowedTeacher, bool allowedAV, string idPupil, string idClass, string idCompany)
         {
+            Id = id;
             StartDate = startDate;
             EndDate = endDate;
             Title = title;
@@ -42,6 +32,9 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             Salary = salary;
             AllowedTeacher = allowedTeacher;
             AllowedAV = allowedAV;
+            IdPupil = idPupil;
+            IdCompany = idCompany;
+            IdClass = idClass;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Praktikumsverwaltung_DesktopApp.pkgData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,19 +23,44 @@ namespace Praktikumsverwaltung_DesktopApp
         public EditEntry()
         {
             InitializeComponent();
-            this.LoadNewEntries();
+            this.LoadAllOwnEntries();
             lvEntries.SelectionChanged += lvNewEntries_SelectionChanged;
         }
-
-        private void LoadNewEntries()
+        
+        private void LoadAllOwnEntries()
         {
-            Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
+            List<Entry> listAllOwnEntries;
+            StringBuilder strBuilderEntry = new StringBuilder();
+            try
+            {
+                GatewayDatabase gatewayDatabase = GatewayDatabase.newInstance();
+                Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
 
-            BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
-            BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
+                BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
+                BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
 
-            lvEntries.Items.Add(new { Col1 = "test1", Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
-            lvEntries.Items.Add(new { Col1 = "ahshdbsn", Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
+                listAllOwnEntries = gatewayDatabase.GetAllOwnEntries();
+
+                foreach (Entry entry in listAllOwnEntries)
+                {
+                    strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append("Dauer: " + entry.StartDate.ToString("dd.MM.yyyy") + " bis " + entry.EndDate.ToString("dd.MM.yyyy") + Environment.NewLine);
+                    strBuilderEntry.Append("Gehalt: " + entry.Salary + " €" + Environment.NewLine);
+                    strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append("---------------------------------------------------------------------------");
+
+                    //StringBuilder strBuilderAddress = new StringBuilder();
+                    //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
+                                        
+                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in LoadAllOwnEntries: " + ex.Message);
+            }
         }
 
         // to disable the selection of each item of the listview

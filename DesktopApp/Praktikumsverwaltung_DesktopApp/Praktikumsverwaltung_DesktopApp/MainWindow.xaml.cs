@@ -39,7 +39,11 @@ namespace Praktikumsverwaltung_DesktopApp
             StringBuilder strBuilderEntry = new StringBuilder();
             try
             {
-                List<Entry> listEntries = db.GetAllEntries();          // mongoDB get all entries
+                Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
+                BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
+                BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
+
+                List<Entry> listEntries = db.GetAllEntries();          // WebService get all entries
 
                 foreach (Entry entry in listEntries)
                 {
@@ -47,18 +51,14 @@ namespace Praktikumsverwaltung_DesktopApp
                     strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("Dauer: " + entry.StartDate.ToString("dd.MM.yyyy") + " bis " + entry.EndDate.ToString("dd.MM.yyyy") + Environment.NewLine);
-                    strBuilderEntry.Append("Gehalt: " + entry.Salary + Environment.NewLine);
+                    strBuilderEntry.Append("Gehalt: " + entry.Salary + " €" + Environment.NewLine);
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("---------------------------------------------------------------------------");
                     
                     //StringBuilder strBuilderAddress = new StringBuilder();
                     //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
-
-                    Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
-
-                    BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
-                    BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
-
+                    
+                    // Entries only editable if admin
                     if (isAdmin == false)
                     {
                         this.gvColumnEditAdmin.Width = 0;
@@ -77,7 +77,7 @@ namespace Praktikumsverwaltung_DesktopApp
         // if user is an admin, there are some additional "special" window elements
         private void LoadAdminGuiElements()
         {
-            if (db.IsAdmin())
+            if (db.IsAdmin)
             {
                 MenuItem mItemNewEntries = new MenuItem();
                 mItemNewEntries.Header = "New Entries";
@@ -121,6 +121,13 @@ namespace Praktikumsverwaltung_DesktopApp
         {
             EditEntry editEntry = new EditEntry();
             editEntry.Show();
+        }
+
+        private void mItemLogout_Click(object sender, EventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            this.Close();
+            loginWindow.Show();
         }
 
         private void ClickBtnEditAdmin(object sender, EventArgs e)

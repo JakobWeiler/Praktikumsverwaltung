@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,23 +8,16 @@ using System.Threading.Tasks;
 
 namespace Praktikumsverwaltung_DesktopApp.pkgData
 {
-    class Pupil
+    class Pupil : Person
     {
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
-        public string Email { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public bool IsActive { get; set; }
+        public string IdDepartment { get; set; }
+        public string IdClass { get; set; }                
 
-        public Pupil(string firstname, string lastname, string email, string username, string password)
+        public Pupil(string id, string firstname, string lastname, string email, string username, string password, bool isActive, string idDepartment, string idClass)
+        : base(id, firstname, lastname, email, username, password, isActive)
         {
-            Firstname = firstname;
-            Lastname = lastname;
-            Email = email;
-            Username = username;
-            Password = password;
-            IsActive = true;
+            IdDepartment = idDepartment;
+            IdClass = idClass;
         }
     }
 }

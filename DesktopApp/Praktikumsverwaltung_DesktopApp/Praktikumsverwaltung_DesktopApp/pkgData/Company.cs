@@ -10,19 +10,15 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
 {
     class Company
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
-        [BsonElement("name")]
+        public string Id { get; set; }
         public string Name { get; set; }
-        [BsonElement("location")]
         public string Location { get; set; }
-        [BsonElement("numberOfEmployees")]
         public float NumberOfEmployees { get; set; }
-        [BsonElement("contactPerson")]
         public string ContactPerson { get; set; }
 
-        public Company(string name, string location, int numberOfEmployees, string contactPerson)
+        public Company(string id, string name, string location, int numberOfEmployees, string contactPerson)
         {
+            Id = id;
             Name = name;
             Location = location;
             NumberOfEmployees = numberOfEmployees;

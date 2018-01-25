@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -61,33 +62,23 @@ namespace Praktikumsverwaltung_DesktopApp
                     bool successful = false;
 
                     GatewayDatabase gatewayDb = GatewayDatabase.newInstance();      // Singleton
+                    successful = gatewayDb.IsLoginOk(username, password);       // calls the webservice
 
-                    successful = gatewayDb.ConnectMongoDB();            // Connection MongoDB
-
-                    if (successful == true)
+                    if (successful)
                     {
-                        successful = gatewayDb.CheckLogin(username, password);
-
-                        if (successful)
-                        {
-                            MainWindow myMain = new MainWindow();
-                            myMain.Show();
-                            this.Close();
-                        }
-                        else
-                        {
-                            this.lblMessageLogin.Content = "Login not successful. Try again.";
-                        }
+                        MainWindow mainWindow = new MainWindow();
+                        mainWindow.Show();
+                        this.Close();
                     }
                     else
                     {
-                        this.lblMessageLogin.Content = "Connection failed.";
+                        this.lblMessageLogin.Content = "Login not successful. Try again.";
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+               this.lblMessageLogin.Content = "Error: " + ex.Message;
             }
         }
 

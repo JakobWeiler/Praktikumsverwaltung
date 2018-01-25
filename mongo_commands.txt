@@ -139,4 +139,17 @@ db.Teacher.find({"_id":ObjectId("5a0ebf2672a5a34fbcb455ff")})
 Mit Putty auf Server: mongodb-linux-x86.... / mongodb-linux... / bin
 mongodump --db 5BHIFS_BSD_Praktikumsverwaltung
 
-db.market.find({}).sort({_id:-1}).limit(1)
+db.Company.find({}).sort({_id:-1}).limit(1)
+
+--Join
+db.Class.aggregate([
+   {
+     $lookup:
+       {
+         from: "Teacher",
+         localField: "idKV",
+         foreignField: "_id",
+         as: "KV"
+       }
+  }
+])
