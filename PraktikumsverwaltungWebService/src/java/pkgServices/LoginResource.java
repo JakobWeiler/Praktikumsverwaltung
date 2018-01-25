@@ -17,6 +17,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import pkgData.Database;
 import pkgData.Person;
+import pkgData.Pupil;
+import pkgData.Teacher;
 
 /**
  * REST Web Service
@@ -54,6 +56,12 @@ public class LoginResource {
             System.out.println("error in login: " + ex.getMessage());
         }
         
-        return new Gson().toJson(p, Person.class);
+        if(p instanceof Pupil) {
+            return new Gson().toJson(p, Pupil.class);
+        }
+        else {
+            return new Gson().toJson(p, Teacher.class);
+        }
+        
     }
 }
