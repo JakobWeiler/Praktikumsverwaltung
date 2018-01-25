@@ -55,7 +55,7 @@ public class CompanyResource {
     
     @GET
     @Path("{companyId}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_XML, MediaType.APPLICATION_XML})
+    @Produces(MediaType.APPLICATION_JSON)
     public Company getCompanyById(@PathParam("companyId") String id) {
         Company company = null;
          
@@ -70,7 +70,7 @@ public class CompanyResource {
     }
     
     @POST
-    @Consumes({MediaType.TEXT_HTML, MediaType.APPLICATION_JSON, MediaType.TEXT_XML})
+    @Consumes(MediaType.APPLICATION_JSON)
     public Company newCompany(Company company) throws Exception {
         Company retCompany;
         
