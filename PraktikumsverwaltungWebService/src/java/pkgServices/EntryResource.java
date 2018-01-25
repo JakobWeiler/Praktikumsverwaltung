@@ -41,7 +41,7 @@ public class EntryResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Entry> getAllEntries() {
+    public String getAllEntries() {
         ArrayList<Entry> listEntries;
         try {
             Database db = Database.newInstance();
@@ -52,13 +52,13 @@ public class EntryResource {
             listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));
         }
         
-        return listEntries;
+        return new Gson().toJson(listEntries);
     }
     
     @GET
     @Path("{entryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Entry> getAllOwnEntries(@PathParam("entryId") String id) {
+    public String getAllOwnEntries(@PathParam("entryId") String id) {
         ArrayList<Entry> listEntries = null;
          
         try{
@@ -69,7 +69,7 @@ public class EntryResource {
                 listEntries = new ArrayList<>();
                 listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));      
             }
-        return listEntries;
+        return new Gson().toJson(listEntries);
     }
     
     @POST
