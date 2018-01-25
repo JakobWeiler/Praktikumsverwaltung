@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Praktikumsverwaltung_WebApp/nbproject/private/
+/Praktikumsverwaltung_WebApp/build/
