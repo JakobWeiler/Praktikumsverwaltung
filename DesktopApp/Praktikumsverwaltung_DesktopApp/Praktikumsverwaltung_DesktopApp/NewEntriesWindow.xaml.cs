@@ -79,6 +79,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 selectedEntry.AllowedTeacher = true;
                 selectedEntry.AllowedAV = true;
+                selectedEntry.SeenByAdmin = true;
 
                 gatewayDatabase.UpdateEntry(selectedEntry);
 
@@ -103,6 +104,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 selectedEntry.AllowedTeacher = false;
                 selectedEntry.AllowedAV = false;
+                selectedEntry.SeenByAdmin = true;
 
                 gatewayDatabase.UpdateEntry(selectedEntry);
 

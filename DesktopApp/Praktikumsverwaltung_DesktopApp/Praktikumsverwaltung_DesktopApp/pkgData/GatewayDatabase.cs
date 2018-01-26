@@ -66,7 +66,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GETWebService: " + ex.Message);
+                throw new Exception("Error in GatewayDB_GETWebService: " + ex.Message);
             }
 
             return responseText;
@@ -101,7 +101,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in POSTWebService: " + ex.Message);
+                throw new Exception("Error in GatewayDB_POSTWebService: " + ex.Message);
             }
 
             return responseText;
@@ -136,7 +136,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in PUTWebService: " + ex.Message);
+                throw new Exception("Error in GatewayDB_PUTWebService: " + ex.Message);
             }
 
             return responseText;
@@ -145,7 +145,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         // WebService checks both Login possibilities, Pupil and Teacher
         public bool IsLoginOk(string username, string password)
         {
-            bool successful = false, isPupil = false;
+            bool successful = false;
             string myPath, jsonString;
             var encoding = ASCIIEncoding.ASCII;
 
@@ -190,7 +190,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in IsLoginOk: " + ex.Message);
+                throw new Exception("Error in GatewayDB_IsLoginOk: " + ex.Message);
             }           
 
             return successful;
@@ -212,7 +212,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GetAllEntries: " + ex.Message);
+                throw new Exception("Error in GatewayDB_GetAllEntries: " + ex.Message);
             }
 
             return listEntries;
@@ -234,7 +234,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GetAllEditableEntries: " + ex.Message);
+                throw new Exception("Error in GatewayDB_GetAllEditableEntries: " + ex.Message);
             }
 
             return listEditableEntries;
@@ -256,7 +256,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GetAllActivePupils: " + ex.Message);
+                throw new Exception("Error in GatewayDB_GetAllActivePupils: " + ex.Message);
             }
 
             return listPupils;
@@ -278,7 +278,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GetAllActiveTeachers: " + ex.Message);
+                throw new Exception("Error in GatewayDB_GetAllActiveTeachers: " + ex.Message);
             }
 
             return listTeacher;
@@ -300,7 +300,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GetAllCompanies: " + ex.Message);
+                throw new Exception("Error in GatewayDB_GetAllCompanies: " + ex.Message);
             }
 
             return listCompanies;
@@ -341,9 +341,11 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append("\", \"description\" : \"");
                 jsonStringBuilder.Append(entry.Description);
                 jsonStringBuilder.Append("\", \"allowedTeacher\" : ");
-                jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());
+                jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());            // ToLower() because mongodb needs true/false and not True/False
                 jsonStringBuilder.Append(", \"allowedAV\" : ");
-                jsonStringBuilder.Append(entry.AllowedAV.ToString().ToLower());
+                jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());
+                jsonStringBuilder.Append(", \"seenByAdmin\" : ");
+                jsonStringBuilder.Append(entry.SeenByAdmin.ToString().ToLower());
                 jsonStringBuilder.Append(", \"idPupil\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(entry.IdPupil);
                 jsonStringBuilder.Append("\" }, \"idCompany\" : { \"$oid\" : \"");
@@ -353,16 +355,15 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append("\" } }");
                                 
                 jsonStringResponse = this.POSTWebService(myPath, jsonStringBuilder.ToString());
-                string result = JsonConvert.DeserializeObject<String>(jsonStringResponse);
 
-                if (result.Equals("ok"))
+                if (jsonStringResponse.Equals("ok"))
                 {
                     successful = true;
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in AddEntry: " + ex.Message);
+                throw new Exception("Error in GatewayDB_AddEntry: " + ex.Message);
             }
 
             return successful;
@@ -384,7 +385,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GetAllUnacceptedEntries: " + ex.Message);
+                throw new Exception("Error in GatewayDB_GetAllUnacceptedEntries: " + ex.Message);
             }
 
             return listUnacceptedEntries;
@@ -393,24 +394,55 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool UpdateEntry(Entry editedEntry)
         {
             bool successful = false;
-            string myPath, jsonStringResponse;
+            string myPath, mySpecialJavaDouble, jsonStringResponse;
             var encoding = ASCIIEncoding.ASCII;
 
             try
             {
                 myPath = this.urlWebService + "/EntryDetail";       // path to the webservice with the params
-                jsonStringResponse = this.PUTWebService(myPath, editedEntry.ToJson());
 
-                string result = JsonConvert.DeserializeObject<String>(jsonStringResponse);
+                // !!!!!!!!!!!!! C# double is with a ',' BUT IN JAVA a double is with a '.'
+                mySpecialJavaDouble = editedEntry.Salary.ToString();
+                mySpecialJavaDouble = mySpecialJavaDouble.Replace(',', '.');
 
-                if (result.Equals("ok"))
+                // !!! Creating own json String because of the date and double
+                StringBuilder jsonStringBuilder = new StringBuilder();
+                jsonStringBuilder.Append("{ \"_id\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(editedEntry.Id);
+                jsonStringBuilder.Append("\" }, \"startDate\" : { \"$date\" : ");
+                jsonStringBuilder.Append((editedEntry.StartDate - new DateTime(1970, 1, 1)).TotalMilliseconds);     // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
+                jsonStringBuilder.Append(" }, \"endDate\" : { \"$date\" : ");
+                jsonStringBuilder.Append((editedEntry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds);       // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
+                jsonStringBuilder.Append(" }, \"salary\" : ");
+                jsonStringBuilder.Append(mySpecialJavaDouble);
+                jsonStringBuilder.Append(", \"title\" : \"");
+                jsonStringBuilder.Append(editedEntry.Title);
+                jsonStringBuilder.Append("\", \"description\" : \"");
+                jsonStringBuilder.Append(editedEntry.Description);
+                jsonStringBuilder.Append("\", \"allowedTeacher\" : ");
+                jsonStringBuilder.Append(editedEntry.AllowedTeacher.ToString().ToLower());            // ToLower() because mongodb needs true/false and not True/False
+                jsonStringBuilder.Append(", \"allowedAV\" : ");
+                jsonStringBuilder.Append(editedEntry.AllowedTeacher.ToString().ToLower());
+                jsonStringBuilder.Append(", \"seenByAdmin\" : ");
+                jsonStringBuilder.Append(editedEntry.SeenByAdmin.ToString().ToLower());
+                jsonStringBuilder.Append(", \"idPupil\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(editedEntry.IdPupil);
+                jsonStringBuilder.Append("\" }, \"idCompany\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(editedEntry.IdCompany);
+                jsonStringBuilder.Append("\" }, \"idClass\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(editedEntry.IdClass);
+                jsonStringBuilder.Append("\" } }");
+
+                jsonStringResponse = this.PUTWebService(myPath, jsonStringBuilder.ToString());
+
+                if (jsonStringResponse.Equals("ok"))
                 {
                     successful = true;
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in UpdateEntry: " + ex.Message);
+                throw new Exception("Error in GatewayDB_UpdateEntry: " + ex.Message);
             }
 
             return successful;
