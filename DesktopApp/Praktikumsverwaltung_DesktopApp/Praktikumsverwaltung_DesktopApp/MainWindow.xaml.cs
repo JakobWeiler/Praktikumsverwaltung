@@ -64,6 +64,11 @@ namespace Praktikumsverwaltung_DesktopApp
                         this.gvColumnEditAdmin.Width = 0;
                         this.gvColumnRemoveAdmin.Width = 0;
                     }
+                    else
+                    {
+                        this.gvColumnEditAdmin.Width = 60;
+                        this.gvColumnRemoveAdmin.Width = 60;
+                    }
 
                     lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
                 }
@@ -82,12 +87,12 @@ namespace Praktikumsverwaltung_DesktopApp
                 MenuItem mItemNewEntries = new MenuItem();
                 mItemNewEntries.Header = "New Entries";
 
-                MenuItem mItemShow = new MenuItem();
-                mItemShow.Header = "Show";
-                mItemShow.Click += (s, e) => { mItemShow_Click(s, e); };
-
-                mItemNewEntries.Items.Add(mItemShow);
-                this.menuBar.Items.Add(mItemNewEntries);
+                MenuItem mItemNewEntriesShow = new MenuItem();
+                mItemNewEntriesShow.Header = "Show";
+                mItemNewEntriesShow.Click += (s, e) => { mItemNewEntriesShow_Click(s, e); };
+                
+                mItemNewEntries.Items.Add(mItemNewEntriesShow);
+                this.menuBar.Items.Insert(2, mItemNewEntries);          // Insert... adds menuitem add a specific position
             }
         }
 
@@ -97,7 +102,7 @@ namespace Praktikumsverwaltung_DesktopApp
             lvEntries.SelectedValue = false;
         }
 
-        private void mItemShow_Click(object sender, EventArgs e)
+        private void mItemNewEntriesShow_Click(object sender, EventArgs e)
         {
             // Load new entries which have to be accepted or rejected
             NewEntriesWindow newEntries = new NewEntriesWindow();

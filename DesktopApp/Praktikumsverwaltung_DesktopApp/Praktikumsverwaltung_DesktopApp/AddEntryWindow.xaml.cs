@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using Praktikumsverwaltung_DesktopApp.pkgData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,8 +28,10 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            String title = "", description = "", formOfIntern = "", dpStart = "", dpEnd = "";
-            int salary = -1;
+            String title = "", description = "", dpStart = "", dpEnd = "";
+            double salary = -1;
+            DateTime startDate = new DateTime();
+            DateTime endDate = new DateTime();
 
             
             try
@@ -37,7 +41,6 @@ namespace Praktikumsverwaltung_DesktopApp
                 lblErrorSalary.Foreground = Brushes.Red;
                 lblErrorStartDate.Foreground = Brushes.Red;
                 lblErrorEndDate.Foreground = Brushes.Red;
-                lblErrorFormOfIntern.Foreground = Brushes.Red;
 
                 if (txtTitle.Text.Length > 0)
                 {
@@ -62,7 +65,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 if (txtSalary.Text.Length > 0)
                 {
                     // checks if salary doesn't consist of letters
-                    int.TryParse(txtSalary.Text.ToString(), out salary);        // returns the salary (with type int) or 0 if parse isn't possible
+                    double.TryParse(txtSalary.Text.ToString(), out salary);        // returns the salary (with type int) or 0 if parse isn't possible
 
                     if (salary > 0 || txtSalary.Text.Equals("0"))       // we have to check if the value is 0, in order to differ from the result of tryParse (Because the user could type in 0).
                     {
@@ -82,6 +85,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 if (datePickerStartDate.Text.Length > 0)
                 {
                     dpStart = datePickerStartDate.Text;
+                    startDate = datePickerStartDate.SelectedDate.Value.Date;
                     lblErrorStartDate.Content = "";
                 }
                 else
@@ -92,6 +96,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 if (datePickerEndDate.Text.Length > 0)
                 {
                     dpEnd = datePickerEndDate.Text;
+                    endDate = datePickerEndDate.SelectedDate.Value.Date;
                     lblErrorEndDate.Content = "";
                 }
                 else
@@ -99,25 +104,18 @@ namespace Praktikumsverwaltung_DesktopApp
                     lblErrorEndDate.Content = "select a date";
                 }
 
-                if (txtFormOfIntern.Text.Length > 0)
-                {
-                    formOfIntern = txtFormOfIntern.Text;
-                    lblErrorFormOfIntern.Content = "";
-                }
-                else
-                {
-                    lblErrorFormOfIntern.Content = "mind. 1 letter";
-                }
-
                 // salary > -1, because it can be 0
-                if (title != null && description != null && formOfIntern != null && salary > -1 && dpStart != null && dpEnd != null)
+                if (title != null && description != null && salary > -1 && dpStart != null && dpEnd != null)
                 {
-                    
+                    // id's are going to be set in GatewayDatabase AddEntry()
+                    Entry entry = new Entry("id-1", startDate, endDate, title, description, salary, false, false, "id-1", "id-1", "id-1");
+                    GatewayDatabase gatewayDatabase = GatewayDatabase.newInstance();
+                    gatewayDatabase.AddEntry(entry);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error in AddEntry: " + ex.Message);
             }
         }
     }

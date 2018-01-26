@@ -101,7 +101,42 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GETWebService: " + ex.Message);
+                throw new Exception("Error in POSTWebService: " + ex.Message);
+            }
+
+            return responseText;
+        }
+
+        // POSTs results on the webservice
+        private string PUTWebService(string myPath, string jsonString)
+        {
+            string responseText;
+            var encoding = ASCIIEncoding.ASCII;
+
+            try
+            {
+                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(myPath));       //Create a HttpWebRequest object  
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "PUT";      //Set the Method
+
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(jsonString);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+
+                HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();        //Get the Response 
+
+                // reads every byte of the response message
+                using (var reader = new System.IO.StreamReader(httpWebResponse.GetResponseStream(), encoding))
+                {
+                    responseText = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in PUTWebService: " + ex.Message);
             }
 
             return responseText;
@@ -119,46 +154,37 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 myPath = this.urlWebService + "/Login?username=" + username + "&password=" + password;       // path to the webservice with the params
                 jsonString = this.GETWebService(myPath);
 
-                // return of WebService is "true" if the Login was correct
-                if (jsonString.Equals("true"))
+                Pupil pupilLogin = JsonConvert.DeserializeObject<Pupil>(jsonString);
+
+                // Wenn es null ist, bleibt successful auf false
+                if (pupilLogin != null)
                 {
-                    successful = true;
-
-                    // ******************* checks if it is a pupil or a teacher and saves the idUserBsonId / idUserClassBsonId or isAdmin
-                    List<Pupil> listActivePupils = this.GetAllActivePupils();
-                    foreach (Pupil p in listActivePupils)
+                    // Wenn es ein Pupil ist, hat er das Feld IdClass im jsonString, wenn nicht, ist es ein Teacher
+                    if (pupilLogin.IdClass != null)
                     {
-                        if (p.Username.Equals(username) && p.Password.Equals(password))
-                        {
-                            this.idUserBsonId = p.Id;
-                            this.idUserClassBsonId = p.IdClass;
-                            this.idUserDepartmentBsonId = p.IdDepartment;
-                            this.IsPupil = true;
-                            this.IsTeacher = false;
-                            this.IsAdmin = false;
-                            break;
-                        }
+                        this.idUserBsonId = pupilLogin.Id;
+                        this.idUserClassBsonId = pupilLogin.IdClass;
+                        this.idUserDepartmentBsonId = pupilLogin.IdDepartment;
+                        this.IsPupil = true;
+                        this.IsTeacher = false;
+                        this.IsAdmin = false;
+
+                        successful = true;
                     }
-
-                    // If the person isn't a pupil, it should be a teacher
-                    if (!this.IsPupil)
+                    else
                     {
-                        List<Teacher> listActiveTeachers = this.GetAllActiveTeachers();
-                        foreach (Teacher t in listActiveTeachers)
-                        {
-                            if (t.Username.Equals(username) && t.Password.Equals(password))
-                            {
-                                this.idUserBsonId = t.Id;
-                                this.IsPupil = false;
-                                this.IsTeacher = true;
+                        Teacher teacherLogin = JsonConvert.DeserializeObject<Teacher>(jsonString);
 
-                                if (t.IsAdmin)
-                                {
-                                    this.IsAdmin = true;
-                                }
-                                break;
-                            }
+                        this.idUserBsonId = teacherLogin.Id;
+                        this.IsPupil = false;
+                        this.IsTeacher = true;
+
+                        if (teacherLogin.IsAdmin)
+                        {
+                            this.IsAdmin = true;
                         }
+
+                        successful = true;
                     }
                 }
             }
@@ -283,7 +309,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool AddEntry(Entry entry)
         {
             bool successful = false;
-            string myPath, jsonString, jsonStringResponse;
+            string myPath, jsonStringResponse;
             var encoding = ASCIIEncoding.ASCII;
 
             try
@@ -295,9 +321,37 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 entry.IdCompany = this.idUserDepartmentBsonId;
 
                 myPath = this.urlWebService + "/Entry";       // path to the webservice with the params
-                jsonString = JsonConvert.SerializeObject(entry);
 
-                jsonStringResponse = this.POSTWebService(myPath, jsonString);
+                StringBuilder jsonStringBuilder = new StringBuilder();
+                jsonStringBuilder.Append("{ \"_id\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.Id);
+                jsonStringBuilder.Append("\" }, \"startDate\" : { \"$date\" : ");
+                jsonStringBuilder.Append((entry.StartDate - new DateTime(1970, 1, 1)).TotalMilliseconds);     // to get the milliseconds of the date
+                jsonStringBuilder.Append(" }, \"endDate\" : { \"$date\" : ");
+                jsonStringBuilder.Append((entry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds);       // to get the milliseconds of the date (long)(entry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds
+                jsonStringBuilder.Append(" }, \"salary\" : ");
+                jsonStringBuilder.Append(entry.Salary);
+                jsonStringBuilder.Append(", \"title\" : \"");
+                jsonStringBuilder.Append(entry.Title);
+                jsonStringBuilder.Append("\", \"description\" : \"");
+                jsonStringBuilder.Append(entry.Description);
+                jsonStringBuilder.Append("\", \"allowedTeacher\" : ");
+                jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());
+                jsonStringBuilder.Append(", \"allowedAV\" : ");
+                jsonStringBuilder.Append(entry.AllowedAV.ToString().ToLower());
+                jsonStringBuilder.Append(", \"idPupil\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.IdPupil);
+                jsonStringBuilder.Append("\" }, \"idCompany\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.IdCompany);
+                jsonStringBuilder.Append("\" }, \"idClass\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.IdClass);
+                jsonStringBuilder.Append("\" } }");
+
+
+                //{ "_id" : { "$oid" : "5a621f5554fc3d1de88cb089" }, "startDate" : { "$date" : 1499644800000 }, "endDate" : { "$date" : 1504224000000 }, "salary" : 550.0, "title" : "sadgaffadfgfgsdf", "description" : "sdfsds", "allowedTeacher" : false, "allowedAV" : false, "idPupil" : { "$oid" : "5a1d3eba2d19782a01d75dc0" }, "idCompany" : { "$oid" : "5a1d39152d19782a01d75db5" }, "idClass" : { "$oid" : "5a1d3e092d19782a01d75dbe" } }
+                //jsonString = JsonConvert.SerializeObject(entry);                
+                //jsonString = entry.ToJson();
+                jsonStringResponse = this.POSTWebService(myPath, jsonStringBuilder.ToString());
 
                 string result = JsonConvert.DeserializeObject<String>(jsonStringResponse);
 
@@ -308,7 +362,55 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
             catch (Exception ex)
             {
-                throw new Exception("Error in GetAllCompanies: " + ex.Message);
+                throw new Exception("Error in AddEntry: " + ex.Message);
+            }
+
+            return successful;
+        }
+
+        public List<Entry> GetAllUnacceptedEntries()
+        {
+            List<Entry> listUnacceptedEntries;
+
+            string myPath, jsonString;
+            var encoding = ASCIIEncoding.ASCII;
+
+            try
+            {
+                myPath = this.urlWebService + "/EntryAdmin";       // path to the webservice with the params
+                jsonString = this.GETWebService(myPath);
+
+                listUnacceptedEntries = JsonConvert.DeserializeObject<List<Entry>>(jsonString);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GetAllUnacceptedEntries: " + ex.Message);
+            }
+
+            return listUnacceptedEntries;
+        }
+
+        public bool UpdateEntry(Entry editedEntry)
+        {
+            bool successful = false;
+            string myPath, jsonStringResponse;
+            var encoding = ASCIIEncoding.ASCII;
+
+            try
+            {
+                myPath = this.urlWebService + "/EntryDetail";       // path to the webservice with the params
+                jsonStringResponse = this.PUTWebService(myPath, editedEntry.ToJson());
+
+                string result = JsonConvert.DeserializeObject<String>(jsonStringResponse);
+
+                if (result.Equals("ok"))
+                {
+                    successful = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in UpdateEntry: " + ex.Message);
             }
 
             return successful;

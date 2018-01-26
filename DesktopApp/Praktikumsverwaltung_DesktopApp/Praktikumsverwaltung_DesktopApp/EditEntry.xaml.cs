@@ -39,7 +39,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
                 BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
 
-                listAllOwnEntries = gatewayDatabase.GetAllOwnEntries();
+                listAllOwnEntries = gatewayDatabase.GetAllOwnEntries();         // !!! loads only the own entries
 
                 foreach (Entry entry in listAllOwnEntries)
                 {
