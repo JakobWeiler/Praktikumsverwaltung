@@ -41,7 +41,7 @@ public class EntryResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllEntries() {
+    public ArrayList<Entry> getAllEntries() {
         ArrayList<Entry> listEntries;
         try {
             Database db = Database.newInstance();
@@ -49,16 +49,16 @@ public class EntryResource {
         }
         catch (Exception ex) {
             listEntries = new ArrayList<>();
-            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));
+            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));
         }
         
-        return new Gson().toJson(listEntries);
+        return listEntries;
     }
     
     @GET
     @Path("{entryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllOwnEntries(@PathParam("entryId") String id) {
+    public ArrayList<Entry> getAllOwnEntries(@PathParam("entryId") String id) {
         ArrayList<Entry> listEntries = null;
          
         try{
@@ -67,9 +67,9 @@ public class EntryResource {
         }     
 	catch(Exception ex){ 
                 listEntries = new ArrayList<>();
-                listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));      
+                listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));      
             }
-        return new Gson().toJson(listEntries);
+        return listEntries;
     }
     
     @POST
@@ -88,37 +88,5 @@ public class EntryResource {
         }
         
         return retValue;
-    }
-    
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public ArrayList<Entry> getKvEntries(@QueryParam("id_kv") String id_kv) {
-//        ArrayList<Entry> listEntries;
-//        try {
-//            Database db = Database.newInstance();
-//            listEntries = db.getKvEntries(id_kv);
-//        }
-//        catch (Exception ex) {
-//            listEntries = new ArrayList<>();
-//            listEntries.add(new Entry(new ObjectId(), null, null, 0.0, ex.getMessage(), "", false, false, new ObjectId(), new ObjectId(), new ObjectId()));
-//        }
-//        
-//        return listEntries;
-//    }
-    
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public ArrayList<Entry> getAvEntries(@QueryParam("id_av") String id_av) {
-//        ArrayList<Entry> listEntries;
-//        try {
-//            Database db = Database.newInstance();
-//            listEntries = db.getAvEntries(id_av);
-//        }
-//        catch (Exception ex) {
-//            listEntries = new ArrayList<>();
-//            listEntries.add(new Entry(new ObjectId(), null, null, 0.0, ex.getMessage(), "", false, false, new ObjectId(), new ObjectId(), new ObjectId()));
-//        }
-//        
-//        return listEntries;
-//    }
+    }    
 }
