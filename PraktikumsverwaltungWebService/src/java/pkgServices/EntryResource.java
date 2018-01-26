@@ -79,11 +79,8 @@ public class EntryResource {
         Database db = Database.newInstance();
         Gson gson = new Gson();
         try{
-            System.out.println("++++++++++++++ vor addEntry " +jsonStringEntry);
-//            System.out.println("++++++++++++++ vor addEntry " +gson.fromJson(jsonStringEntry, Entry.class));
             db.addEntry(jsonStringEntry);                //gson.fromJson(jsonStringEntry, Entry.class
         }catch(Exception e) {
-            System.out.println("+++++++ error: " +e.getMessage());
             retValue = e.getMessage();
         }
         
