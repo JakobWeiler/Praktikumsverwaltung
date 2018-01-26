@@ -44,7 +44,7 @@ public class EntryAdminResource {
         }
         catch (Exception ex) {
             listUnacceptedEntries = new ArrayList<>();
-            listUnacceptedEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));
+            listUnacceptedEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));
         }
         
         return listUnacceptedEntries;
