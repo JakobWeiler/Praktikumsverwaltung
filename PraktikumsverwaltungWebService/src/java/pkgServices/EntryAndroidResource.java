@@ -43,7 +43,7 @@ public class EntryAndroidResource {
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<Entry> getAllEntries() {
         ArrayList<Entry> listEntries;
-        try {
+        try { 
             Database db = Database.newInstance();
             listEntries = db.getAllEntries();
         }
