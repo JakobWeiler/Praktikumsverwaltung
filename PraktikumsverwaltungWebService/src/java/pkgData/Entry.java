@@ -23,6 +23,7 @@ public class Entry {
     private String description;
     private boolean allowedTeacher;
     private boolean allowedAV;
+    private boolean seenByAdmin;
     private String idPupil;
     private String idCompany;
     private String idClass;
@@ -30,7 +31,7 @@ public class Entry {
     public Entry() {
     }
 
-    public Entry(String id, LocalDate startDate, LocalDate endDate, double salary, String title, String description, boolean allowedTeacher, boolean allowedAV, String idPupil, String idCompany, String idClass) {
+    public Entry(String id, LocalDate startDate, LocalDate endDate, double salary, String title, String description, boolean allowedTeacher, boolean allowedAV, boolean seenByAdmin, String idPupil, String idCompany, String idClass) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -39,6 +40,7 @@ public class Entry {
         this.description = description;
         this.allowedTeacher = allowedTeacher;
         this.allowedAV = allowedAV;
+        this.seenByAdmin = seenByAdmin;
         this.idPupil = idPupil;
         this.idCompany = idCompany;
         this.idClass = idClass;
@@ -106,6 +108,14 @@ public class Entry {
 
     public void setAllowedAV(boolean allowedAV) {
         this.allowedAV = allowedAV;
+    }
+
+    public boolean isSeenByAdmin() {
+        return seenByAdmin;
+    }
+
+    public void setSeenByAdmin(boolean seenByAdmin) {
+        this.seenByAdmin = seenByAdmin;
     }
 
     public String getIdPupil() {
