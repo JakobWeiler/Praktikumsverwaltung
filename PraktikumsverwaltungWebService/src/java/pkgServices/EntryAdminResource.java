@@ -40,7 +40,7 @@ public class EntryAdminResource {
         ArrayList<Entry> listUnacceptedEntries;
         try {
             Database db = Database.newInstance();
-            listUnacceptedEntries = db.getAllUnacceptedEntries();
+            listUnacceptedEntries = db.getAllUnacceptedAndUnseenEntries();
         }
         catch (Exception ex) {
             listUnacceptedEntries = new ArrayList<>();
