@@ -77,7 +77,6 @@ public class EntryResource {
     public String addEntry(String jsonStringEntry) throws Exception {
         String retValue ="ok";
         Database db = Database.newInstance();
-        Gson gson = new Gson();
         try{
             db.addEntry(jsonStringEntry);                //gson.fromJson(jsonStringEntry, Entry.class
         }catch(Exception e) {
@@ -85,5 +84,21 @@ public class EntryResource {
         }
         
         return retValue;
-    }    
+    }
+    
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String updateProduct(String editedEntry) throws Exception {
+        String retValue = "ok";
+        
+        try {
+            Database db = Database.newInstance();
+            db.updateEntry(editedEntry);
+        }
+        catch (Exception ex) {
+            retValue = ex.getMessage();
+        }
+        
+        return retValue;
+    }
 }
