@@ -20,6 +20,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -40,8 +41,8 @@ public class Database {
         private String dbName;
  
         private Database() {
-            connStr = "mongodb://192.168.142.144:27017";  //intern
-            //connStr = "mongodb://212.152.179.118:27017";   //extern
+            //connStr = "mongodb://192.168.142.144:27017";  //intern
+            connStr = "mongodb://212.152.179.118:27017";   //extern
             dbName = "5BHIFS_BSD_Praktikumsverwaltung";
             
             mongoDb = connect();
@@ -241,12 +242,10 @@ public class Database {
         }
         
         public void addEntry(String jsonStringEntry) throws Exception {
-            System.out.println("***** in addEntry: " + jsonStringEntry);
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             
-            System.out.println("before gson parse");
+            System.out.println("jsonString: " + jsonStringEntry);
             Document doc = Document.parse(jsonStringEntry);
-            System.out.println("after gson parse");
 //            Document doc = new Document("_id", newEntry.getId())
 //                .append("startDate", newEntry.getStartDate())
 //                .append("endDate", newEntry.getEndDate())
@@ -258,17 +257,22 @@ public class Database {
 //                .append("idPupil", newEntry.getIdPupil())
 //                .append("idCompany", newEntry.getIdCompany())
 //                .append("idClass", newEntry.getIdClass());
-            System.out.println("before insert" + doc);
+            System.out.println("before insert, doc:" + doc);
 
+//            Instant instant = LocalDateTime.of(LocalDate.parse(pickedDate), LocalTime.MIDNIGHT).atZone(ZoneId.systemDefault()).toInstant();
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("ss");
+            
             Date wrongDate = doc.getDate("startDate");
             System.out.println("-----date: " +  wrongDate);
-            wrongDate.toString().replace("PST", "PDT");
             doc.replace("startDate", wrongDate.toString());
             
             wrongDate = doc.getDate("endDate");
             System.out.println("-----date: " +  wrongDate);
-            wrongDate.toString().replace("PST", "PDT");
             doc.replace("endDate", wrongDate.toString());
+            
+            wrongDate = new Date();
+            System.out.println("-----date new: " +  wrongDate);
             
             System.out.println("before insert" + doc);
             collection.insertOne(doc);
