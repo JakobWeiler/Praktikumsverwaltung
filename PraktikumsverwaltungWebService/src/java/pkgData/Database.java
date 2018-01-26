@@ -120,7 +120,7 @@ public class Database {
         // checks if login of pupil is ok
         public Pupil getIsLoginOkPupil(String username, String password) throws Exception {
             Pupil p = null;
-            mongoDb = connect();
+            //mongoDb = connect();
             Gson gson = new Gson();
             MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
             
@@ -146,7 +146,7 @@ public class Database {
         // checks if login of teacher is ok
         public Teacher getIsLoginOkTeacher(String username, String password) throws Exception {
             Teacher t = null;
-            mongoDb = connect();
+            //mongoDb = connect();
             Gson gson = new Gson();
             MongoCollection<Document> collection = mongoDb.getCollection("Teacher");
             
@@ -196,7 +196,6 @@ public class Database {
             
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             for(Document d : collection.find(query)) {
-                System.out.println(d.toJson());
                 Entry e = new Entry(); //gson.fromJson(d.toJson(), Entry.class);
                 e.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 e.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -209,7 +208,6 @@ public class Database {
                 e.setIdPupil(d.getObjectId("idPupil").toString());
                 e.setIdCompany(d.getObjectId("idCompany").toString());
                 e.setIdClass(d.getObjectId("idClass").toString());
-                System.out.println(e.getId());
                 listEntry.add(e);
             }
             return listEntry;
@@ -244,12 +242,11 @@ public class Database {
         
         public void addEntry(String jsonStringEntry) throws Exception {
             System.out.println("***** in addEntry: " + jsonStringEntry);
-            Gson gson = new Gson();
-//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             
-            //collection.insertOne(Document.parse(gson.toJson(e, Entry.class)));
+            System.out.println("before gson parse");
             Document doc = Document.parse(jsonStringEntry);
+            System.out.println("after gson parse");
 //            Document doc = new Document("_id", newEntry.getId())
 //                .append("startDate", newEntry.getStartDate())
 //                .append("endDate", newEntry.getEndDate())
@@ -264,10 +261,12 @@ public class Database {
             System.out.println("before insert" + doc);
 
             Date wrongDate = doc.getDate("startDate");
+            System.out.println("-----date: " +  wrongDate);
             wrongDate.toString().replace("PST", "PDT");
             doc.replace("startDate", wrongDate.toString());
             
             wrongDate = doc.getDate("endDate");
+            System.out.println("-----date: " +  wrongDate);
             wrongDate.toString().replace("PST", "PDT");
             doc.replace("endDate", wrongDate.toString());
             
