@@ -58,22 +58,17 @@ public class PupilResource {
         return listPupils;
     }
 
-    @POST
-    @Consumes({MediaType.TEXT_HTML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON})
-    public String addPupil(Pupil pupil) throws Exception {
-        String retValue ="ok";
-        Database db = Database.newInstance();
-        
-        try{
-            db.addPupil(pupil);
-        }catch(Exception e) {
-            retValue = e.getMessage();
-        }
-        return retValue;
-    }
-    
-    @PUT
-    @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(String content) {
-    }
+//    @POST
+//    @Consumes({MediaType.TEXT_HTML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON})
+//    public String addPupil(Pupil pupil) throws Exception {
+//        String retValue ="ok";
+//        Database db = Database.newInstance();
+//        
+//        try{
+//            db.addPupil(pupil);
+//        }catch(Exception e) {
+//            retValue = e.getMessage();
+//        }
+//        return retValue;
+//    }
 }

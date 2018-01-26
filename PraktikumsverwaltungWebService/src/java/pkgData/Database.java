@@ -24,6 +24,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -39,9 +40,11 @@ public class Database {
         private String dbName;
  
         private Database() {
-         connStr = "mongodb://192.168.142.144:27017";  //intern
-         //connStr = "mongodb://212.152.179.118:27017";   //extern
-         dbName = "5BHIFS_BSD_Praktikumsverwaltung";
+            //connStr = "mongodb://192.168.142.144:27017";  //intern
+            connStr = "mongodb://212.152.179.118:27017";   //extern
+            dbName = "5BHIFS_BSD_Praktikumsverwaltung";
+            
+            mongoDb = connect();
         }
         
         public static Database newInstance() {
@@ -59,7 +62,7 @@ public class Database {
         public ArrayList<Company> getAllCompanies() throws Exception {
             ArrayList<Company> allCompanies = new ArrayList<>();
             Gson gson = new Gson();
-            mongoDb = connect();
+//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
             for(Document d : collection.find()){
@@ -72,7 +75,7 @@ public class Database {
         
         public Company getCompanyById(ObjectId id) throws Exception {
             Gson gson = new Gson();
-            mongoDb = connect();
+//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
             return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Company.class);
@@ -80,7 +83,7 @@ public class Database {
         
         public Company addCompany(Company c) throws Exception {
             Gson gson = new Gson();
-            mongoDb = connect();
+//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
             collection.insertOne(Document.parse(gson.toJson(c, Company.class)));
@@ -90,7 +93,7 @@ public class Database {
         
         public ArrayList<Pupil> getAllActivePupils() throws Exception { 
             ArrayList<Pupil> listPupil = new ArrayList<>();
-            mongoDb = connect();
+//            mongoDb = connect();
             Gson gson = new Gson();
             
             BasicDBObject query = new BasicDBObject();
@@ -115,8 +118,8 @@ public class Database {
         }
         
         // checks if login of pupil is ok
-        public String getIsLoginOkPupil(String username, String password) throws Exception {
-            String retVal = "false";
+        public Pupil getIsLoginOkPupil(String username, String password) throws Exception {
+            Pupil p = null;
             mongoDb = connect();
             Gson gson = new Gson();
             MongoCollection<Document> collection = mongoDb.getCollection("Pupil");
@@ -126,14 +129,23 @@ public class Database {
             query.put("password", password);            
             
             for(Document d : collection.find(query)) {
-                retVal = "true";
+                p = new Pupil();
+                p.setUsername(d.getString("username"));
+                p.setPassword(d.getString("password"));
+                p.setFirstName(d.getString("firstName"));
+                p.setLastname(d.getString("lastName"));
+                p.setEmail(d.getString("email"));
+                p.setIsActive(d.getBoolean("isActive"));
+                p.setId(d.getObjectId("_id").toString());
+                p.setIdDepartment(d.getObjectId("idDepartment").toString());
+                p.setIdClass(d.getObjectId("idClass").toString());
             }
-            return retVal;
+            return p;
         }
         
         // checks if login of teacher is ok
-        public String getIsLoginOkTeacher(String username, String password) throws Exception {
-            String retVal = "false";
+        public Teacher getIsLoginOkTeacher(String username, String password) throws Exception {
+            Teacher t = null;
             mongoDb = connect();
             Gson gson = new Gson();
             MongoCollection<Document> collection = mongoDb.getCollection("Teacher");
@@ -143,20 +155,21 @@ public class Database {
             query.put("password", password);            
             
             for(Document d : collection.find(query)) {
-                retVal = "true";
+                t = gson.fromJson(d.toJson(), Teacher.class);
+                t.setId(d.getObjectId("_id").toString());
             }
-            return retVal;
+            return t;
         }
         
-        public void addPupil(Pupil p) throws Exception {
-            ArrayList<Pupil> listPupil = new ArrayList<>();
-            MongoDatabase mongoDb = connect();
-            listPupil.add(p);
-        }
+//        public void addPupil(Pupil p) throws Exception {
+//            ArrayList<Pupil> listPupil = new ArrayList<>();
+////            MongoDatabase mongoDb = connect();
+//            listPupil.add(p);
+//        }
         
         public ArrayList<Teacher> getAllActiveTeachers() throws Exception {
             ArrayList<Teacher> listTeacher = new ArrayList<>();
-            mongoDb = connect();
+//            mongoDb = connect();
             Gson gson = new Gson();
             
             BasicDBObject query = new BasicDBObject();
@@ -174,7 +187,7 @@ public class Database {
         // returns all accepted Entries (accepted by kv and av)
         public ArrayList<Entry> getAllEntries() throws Exception {
             ArrayList<Entry> listEntry = new ArrayList<>();
-            mongoDb = connect();
+//            mongoDb = connect();
 
             // Delivers only Entries which are accepted by KV and AV
             BasicDBObject query = new BasicDBObject();
@@ -202,18 +215,99 @@ public class Database {
             return listEntry;
         }
         
-        public void addEntry(Entry e) throws Exception {
+        public ArrayList<Entry> getAllOwnEntries(String id) throws Exception {
+            ArrayList<Entry> listEntry = new ArrayList<>();
+//            mongoDb = connect();
+
+            // Delivers only Entries which are accepted by KV and AV
+            BasicDBObject query = new BasicDBObject();
+            query.put("idPupil", new ObjectId(id));
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            for(Document d : collection.find(query)) {
+                Entry e = new Entry();
+                e.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                e.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                e.setSalary(d.getDouble("salary"));
+                e.setTitle(d.getString("title"));
+                e.setDescription(d.getString("description"));
+                e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
+                e.setAllowedAV(d.getBoolean("allowedAV"));
+                e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
+                e.setIdPupil(d.getObjectId("idPupil").toString());
+                e.setIdCompany(d.getObjectId("idCompany").toString());
+                e.setIdClass(d.getObjectId("idClass").toString());
+                listEntry.add(e);
+            }
+            return listEntry;
+        }
+        
+        public void addEntry(String jsonStringEntry) throws Exception {
+            System.out.println("***** in addEntry: " + jsonStringEntry);
             Gson gson = new Gson();
-            mongoDb = connect();
+//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             
-            collection.insertOne(Document.parse(gson.toJson(e, Entry.class)));
+            //collection.insertOne(Document.parse(gson.toJson(e, Entry.class)));
+            Document doc = Document.parse(jsonStringEntry);
+//            Document doc = new Document("_id", newEntry.getId())
+//                .append("startDate", newEntry.getStartDate())
+//                .append("endDate", newEntry.getEndDate())
+//                .append("salary", newEntry.getSalary())
+//                .append("title", newEntry.getTitle())
+//                .append("description", newEntry.getDescription())
+//                .append("allowedTeacher", newEntry.isAllowedTeacher())
+//                .append("allowedAV", newEntry.isAllowedAV())
+//                .append("idPupil", newEntry.getIdPupil())
+//                .append("idCompany", newEntry.getIdCompany())
+//                .append("idClass", newEntry.getIdClass());
+            System.out.println("before insert" + doc);
+
+            Date wrongDate = doc.getDate("startDate");
+            wrongDate.toString().replace("PST", "PDT");
+            doc.replace("startDate", wrongDate.toString());
+            
+            wrongDate = doc.getDate("endDate");
+            wrongDate.toString().replace("PST", "PDT");
+            doc.replace("endDate", wrongDate.toString());
+            
+            System.out.println("before insert" + doc);
+            collection.insertOne(doc);
+            System.out.println("after insert");
+        }
+        
+        public ArrayList<Entry> getAllUnacceptedEntries() {
+            ArrayList<Entry> listUnacceptedEntries = new ArrayList<>();
+            Gson gson = new Gson();
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("allowedTeacher", false);
+            query.put("allowedAV", false);
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            
+            for(Document d : collection.find(query)){
+                Entry e = new Entry();
+                e.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                e.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                e.setSalary(d.getDouble("salary"));
+                e.setTitle(d.getString("title"));
+                e.setDescription(d.getString("description"));
+                e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
+                e.setAllowedAV(d.getBoolean("allowedAV"));
+                e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
+                e.setIdPupil(d.getObjectId("idPupil").toString());
+                e.setIdCompany(d.getObjectId("idCompany").toString());
+                e.setIdClass(d.getObjectId("idClass").toString());
+                listUnacceptedEntries.add(e);
+            }
+            return listUnacceptedEntries;
         }
         
         public ArrayList<Department> getAllDepartments() throws Exception {
             ArrayList<Department> allDepartments = new ArrayList<>();
             Gson gson = new Gson();
-            mongoDb = connect();
+//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Department");
             
             for(Document d : collection.find()){
@@ -226,7 +320,7 @@ public class Database {
         
         public Department getDepartmentById(ObjectId id) throws Exception {
             Gson gson = new Gson();
-            mongoDb = connect();
+//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Department");
             
             return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Department.class);
@@ -234,11 +328,27 @@ public class Database {
         
         public Department addDepartment(Department d) throws Exception {
             Gson gson = new Gson();
-            mongoDb = connect();
+//            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Department");
             
             collection.insertOne(Document.parse(gson.toJson(d, Department.class)));
             
             return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Department.class);
         }        
+        
+        public ArrayList<Class> getAllClasses() throws Exception {
+            ArrayList<Class> allClasses = new ArrayList<>();
+            Gson gson = new Gson();
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Class");
+            
+            for(Document d : collection.find()){
+                Class c = new Class();
+                c.setId(d.getObjectId("_id").toString());
+                c.setDescription(d.getString("description"));
+                c.setIdKV(d.getObjectId("idKV").toString());
+                allClasses.add(c);
+            }
+            return allClasses;
+        }
 }
