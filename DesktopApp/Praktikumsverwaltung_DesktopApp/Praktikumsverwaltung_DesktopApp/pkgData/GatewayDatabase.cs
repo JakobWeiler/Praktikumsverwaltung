@@ -31,7 +31,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool IsTeacher { get; set; }
 
         /***********************/
-        private string urlWebService = "http://10.0.0.19:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.61  daheim: 10.0.0.19
+        private string urlWebService = "http://10.0.0.19:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.246  daheim: 10.0.0.19
         private static readonly HttpClient client = new HttpClient();
 
         // Singleton
@@ -309,7 +309,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool AddEntry(Entry entry)
         {
             bool successful = false;
-            string myPath, jsonStringResponse;
+            string myPath, mySpecialJavaDouble, jsonStringResponse;
             var encoding = ASCIIEncoding.ASCII;
 
             try
@@ -318,19 +318,24 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 entry.Id = (ObjectId.GenerateNewId()).ToString();
                 entry.IdPupil = this.idUserBsonId;
                 entry.IdClass = this.idUserClassBsonId;
-                entry.IdCompany = this.idUserDepartmentBsonId;
+                entry.IdCompany = "5a1d38902d19782a01d75dad";
 
                 myPath = this.urlWebService + "/Entry";       // path to the webservice with the params
 
+                // !!!!!!!!!!!!! C# double is with a ',' BUT IN JAVA a double is with a '.'
+                mySpecialJavaDouble = entry.Salary.ToString();
+                mySpecialJavaDouble = mySpecialJavaDouble.Replace(',', '.');
+                
+                // !!! Creating own json String because of the date and double
                 StringBuilder jsonStringBuilder = new StringBuilder();
                 jsonStringBuilder.Append("{ \"_id\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(entry.Id);
                 jsonStringBuilder.Append("\" }, \"startDate\" : { \"$date\" : ");
-                jsonStringBuilder.Append((entry.StartDate - new DateTime(1970, 1, 1)).TotalMilliseconds);     // to get the milliseconds of the date
+                jsonStringBuilder.Append((entry.StartDate - new DateTime(1970, 1, 1)).TotalMilliseconds);     // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
                 jsonStringBuilder.Append(" }, \"endDate\" : { \"$date\" : ");
-                jsonStringBuilder.Append((entry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds);       // to get the milliseconds of the date (long)(entry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds
+                jsonStringBuilder.Append((entry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds);       // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
                 jsonStringBuilder.Append(" }, \"salary\" : ");
-                jsonStringBuilder.Append(entry.Salary);
+                jsonStringBuilder.Append(mySpecialJavaDouble);
                 jsonStringBuilder.Append(", \"title\" : \"");
                 jsonStringBuilder.Append(entry.Title);
                 jsonStringBuilder.Append("\", \"description\" : \"");
@@ -346,13 +351,8 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append("\" }, \"idClass\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(entry.IdClass);
                 jsonStringBuilder.Append("\" } }");
-
-
-                //{ "_id" : { "$oid" : "5a621f5554fc3d1de88cb089" }, "startDate" : { "$date" : 1499644800000 }, "endDate" : { "$date" : 1504224000000 }, "salary" : 550.0, "title" : "sadgaffadfgfgsdf", "description" : "sdfsds", "allowedTeacher" : false, "allowedAV" : false, "idPupil" : { "$oid" : "5a1d3eba2d19782a01d75dc0" }, "idCompany" : { "$oid" : "5a1d39152d19782a01d75db5" }, "idClass" : { "$oid" : "5a1d3e092d19782a01d75dbe" } }
-                //jsonString = JsonConvert.SerializeObject(entry);                
-                //jsonString = entry.ToJson();
+                                
                 jsonStringResponse = this.POSTWebService(myPath, jsonStringBuilder.ToString());
-
                 string result = JsonConvert.DeserializeObject<String>(jsonStringResponse);
 
                 if (result.Equals("ok"))

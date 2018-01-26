@@ -18,11 +18,12 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public string Description { get; set; }
         public bool AllowedTeacher { get; set; }
         public bool AllowedAV { get; set; }
+        public bool SeenByAdmin { get; set; }
         public string IdPupil { get; set; }
         public string IdCompany { get; set; }
         public string IdClass { get; set; }
 
-        public Entry(string id, DateTime startDate, DateTime endDate, string title, string description, double salary, bool allowedTeacher, bool allowedAV, string idPupil, string idClass, string idCompany)
+        public Entry(string id, DateTime startDate, DateTime endDate, string title, string description, double salary, bool allowedTeacher, bool allowedAV, bool seenByAdmin, string idPupil, string idClass, string idCompany)
         {
             Id = id;
             StartDate = startDate;
@@ -32,6 +33,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             Salary = salary;
             AllowedTeacher = allowedTeacher;
             AllowedAV = allowedAV;
+            SeenByAdmin = seenByAdmin;
             IdPupil = idPupil;
             IdCompany = idCompany;
             IdClass = idClass;
