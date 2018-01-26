@@ -49,7 +49,7 @@ public class EntryAndroidResource {
         }
         catch (Exception ex) {
             listEntries = new ArrayList<>();
-            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));
+            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));
         }
         
         return listEntries;
