@@ -18,14 +18,11 @@
         <DatePicker x:Name="datePickerStartDate" HorizontalAlignment="Left" Margin="120,204,0,0" VerticalAlignment="Top" Width="424" Height="26"/>
         <DatePicker x:Name="datePickerEndDate" HorizontalAlignment="Left" Margin="120,235,0,0" VerticalAlignment="Top" Height="26" Width="424"/>
         <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="356,323,0,0" VerticalAlignment="Top" Width="188" Height="26" Click="btnAdd_Click"/>
-        <Label x:Name="lblFormOfIntern" Content="Form of intern:" HorizontalAlignment="Left" Margin="0,266,0,0" VerticalAlignment="Top" Width="115"/>
-        <TextBox x:Name="txtFormOfIntern" HorizontalAlignment="Left" Height="26" Margin="120,266,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="424"/>
         <Label x:Name="lblErrorTitle" Content="" HorizontalAlignment="Left" Margin="549,1,0,0" VerticalAlignment="Top" Width="260"/>
         <Label x:Name="lblErrorDescription" Content="" HorizontalAlignment="Left" Margin="549,32,0,0" VerticalAlignment="Top" Width="260"/>
         <Label x:Name="lblErrorSalary" Content="" HorizontalAlignment="Left" Margin="549,173,0,0" VerticalAlignment="Top" Width="260" Height="27"/>
         <Label x:Name="lblErrorStartDate" Content="" HorizontalAlignment="Left" Margin="549,205,0,0" VerticalAlignment="Top" Height="25" Width="260"/>
         <Label x:Name="lblErrorEndDate" Content="" HorizontalAlignment="Left" Margin="549,235,0,0" VerticalAlignment="Top" Width="260"/>
-        <Label x:Name="lblErrorFormOfIntern" Content="" HorizontalAlignment="Left" Margin="549,266,0,0" VerticalAlignment="Top" Width="260"/>
 
     </Grid>
 </Window>

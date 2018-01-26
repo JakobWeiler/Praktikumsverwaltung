@@ -13,7 +13,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public string Id { get; set; }
         public DateTime StartDate { get; set; }           // DateTime as String because otherwise deserialization causes problems
         public DateTime EndDate { get; set; }
-        public float Salary { get; set; }
+        public double Salary { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public bool AllowedTeacher { get; set; }
@@ -22,7 +22,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public string IdCompany { get; set; }
         public string IdClass { get; set; }
 
-        public Entry(string id, DateTime startDate, DateTime endDate, string title, string description, float salary, bool allowedTeacher, bool allowedAV, string idPupil, string idClass, string idCompany)
+        public Entry(string id, DateTime startDate, DateTime endDate, string title, string description, double salary, bool allowedTeacher, bool allowedAV, string idPupil, string idClass, string idCompany)
         {
             Id = id;
             StartDate = startDate;
