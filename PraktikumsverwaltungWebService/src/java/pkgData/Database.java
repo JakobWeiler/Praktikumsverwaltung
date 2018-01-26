@@ -258,39 +258,8 @@ public class Database {
             mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             
-            System.out.println("jsonString: " + jsonStringEntry);
-            Document doc = Document.parse(jsonStringEntry);
-//            Document doc = new Document("_id", newEntry.getId())
-//                .append("startDate", newEntry.getStartDate())
-//                .append("endDate", newEntry.getEndDate())
-//                .append("salary", newEntry.getSalary())
-//                .append("title", newEntry.getTitle())
-//                .append("description", newEntry.getDescription())
-//                .append("allowedTeacher", newEntry.isAllowedTeacher())
-//                .append("allowedAV", newEntry.isAllowedAV())
-//                .append("idPupil", newEntry.getIdPupil())
-//                .append("idCompany", newEntry.getIdCompany())
-//                .append("idClass", newEntry.getIdClass());
-            System.out.println("before insert, doc:" + doc);
-
-//            Instant instant = LocalDateTime.of(LocalDate.parse(pickedDate), LocalTime.MIDNIGHT).atZone(ZoneId.systemDefault()).toInstant();
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("ss");
-            
-            Date wrongDate = doc.getDate("startDate");
-            System.out.println("-----date: " +  wrongDate);
-            doc.replace("startDate", wrongDate.toString());
-            
-            wrongDate = doc.getDate("endDate");
-            System.out.println("-----date: " +  wrongDate);
-            doc.replace("endDate", wrongDate.toString());
-            
-            wrongDate = new Date();
-            System.out.println("-----date new: " +  wrongDate);
-            
-            System.out.println("before insert" + doc);
+            Document doc = Document.parse(jsonStringEntry);            
             collection.insertOne(doc);
-            System.out.println("after insert");
             
             disconnect();
         }
