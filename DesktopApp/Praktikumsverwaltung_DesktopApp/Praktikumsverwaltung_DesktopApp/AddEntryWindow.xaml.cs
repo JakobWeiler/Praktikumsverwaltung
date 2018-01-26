@@ -69,7 +69,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     if (salary > 0 || txtSalary.Text.Equals("0"))       // we have to check if the value is 0, in order to differ from the result of tryParse (Because the user could type in 0).
                     {
-                        salary = int.Parse(txtSalary.Text);
+                        salary = Double.Parse(txtSalary.Text);
                         lblErrorSalary.Content = "";
                     }
                     else
@@ -108,7 +108,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 if (title != null && description != null && salary > -1 && dpStart != null && dpEnd != null)
                 {
                     // id's are going to be set in GatewayDatabase AddEntry()
-                    Entry entry = new Entry("id-1", startDate, endDate, title, description, salary, false, false, "id-1", "id-1", "id-1");
+                    Entry entry = new Entry("id-1", startDate, endDate, title, description, salary, false, false, false, "id-1", "id-1", "id-1");
                     GatewayDatabase gatewayDatabase = GatewayDatabase.newInstance();
                     gatewayDatabase.AddEntry(entry);
                 }
