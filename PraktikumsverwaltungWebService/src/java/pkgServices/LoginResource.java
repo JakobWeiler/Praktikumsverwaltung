@@ -40,7 +40,7 @@ public class LoginResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getIsLoginOk(@QueryParam("username") String username, @QueryParam("password") String password) {
-        Person p = null;
+        Person p = null;        
         
         try {
             Database db = Database.newInstance();
