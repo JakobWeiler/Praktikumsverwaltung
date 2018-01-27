@@ -107,7 +107,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             return responseText;
         }
 
-        // POSTs results on the webservice
+        // PUTs results on the webservice
         private string PUTWebService(string myPath, string jsonString)
         {
             string responseText;
@@ -137,6 +137,33 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             catch (Exception ex)
             {
                 throw new Exception("Error in GatewayDB_PUTWebService: " + ex.Message);
+            }
+
+            return responseText;
+        }
+
+        // DELETE's something on the webservice (similiar to GETWebService except the httpwebrequest.method)
+        private string DELETEWebService(string myPath)
+        {
+            string responseText;
+            var encoding = ASCIIEncoding.ASCII;
+
+            try
+            {
+                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(myPath));       //Create a HttpWebRequest object  
+                httpWebRequest.Method = "DELETE";      //Set the Method
+
+                HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();        //Get the Response 
+
+                // reads every byte of the response message
+                using (var reader = new System.IO.StreamReader(httpWebResponse.GetResponseStream(), encoding))
+                {
+                    responseText = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GatewayDB_DELETEWebService: " + ex.Message);
             }
 
             return responseText;
@@ -482,7 +509,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             return entry;
         }
 
-        public String MakeSpecialEntryJsonString(Entry entry)
+        private string MakeSpecialEntryJsonString(Entry entry)
         {
             string jsonString = null, mySpecialJavaAndMongoDbDouble;
 
@@ -534,6 +561,30 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             }
 
             return jsonString;
+        }
+
+        public bool DeleteEntry(string idOfEntry)
+        {
+            bool successful = false;
+            string myPath, jsonResponse;
+            var encoding = ASCIIEncoding.ASCII;
+
+            try
+            {
+                myPath = this.urlWebService + "/Entry?entryId=" + idOfEntry;       // path to the webservice with the params
+                jsonResponse = this.DELETEWebService(myPath);
+                
+                if (jsonResponse.Equals("ok"))
+                {
+                    successful = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GatewayDB_IsLoginOk: " + ex.Message);
+            }
+
+            return successful;
         }
     }
 }

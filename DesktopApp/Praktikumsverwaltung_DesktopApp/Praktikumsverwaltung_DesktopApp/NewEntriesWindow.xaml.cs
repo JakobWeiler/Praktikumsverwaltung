@@ -97,6 +97,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     // Delete the edited entries
                     this.listUnacceptedEntries.RemoveAt(index);
+                    this.listEntryStrings.RemoveAt(index);
                     this.lvNewEntries.Items.RemoveAt(index);
                 }            
                 else
@@ -137,6 +138,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     // Delete the edited entries
                     this.listUnacceptedEntries.RemoveAt(index);
+                    this.listEntryStrings.RemoveAt(index);
                     this.lvNewEntries.Items.RemoveAt(index);
                 }
                 else
