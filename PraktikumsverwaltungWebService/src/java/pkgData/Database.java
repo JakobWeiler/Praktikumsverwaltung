@@ -321,21 +321,23 @@ public class Database {
             query.put("_id", new ObjectId(idOfEntry));
             
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
-            for(Document d : collection.find(query)) {
-                entry = new Entry();
-                entry.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                entry.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                entry.setSalary(d.getDouble("salary"));
-                entry.setTitle(d.getString("title"));
-                entry.setDescription(d.getString("description"));
-                entry.setAllowedTeacher(d.getBoolean("allowedTeacher"));
-                entry.setAllowedAV(d.getBoolean("allowedAV"));
-                entry.setSeenByAdmin(d.getBoolean("seenByAdmin"));
-                entry.setId(d.getObjectId("_id").toString());            // to make the id's "visible"                
-                entry.setIdPupil(d.getObjectId("idPupil").toString());
-                entry.setIdCompany(d.getObjectId("idCompany").toString());
-                entry.setIdClass(d.getObjectId("idClass").toString());
-            }
+            
+            Document d = collection.find(query).first();
+            
+            entry = new Entry();
+            entry.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            entry.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            entry.setSalary(d.getDouble("salary"));
+            entry.setTitle(d.getString("title"));
+            entry.setDescription(d.getString("description"));
+            entry.setAllowedTeacher(d.getBoolean("allowedTeacher"));
+            entry.setAllowedAV(d.getBoolean("allowedAV"));
+            entry.setSeenByAdmin(d.getBoolean("seenByAdmin"));
+            entry.setId(d.getObjectId("_id").toString());            // to make the id's "visible"                
+            entry.setIdPupil(d.getObjectId("idPupil").toString());
+            entry.setIdCompany(d.getObjectId("idCompany").toString());
+            entry.setIdClass(d.getObjectId("idClass").toString());
+            
             disconnect();
             return entry;
         }
