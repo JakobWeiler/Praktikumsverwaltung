@@ -408,4 +408,22 @@ public class Database {
             disconnect();
             return allClasses;
         }
+        
+        public Class getClassById(String id) throws Exception {
+            Class myClass = null;
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Class");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            
+            Document d = collection.find(query).first();
+            myClass = new Class();
+            myClass.setId(d.getObjectId("_id").toString());
+            myClass.setDescription(d.getString("description"));
+            myClass.setIdKV(d.getObjectId("idKV").toString());
+            
+            disconnect();
+            return myClass;
+        }
 }
