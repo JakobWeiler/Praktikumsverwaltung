@@ -399,7 +399,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
 
             try
             {
-                myPath = this.urlWebService + "/EntryDetail";       // path to the webservice with the params
+                myPath = this.urlWebService + "/Entry";       // path to the webservice with the params
 
                 // !!!!!!!!!!!!! C# double is with a ',' BUT IN JAVA a double is with a '.'
                 mySpecialJavaDouble = editedEntry.Salary.ToString();

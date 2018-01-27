@@ -36,7 +36,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void LoadEntries()
         {
-            StringBuilder strBuilderEntry = new StringBuilder();
+            StringBuilder strBuilderEntry;
             try
             {
                 Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
@@ -47,6 +47,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 foreach (Entry entry in listEntries)
                 {
+                    strBuilderEntry = new StringBuilder();
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
@@ -83,7 +84,7 @@ namespace Praktikumsverwaltung_DesktopApp
         private void LoadAdminGuiElements()
         {
             if (db.IsAdmin)
-            {
+            {    
                 MenuItem mItemNewEntries = new MenuItem();
                 mItemNewEntries.Header = "New Entries";
 
@@ -93,6 +94,10 @@ namespace Praktikumsverwaltung_DesktopApp
                 
                 mItemNewEntries.Items.Add(mItemNewEntriesShow);
                 this.menuBar.Items.Insert(2, mItemNewEntries);          // Insert... adds menuitem add a specific position
+
+                List<Entry> listUnacceptedAndUnseenEntries = this.db.GetAllUnacceptedEntries();
+                this.lblAdminAmountOfNewEntries.Visibility = Visibility.Visible;
+                this.lblAdminAmountOfNewEntries.Content = listUnacceptedAndUnseenEntries.Count + " new entries";
             }
         }
 
