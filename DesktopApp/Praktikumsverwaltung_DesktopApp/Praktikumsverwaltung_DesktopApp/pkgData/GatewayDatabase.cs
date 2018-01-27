@@ -309,7 +309,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool AddEntry(Entry entry)
         {
             bool successful = false;
-            string myPath, mySpecialJavaDouble, jsonStringResponse;
+            string myPath, mySpecialJavaAndMongoDbDouble, jsonStringResponse;
             var encoding = ASCIIEncoding.ASCII;
 
             try
@@ -323,9 +323,15 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 myPath = this.urlWebService + "/Entry";       // path to the webservice with the params
 
                 // !!!!!!!!!!!!! C# double is with a ',' BUT IN JAVA a double is with a '.'
-                mySpecialJavaDouble = entry.Salary.ToString();
-                mySpecialJavaDouble = mySpecialJavaDouble.Replace(',', '.');
-                
+                mySpecialJavaAndMongoDbDouble = entry.Salary.ToString();
+                mySpecialJavaAndMongoDbDouble = mySpecialJavaAndMongoDbDouble.Replace(',', '.');
+
+                // !!!!!!! MongoDB salary (=double) needs always a type like a float e.g. 1300.0 and NOT only 1300 => otherwise exception
+                if (mySpecialJavaAndMongoDbDouble.Contains(".") == false)
+                {
+                    mySpecialJavaAndMongoDbDouble += ".0";
+                }
+
                 // !!! Creating own json String because of the date and double
                 StringBuilder jsonStringBuilder = new StringBuilder();
                 jsonStringBuilder.Append("{ \"_id\" : { \"$oid\" : \"");
@@ -335,7 +341,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append(" }, \"endDate\" : { \"$date\" : ");
                 jsonStringBuilder.Append((entry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds);       // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
                 jsonStringBuilder.Append(" }, \"salary\" : ");
-                jsonStringBuilder.Append(mySpecialJavaDouble);
+                jsonStringBuilder.Append(mySpecialJavaAndMongoDbDouble);
                 jsonStringBuilder.Append(", \"title\" : \"");
                 jsonStringBuilder.Append(entry.Title);
                 jsonStringBuilder.Append("\", \"description\" : \"");
@@ -394,7 +400,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool UpdateEntry(Entry editedEntry)
         {
             bool successful = false;
-            string myPath, mySpecialJavaDouble, jsonStringResponse;
+            string myPath, mySpecialJavaAndMongoDbDouble, jsonStringResponse;
             var encoding = ASCIIEncoding.ASCII;
 
             try
@@ -402,8 +408,14 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 myPath = this.urlWebService + "/Entry";       // path to the webservice with the params
 
                 // !!!!!!!!!!!!! C# double is with a ',' BUT IN JAVA a double is with a '.'
-                mySpecialJavaDouble = editedEntry.Salary.ToString();
-                mySpecialJavaDouble = mySpecialJavaDouble.Replace(',', '.');
+                mySpecialJavaAndMongoDbDouble = editedEntry.Salary.ToString();
+                mySpecialJavaAndMongoDbDouble = mySpecialJavaAndMongoDbDouble.Replace(',', '.');
+
+                // !!!!!!! MongoDB salary (=double) needs always a type like a float e.g. 1300.0 and NOT only 1300 => otherwise exception
+                if (mySpecialJavaAndMongoDbDouble.Contains(".") == false)
+                {
+                    mySpecialJavaAndMongoDbDouble += ".0";
+                }
 
                 // !!! Creating own json String because of the date and double
                 StringBuilder jsonStringBuilder = new StringBuilder();
@@ -414,7 +426,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append(" }, \"endDate\" : { \"$date\" : ");
                 jsonStringBuilder.Append((editedEntry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds);       // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
                 jsonStringBuilder.Append(" }, \"salary\" : ");
-                jsonStringBuilder.Append(mySpecialJavaDouble);
+                jsonStringBuilder.Append(mySpecialJavaAndMongoDbDouble);
                 jsonStringBuilder.Append(", \"title\" : \"");
                 jsonStringBuilder.Append(editedEntry.Title);
                 jsonStringBuilder.Append("\", \"description\" : \"");
