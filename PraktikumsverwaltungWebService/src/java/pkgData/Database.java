@@ -322,6 +322,7 @@ public class Database {
             
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             for(Document d : collection.find(query)) {
+                entry = new Entry();
                 entry.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 entry.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 entry.setSalary(d.getDouble("salary"));
