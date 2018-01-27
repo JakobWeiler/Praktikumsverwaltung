@@ -37,12 +37,12 @@ public class EntryDetailResource {
     @GET
     @Path("{entryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Entry getEntry(@PathParam("entryId") String idOfEntry) {
+    public Entry getEntry(@PathParam("entryId") String id) {
         Entry entry = null;
          
         try{
             Database db = Database.newInstance();
-            entry = db.getEntry(idOfEntry);
+            entry = db.getEntry(id);
         }     
 	catch(Exception ex) {
             entry = new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", "");      
