@@ -459,5 +459,81 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
 
             return successful;
         }
+
+        public Entry GetEntry(string idOfEntry)
+        {
+            Entry entry;
+
+            string myPath, jsonString;
+            var encoding = ASCIIEncoding.ASCII;
+
+            try
+            {
+                myPath = this.urlWebService + "/EntryDetail/" + idOfEntry;       // path to the webservice with the params
+                jsonString = this.GETWebService(myPath);
+
+                entry = JsonConvert.DeserializeObject<Entry>(jsonString);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GatewayDB_GetAllEditableEntries: " + ex.Message);
+            }
+
+            return entry;
+        }
+
+        public String MakeSpecialEntryJsonString(Entry entry)
+        {
+            string jsonString = null, mySpecialJavaAndMongoDbDouble;
+
+            try
+            {
+                // !!!!!!!!!!!!! C# double is with a ',' BUT IN JAVA a double is with a '.'
+                mySpecialJavaAndMongoDbDouble = entry.Salary.ToString();
+                mySpecialJavaAndMongoDbDouble = mySpecialJavaAndMongoDbDouble.Replace(',', '.');
+
+                // !!!!!!! MongoDB salary (=double) needs always a type like a float e.g. 1300.0 and NOT only 1300 => otherwise exception
+                if (mySpecialJavaAndMongoDbDouble.Contains(".") == false)
+                {
+                    mySpecialJavaAndMongoDbDouble += ".0";
+                }
+
+                // !!! Creating own json String because of the date and double
+                StringBuilder jsonStringBuilder = new StringBuilder();
+                jsonStringBuilder.Append("{ \"_id\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.Id);
+                jsonStringBuilder.Append("\" }, \"startDate\" : { \"$date\" : ");
+                jsonStringBuilder.Append((entry.StartDate - new DateTime(1970, 1, 1)).TotalMilliseconds);     // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
+                jsonStringBuilder.Append(" }, \"endDate\" : { \"$date\" : ");
+                jsonStringBuilder.Append((entry.EndDate - new DateTime(1970, 1, 1)).TotalMilliseconds);       // to get the milliseconds of the date. Needed because of java. Furthermore subtract 1970 because in Java, Date starts at the year 0 and in c# year starts at 1970. (or vice versa)
+                jsonStringBuilder.Append(" }, \"salary\" : ");
+                jsonStringBuilder.Append(mySpecialJavaAndMongoDbDouble);
+                jsonStringBuilder.Append(", \"title\" : \"");
+                jsonStringBuilder.Append(entry.Title);
+                jsonStringBuilder.Append("\", \"description\" : \"");
+                jsonStringBuilder.Append(entry.Description);
+                jsonStringBuilder.Append("\", \"allowedTeacher\" : ");
+                jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());            // ToLower() because mongodb needs true/false and not True/False
+                jsonStringBuilder.Append(", \"allowedAV\" : ");
+                jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());
+                jsonStringBuilder.Append(", \"seenByAdmin\" : ");
+                jsonStringBuilder.Append(entry.SeenByAdmin.ToString().ToLower());
+                jsonStringBuilder.Append(", \"idPupil\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.IdPupil);
+                jsonStringBuilder.Append("\" }, \"idCompany\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.IdCompany);
+                jsonStringBuilder.Append("\" }, \"idClass\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(entry.IdClass);
+                jsonStringBuilder.Append("\" } }");
+
+                jsonString = jsonStringBuilder.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GatewayDB_MakeSpecialEntryJsonString: " + ex.Message);
+            }
+
+            return jsonString;
+        }
     }
 }
