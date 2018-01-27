@@ -60,10 +60,9 @@ public class CompanyResource {
         Company company = null;
          
         try{
-            company = Database.newInstance().getCompanyById(new ObjectId(id));
+            company = Database.newInstance().getCompanyById(id);
         }     
 	catch(Exception ex){ 
-                ex.printStackTrace();
                 company = new Company("",ex.getMessage(), "",0,"");       
             }
         return company;

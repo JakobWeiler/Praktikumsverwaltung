@@ -88,7 +88,7 @@ public class EntryResource {
     
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public String updateProduct(String editedEntry) throws Exception {
+    public String updateEntry(String editedEntry) throws Exception {
         String retValue = "ok";
         
         try {

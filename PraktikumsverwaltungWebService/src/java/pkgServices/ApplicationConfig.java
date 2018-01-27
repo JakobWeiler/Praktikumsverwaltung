@@ -34,6 +34,7 @@ public class ApplicationConfig extends Application {
         resources.add(pkgServices.DepartmentResource.class);
         resources.add(pkgServices.EntryAdminResource.class);
         resources.add(pkgServices.EntryAndroidResource.class);
+        resources.add(pkgServices.EntryDetailResource.class);
         resources.add(pkgServices.EntryResource.class);
         resources.add(pkgServices.LoginResource.class);
         resources.add(pkgServices.PupilResource.class);
