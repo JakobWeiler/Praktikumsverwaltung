@@ -77,13 +77,20 @@ public class Database {
             return allCompanies;
         }
         
-        public Company getCompanyById(ObjectId id) throws Exception {
+        public Company getCompanyById(String id) throws Exception {
+            Company company = null;
             Gson gson = new Gson();
             mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            
+            Document d = collection.find(query).first();            
+            company = gson.fromJson(d.toJson(), Company.class);
+            
             disconnect();
-            return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Company.class);
+            return company;
         }
         
         public Company addCompany(Company c) throws Exception {
