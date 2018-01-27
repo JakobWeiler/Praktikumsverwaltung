@@ -264,7 +264,23 @@ public class Database {
             disconnect();
         }
         
-        public ArrayList<Entry> getAllUnacceptedEntries() {
+        // Replaces the whole "old" document with the new document because we don't know what exactly changed. Don't forget the query which ensures
+        // that the "old" Entry is selected and replaced (_id of the entry remains equal)
+        public void updateEntry(String jsonStringEditedEntry) throws Exception {
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            
+            Document doc = Document.parse(jsonStringEditedEntry);
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", doc.getObjectId("_id"));
+            
+            collection.replaceOne(query, doc);
+            
+            disconnect();
+        }
+        
+        public ArrayList<Entry> getAllUnacceptedAndUnseenEntries() {
             mongoDb = connect();
             ArrayList<Entry> listUnacceptedEntries = new ArrayList<>();
             Gson gson = new Gson();
@@ -272,6 +288,7 @@ public class Database {
             BasicDBObject query = new BasicDBObject();
             query.put("allowedTeacher", false);
             query.put("allowedAV", false);
+            query.put("seenByAdmin", false);        // Needed, because without it would also load the entries which the admin declined but pupil hasn't updated yet
             
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             
