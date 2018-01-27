@@ -266,6 +266,7 @@ public class Database {
         
         // Replaces the whole "old" document with the new document because we don't know what exactly changed. Don't forget the query which ensures
         // that the "old" Entry is selected and replaced (_id of the entry remains equal)
+        // !!!!!!! Make sure that the salary is always like a float, e.g. 1300.0 and NOT only 1300 => otherwise exception
         public void updateEntry(String jsonStringEditedEntry) throws Exception {
             mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
@@ -309,6 +310,33 @@ public class Database {
             }
             disconnect();
             return listUnacceptedEntries;
+        }
+        
+        public Entry getEntry(String idOfEntry) throws Exception {
+            Entry entry = null;
+            mongoDb = connect();
+
+            // Delivers only Entries which are accepted by KV and AV
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(idOfEntry));
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            for(Document d : collection.find(query)) {
+                entry.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                entry.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                entry.setSalary(d.getDouble("salary"));
+                entry.setTitle(d.getString("title"));
+                entry.setDescription(d.getString("description"));
+                entry.setAllowedTeacher(d.getBoolean("allowedTeacher"));
+                entry.setAllowedAV(d.getBoolean("allowedAV"));
+                entry.setSeenByAdmin(d.getBoolean("seenByAdmin"));
+                entry.setId(d.getObjectId("_id").toString());            // to make the id's "visible"                
+                entry.setIdPupil(d.getObjectId("idPupil").toString());
+                entry.setIdCompany(d.getObjectId("idCompany").toString());
+                entry.setIdClass(d.getObjectId("idClass").toString());
+            }
+            disconnect();
+            return entry;
         }
         
         public ArrayList<Department> getAllDepartments() throws Exception {
