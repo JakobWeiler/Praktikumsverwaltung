@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -99,6 +100,23 @@ public class EntryResource {
             retValue = ex.getMessage();
         }
         
+        return retValue;
+    }
+    
+    @DELETE            // !!! DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String deleteEntry (@QueryParam("entryId") String id) throws Exception {           // STATT path nimmt man hier QueryParam. Und IMMER String für id nehmen, weil sonst bei Error zu viele Exceptions?
+        Database db = Database.newInstance();
+        String retValue = "ok";
+        
+        try {            
+            db.deleteEntry(id);            
+        }
+        catch (Exception ex) {            
+            // !!! the following exception cannot never be reached from client (@delete - bug)
+            // @delete method always returns "200 OK" message
+            retValue = "error: " + ex.getMessage();
+        }
         return retValue;
     }
 }

@@ -177,12 +177,6 @@ public class Database {
             return t;
         }
         
-//        public void addPupil(Pupil p) throws Exception {
-//            ArrayList<Pupil> listPupil = new ArrayList<>();
-////            MongoDatabase mongoDb = connect();
-//            listPupil.add(p);
-//        }
-        
         public ArrayList<Teacher> getAllActiveTeachers() throws Exception {
             ArrayList<Teacher> listTeacher = new ArrayList<>();
             mongoDb = connect();
@@ -284,6 +278,18 @@ public class Database {
             query.put("_id", doc.getObjectId("_id"));
             
             collection.replaceOne(query, doc);
+            
+            disconnect();
+        }
+        
+        public void deleteEntry(String id) throws Exception {
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            
+            collection.deleteOne(query);            
             
             disconnect();
         }
