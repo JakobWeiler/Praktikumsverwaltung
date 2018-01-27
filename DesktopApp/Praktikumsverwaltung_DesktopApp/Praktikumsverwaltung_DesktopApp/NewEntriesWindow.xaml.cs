@@ -31,7 +31,7 @@ namespace Praktikumsverwaltung_DesktopApp
             gatewayDatabase = GatewayDatabase.newInstance();
             this.listEntryStrings = new List<string>();
             this.LoadNewEntries();
-            //lvNewEntries.SelectionChanged += lvNewEntries_SelectionChanged;
+            lvNewEntries.SelectionChanged += lvNewEntries_SelectionChanged;
         }
 
         private void LoadNewEntries()

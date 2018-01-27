@@ -47,7 +47,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 foreach (Entry entry in listEntries)
                 {
-                    strBuilderEntry = new StringBuilder();
+                    strBuilderEntry = new StringBuilder();      // ACHTUNG: Unbedingt hier new StringBuilder machen, weil man ja für jedes ListViewItem einen neuen String braucht, weil sonst hängen sie zusammen und das WPF spinnt
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
@@ -127,10 +127,10 @@ namespace Praktikumsverwaltung_DesktopApp
             }
         }
 
-        private void mItemEntryEdit_Click(object sender, RoutedEventArgs e)
+        private void mItemEntryShow_Click(object sender, RoutedEventArgs e)
         {
-            EditEntry editEntry = new EditEntry();
-            editEntry.Show();
+            ShowWindow showEntry = new ShowWindow();
+            showEntry.Show();
         }
 
         private void mItemLogout_Click(object sender, EventArgs e)
