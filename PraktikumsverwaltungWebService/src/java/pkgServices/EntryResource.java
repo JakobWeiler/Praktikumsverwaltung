@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,7 +42,7 @@ public class EntryResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllEntries() {
+    public ArrayList<Entry> getAllEntries() {
         ArrayList<Entry> listEntries;
         try {
             Database db = Database.newInstance();
@@ -49,16 +50,16 @@ public class EntryResource {
         }
         catch (Exception ex) {
             listEntries = new ArrayList<>();
-            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));
+            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));
         }
         
-        return new Gson().toJson(listEntries);
+        return listEntries;
     }
     
     @GET
     @Path("{entryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllOwnEntries(@PathParam("entryId") String id) {
+    public ArrayList<Entry> getAllOwnEntries(@PathParam("entryId") String id) {
         ArrayList<Entry> listEntries = null;
          
         try{
@@ -67,9 +68,9 @@ public class EntryResource {
         }     
 	catch(Exception ex){ 
                 listEntries = new ArrayList<>();
-                listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, "", "", ""));      
+                listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));      
             }
-        return new Gson().toJson(listEntries);
+        return listEntries;
     }
     
     @POST
@@ -77,48 +78,45 @@ public class EntryResource {
     public String addEntry(String jsonStringEntry) throws Exception {
         String retValue ="ok";
         Database db = Database.newInstance();
-        Gson gson = new Gson();
         try{
-            System.out.println("++++++++++++++ vor addEntry " +jsonStringEntry);
-//            System.out.println("++++++++++++++ vor addEntry " +gson.fromJson(jsonStringEntry, Entry.class));
             db.addEntry(jsonStringEntry);                //gson.fromJson(jsonStringEntry, Entry.class
         }catch(Exception e) {
-            System.out.println("+++++++ error: " +e.getMessage());
             retValue = e.getMessage();
         }
         
         return retValue;
     }
     
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public ArrayList<Entry> getKvEntries(@QueryParam("id_kv") String id_kv) {
-//        ArrayList<Entry> listEntries;
-//        try {
-//            Database db = Database.newInstance();
-//            listEntries = db.getKvEntries(id_kv);
-//        }
-//        catch (Exception ex) {
-//            listEntries = new ArrayList<>();
-//            listEntries.add(new Entry(new ObjectId(), null, null, 0.0, ex.getMessage(), "", false, false, new ObjectId(), new ObjectId(), new ObjectId()));
-//        }
-//        
-//        return listEntries;
-//    }
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String updateEntry(String editedEntry) throws Exception {
+        String retValue = "ok";
+        
+        try {
+            Database db = Database.newInstance();
+            db.updateEntry(editedEntry);
+        }
+        catch (Exception ex) {
+            retValue = ex.getMessage();
+        }
+        
+        return retValue;
+    }
     
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public ArrayList<Entry> getAvEntries(@QueryParam("id_av") String id_av) {
-//        ArrayList<Entry> listEntries;
-//        try {
-//            Database db = Database.newInstance();
-//            listEntries = db.getAvEntries(id_av);
-//        }
-//        catch (Exception ex) {
-//            listEntries = new ArrayList<>();
-//            listEntries.add(new Entry(new ObjectId(), null, null, 0.0, ex.getMessage(), "", false, false, new ObjectId(), new ObjectId(), new ObjectId()));
-//        }
-//        
-//        return listEntries;
-//    }
+    @DELETE            // !!! DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String deleteEntry (@QueryParam("entryId") String id) throws Exception {           // STATT path nimmt man hier QueryParam. Und IMMER String für id nehmen, weil sonst bei Error zu viele Exceptions?
+        Database db = Database.newInstance();
+        String retValue = "ok";
+        
+        try {            
+            db.deleteEntry(id);            
+        }
+        catch (Exception ex) {            
+            // !!! the following exception cannot never be reached from client (@delete - bug)
+            // @delete method always returns "200 OK" message
+            retValue = "error: " + ex.getMessage();
+        }
+        return retValue;
+    }
 }

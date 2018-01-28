@@ -13,7 +13,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public string Id { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }
-        public float NumberOfEmployees { get; set; }
+        public int NumberOfEmployees { get; set; }
         public string ContactPerson { get; set; }
 
         public Company(string id, string name, string location, int numberOfEmployees, string contactPerson)

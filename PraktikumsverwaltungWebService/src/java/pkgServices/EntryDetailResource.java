@@ -5,7 +5,6 @@
  */
 package pkgServices;
 
-import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -13,6 +12,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import pkgData.Database;
 import pkgData.Entry;
@@ -22,31 +22,31 @@ import pkgData.Entry;
  *
  * @author schueler
  */
-@Path("EntryAdmin")
-public class EntryAdminResource {
+@Path("EntryDetail")
+public class EntryDetailResource {
 
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of EntryAdminResource
+     * Creates a new instance of EntryDetailResource
      */
-    public EntryAdminResource() {
+    public EntryDetailResource() {
     }
-
+    
     @GET
+    @Path("{entryId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<Entry> getAllUnacceptedEntries() {
-        ArrayList<Entry> listUnacceptedEntries;
-        try {
+    public Entry getEntry(@PathParam("entryId") String id) {
+        Entry entry = null;
+         
+        try{
             Database db = Database.newInstance();
-            listUnacceptedEntries = db.getAllUnacceptedAndUnseenEntries();
+            entry = db.getEntry(id);
+        }     
+	catch(Exception ex) {
+            entry = new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", "");      
         }
-        catch (Exception ex) {
-            listUnacceptedEntries = new ArrayList<>();
-            listUnacceptedEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));
-        }
-        
-        return listUnacceptedEntries;
-    }
+        return entry;
+    }    
 }

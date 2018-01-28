@@ -20,6 +20,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -44,8 +45,6 @@ public class Database {
             //connStr = "mongodb://192.168.142.144:27017";  //intern
             connStr = "mongodb://212.152.179.118:27017";   //extern
             dbName = "5BHIFS_BSD_Praktikumsverwaltung";
-            
-            mongoDb = connect();
         }
         
         public static Database newInstance() {
@@ -56,14 +55,18 @@ public class Database {
         }
           
         private MongoDatabase connect() {
-         client = new MongoClient(new MongoClientURI(connStr));   
-         return client.getDatabase(dbName);
+            client = new MongoClient(new MongoClientURI(connStr));   
+            return client.getDatabase(dbName);
+        }
+        
+        private void disconnect() {
+            client.close();
         }
         
         public ArrayList<Company> getAllCompanies() throws Exception {
             ArrayList<Company> allCompanies = new ArrayList<>();
             Gson gson = new Gson();
-//            mongoDb = connect();
+            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
             for(Document d : collection.find()){
@@ -71,30 +74,40 @@ public class Database {
                 c.setId(d.getObjectId("_id").toString());
                 allCompanies.add(c);
             }
+            disconnect();
             return allCompanies;
         }
         
-        public Company getCompanyById(ObjectId id) throws Exception {
+        public Company getCompanyById(String id) throws Exception {
+            Company company = null;
             Gson gson = new Gson();
-//            mongoDb = connect();
+            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
-            return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Company.class);
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            
+            Document d = collection.find(query).first();            
+            company = gson.fromJson(d.toJson(), Company.class);
+            
+            disconnect();
+            return company;
         }
         
         public Company addCompany(Company c) throws Exception {
             Gson gson = new Gson();
-//            mongoDb = connect();
+            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Company");
             
             collection.insertOne(Document.parse(gson.toJson(c, Company.class)));
             
+            disconnect();
             return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Company.class);
         }
         
         public ArrayList<Pupil> getAllActivePupils() throws Exception { 
             ArrayList<Pupil> listPupil = new ArrayList<>();
-//            mongoDb = connect();
+            mongoDb = connect();
             Gson gson = new Gson();
             
             BasicDBObject query = new BasicDBObject();
@@ -115,6 +128,7 @@ public class Database {
                 p.setIdClass(d.getObjectId("idClass").toString());
                 listPupil.add(p);
             }
+            disconnect();
             return listPupil;
         }
         
@@ -141,6 +155,7 @@ public class Database {
                 p.setIdDepartment(d.getObjectId("idDepartment").toString());
                 p.setIdClass(d.getObjectId("idClass").toString());
             }
+            disconnect();
             return p;
         }
         
@@ -159,18 +174,13 @@ public class Database {
                 t = gson.fromJson(d.toJson(), Teacher.class);
                 t.setId(d.getObjectId("_id").toString());
             }
+            disconnect();
             return t;
         }
         
-//        public void addPupil(Pupil p) throws Exception {
-//            ArrayList<Pupil> listPupil = new ArrayList<>();
-////            MongoDatabase mongoDb = connect();
-//            listPupil.add(p);
-//        }
-        
         public ArrayList<Teacher> getAllActiveTeachers() throws Exception {
             ArrayList<Teacher> listTeacher = new ArrayList<>();
-//            mongoDb = connect();
+            mongoDb = connect();
             Gson gson = new Gson();
             
             BasicDBObject query = new BasicDBObject();
@@ -182,13 +192,14 @@ public class Database {
                 t.setId(d.getObjectId("_id").toString());            // to make the id "visible"
                 listTeacher.add(t);
             }
+            disconnect();
             return listTeacher;
         }
         
         // returns all accepted Entries (accepted by kv and av)
         public ArrayList<Entry> getAllEntries() throws Exception {
             ArrayList<Entry> listEntry = new ArrayList<>();
-//            mongoDb = connect();
+            mongoDb = connect();
 
             // Delivers only Entries which are accepted by KV and AV
             BasicDBObject query = new BasicDBObject();
@@ -197,7 +208,6 @@ public class Database {
             
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             for(Document d : collection.find(query)) {
-                System.out.println(d.toJson());
                 Entry e = new Entry(); //gson.fromJson(d.toJson(), Entry.class);
                 e.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
                 e.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -206,19 +216,20 @@ public class Database {
                 e.setDescription(d.getString("description"));
                 e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
                 e.setAllowedAV(d.getBoolean("allowedAV"));
-                e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
+                e.setSeenByAdmin(d.getBoolean("seenByAdmin"));
+                e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"                
                 e.setIdPupil(d.getObjectId("idPupil").toString());
                 e.setIdCompany(d.getObjectId("idCompany").toString());
                 e.setIdClass(d.getObjectId("idClass").toString());
-                System.out.println(e.getId());
                 listEntry.add(e);
             }
+            disconnect();
             return listEntry;
         }
         
         public ArrayList<Entry> getAllOwnEntries(String id) throws Exception {
             ArrayList<Entry> listEntry = new ArrayList<>();
-//            mongoDb = connect();
+            mongoDb = connect();
 
             // Delivers only Entries which are accepted by KV and AV
             BasicDBObject query = new BasicDBObject();
@@ -234,56 +245,65 @@ public class Database {
                 e.setDescription(d.getString("description"));
                 e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
                 e.setAllowedAV(d.getBoolean("allowedAV"));
+                e.setSeenByAdmin(d.getBoolean("seenByAdmin"));
                 e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
                 e.setIdPupil(d.getObjectId("idPupil").toString());
                 e.setIdCompany(d.getObjectId("idCompany").toString());
                 e.setIdClass(d.getObjectId("idClass").toString());
                 listEntry.add(e);
             }
+            disconnect();
             return listEntry;
         }
         
         public void addEntry(String jsonStringEntry) throws Exception {
-            System.out.println("***** in addEntry: " + jsonStringEntry);
-            Gson gson = new Gson();
-//            mongoDb = connect();
+            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             
-            //collection.insertOne(Document.parse(gson.toJson(e, Entry.class)));
-            Document doc = Document.parse(jsonStringEntry);
-//            Document doc = new Document("_id", newEntry.getId())
-//                .append("startDate", newEntry.getStartDate())
-//                .append("endDate", newEntry.getEndDate())
-//                .append("salary", newEntry.getSalary())
-//                .append("title", newEntry.getTitle())
-//                .append("description", newEntry.getDescription())
-//                .append("allowedTeacher", newEntry.isAllowedTeacher())
-//                .append("allowedAV", newEntry.isAllowedAV())
-//                .append("idPupil", newEntry.getIdPupil())
-//                .append("idCompany", newEntry.getIdCompany())
-//                .append("idClass", newEntry.getIdClass());
-            System.out.println("before insert" + doc);
-
-            Date wrongDate = doc.getDate("startDate");
-            wrongDate.toString().replace("PST", "PDT");
-            doc.replace("startDate", wrongDate.toString());
-            
-            wrongDate = doc.getDate("endDate");
-            wrongDate.toString().replace("PST", "PDT");
-            doc.replace("endDate", wrongDate.toString());
-            
-            System.out.println("before insert" + doc);
+            Document doc = Document.parse(jsonStringEntry);            
             collection.insertOne(doc);
-            System.out.println("after insert");
+            
+            disconnect();
         }
         
-        public ArrayList<Entry> getAllUnacceptedEntries() {
+        // Replaces the whole "old" document with the new document because we don't know what exactly changed. Don't forget the query which ensures
+        // that the "old" Entry is selected and replaced (_id of the entry remains equal)
+        // !!!!!!! Make sure that the salary is always like a float, e.g. 1300.0 and NOT only 1300 => otherwise exception
+        public void updateEntry(String jsonStringEditedEntry) throws Exception {
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            
+            Document doc = Document.parse(jsonStringEditedEntry);
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", doc.getObjectId("_id"));
+            
+            collection.replaceOne(query, doc);
+            
+            disconnect();
+        }
+        
+        public void deleteEntry(String id) throws Exception {
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            
+            collection.deleteOne(query);            
+            
+            disconnect();
+        }
+        
+        public ArrayList<Entry> getAllUnacceptedAndUnseenEntries() {
+            mongoDb = connect();
             ArrayList<Entry> listUnacceptedEntries = new ArrayList<>();
             Gson gson = new Gson();
             
             BasicDBObject query = new BasicDBObject();
             query.put("allowedTeacher", false);
             query.put("allowedAV", false);
+            query.put("seenByAdmin", false);        // Needed, because without it would also load the entries which the admin declined but pupil hasn't updated yet
             
             MongoCollection<Document> collection = mongoDb.getCollection("Entry");
             
@@ -302,13 +322,44 @@ public class Database {
                 e.setIdClass(d.getObjectId("idClass").toString());
                 listUnacceptedEntries.add(e);
             }
+            disconnect();
             return listUnacceptedEntries;
+        }
+        
+        public Entry getEntry(String idOfEntry) throws Exception {
+            Entry entry = null;
+            mongoDb = connect();
+
+            // Delivers only Entries which are accepted by KV and AV
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(idOfEntry));
+            
+            MongoCollection<Document> collection = mongoDb.getCollection("Entry");
+            
+            Document d = collection.find(query).first();
+            
+            entry = new Entry();
+            entry.setStartDate(d.getDate("startDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            entry.setEndDate(d.getDate("endDate").toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+            entry.setSalary(d.getDouble("salary"));
+            entry.setTitle(d.getString("title"));
+            entry.setDescription(d.getString("description"));
+            entry.setAllowedTeacher(d.getBoolean("allowedTeacher"));
+            entry.setAllowedAV(d.getBoolean("allowedAV"));
+            entry.setSeenByAdmin(d.getBoolean("seenByAdmin"));
+            entry.setId(d.getObjectId("_id").toString());            // to make the id's "visible"                
+            entry.setIdPupil(d.getObjectId("idPupil").toString());
+            entry.setIdCompany(d.getObjectId("idCompany").toString());
+            entry.setIdClass(d.getObjectId("idClass").toString());
+            
+            disconnect();
+            return entry;
         }
         
         public ArrayList<Department> getAllDepartments() throws Exception {
             ArrayList<Department> allDepartments = new ArrayList<>();
             Gson gson = new Gson();
-//            mongoDb = connect();
+            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Department");
             
             for(Document d : collection.find()){
@@ -316,25 +367,30 @@ public class Database {
                 dep.setId(d.getObjectId("_id").toString());
                 allDepartments.add(dep);
             }
+            disconnect();
             return allDepartments;
         }
         
         public Department getDepartmentById(ObjectId id) throws Exception {
             Gson gson = new Gson();
-//            mongoDb = connect();
+            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Department");
+            Department dep = gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Department.class);
             
-            return gson.fromJson(collection.find(eq("_id", id)).first().toJson(), Department.class);
+            disconnect();
+            return dep;
         }
         
         public Department addDepartment(Department d) throws Exception {
             Gson gson = new Gson();
-//            mongoDb = connect();
+            mongoDb = connect();
             MongoCollection<Document> collection = mongoDb.getCollection("Department");
             
             collection.insertOne(Document.parse(gson.toJson(d, Department.class)));
+            Department dep = gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Department.class);
             
-            return gson.fromJson(collection.find().sort(new BasicDBObject("_id", -1)).first().toJson(), Department.class);
+            disconnect();
+            return dep;
         }        
         
         public ArrayList<Class> getAllClasses() throws Exception {
@@ -350,6 +406,25 @@ public class Database {
                 c.setIdKV(d.getObjectId("idKV").toString());
                 allClasses.add(c);
             }
+            disconnect();
             return allClasses;
+        }
+        
+        public Class getClassById(String id) throws Exception {
+            Class myClass = null;
+            mongoDb = connect();
+            MongoCollection<Document> collection = mongoDb.getCollection("Class");
+            
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", new ObjectId(id));
+            
+            Document d = collection.find(query).first();
+            myClass = new Class();
+            myClass.setId(d.getObjectId("_id").toString());
+            myClass.setDescription(d.getString("description"));
+            myClass.setIdKV(d.getObjectId("idKV").toString());
+            
+            disconnect();
+            return myClass;
         }
 }

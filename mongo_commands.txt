@@ -84,6 +84,7 @@ db.createCollection( "Entry",
 			{ description: { $type: "string" } },
             { allowedTeacher: { $type: "bool" } },
 			{ allowedAV: { $type: "bool" } },
+			{ seenByAdmin: { $type: "bool" } },
 			{ idPupil: { $type: "objectId" } },
 			{ idCompany: { $type: "objectId" } },
 			{ idClass: { $type: "objectId" } }
@@ -123,8 +124,9 @@ db.Pupil.insert({"username":"lenze","password":"lenze","firstName":"Lorenz","las
 db.Pupil.insert({"username":"sasa","password":"sasa","firstName":"Sasa","lastName":"Sarkovic","email":"sasa@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
 db.Pupil.insert({"username":"jakob","password":"jakob","firstName":"Jakob","lastName":"Weiler","email":"jakob@htl-villach.at","isActive":true,"idDepartment":ObjectId("5a1d39152d19782a01d75db5"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
 
-db.Entry.insert({"startDate":new Date("2017-07-10"),"endDate":new Date("2017-09-01"),"salary":1300,"title":"Diplomarbeit:KSB-Workflow-Generator","description":"Java-App für interne Zwecke","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a1d3eba2d19782a01d75dc2"),"idCompany":ObjectId("5a1d38902d19782a01d75dac"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
-db.Entry.insert({"startDate":new Date("2017-07-3"),"endDate":new Date("2017-08-25"),"salary":800,"title":"Diplomarbeit","description":"Testen verschiedener Frameworks","allowedTeacher":true,"allowedAV":true,"idPupil":ObjectId("5a1d3eba2d19782a01d75dc0"),"idCompany":ObjectId("5a1d38902d19782a01d75dad"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
+db.Entry.insert({"startDate":new Date("2017-07-10"),"endDate":new Date("2017-09-01"),"salary":1300,"title":"Diplomarbeit:KSB-Workflow-Generator","description":"Java-App für interne Zwecke","allowedTeacher":true,"allowedAV":true,"seenByAdmin":true,"idPupil":ObjectId("5a1d3eba2d19782a01d75dc2"),"idCompany":ObjectId("5a1d38902d19782a01d75dac"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
+db.Entry.insert({"startDate":new Date("2017-07-3"),"endDate":new Date("2017-08-25"),"salary":800,"title":"Diplomarbeit","description":"Testen verschiedener Frameworks","allowedTeacher":true,"allowedAV":true,"seenByAdmin":true,"idPupil":ObjectId("5a1d3eba2d19782a01d75dc0"),"idCompany":ObjectId("5a1d38902d19782a01d75dad"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
+db.Entry.insert({"startDate":new Date("2017-02-25"),"endDate":new Date("2017-05-13"),"salary":1600,"title":"Eine tolle Arbeit","description":"Das ist ein Test","allowedTeacher":false,"allowedAV":false,"seenByAdmin":false,"idPupil":ObjectId("5a1d3eba2d19782a01d75dc2"),"idCompany":ObjectId("5a1d38902d19782a01d75dad"),"idClass":ObjectId("5a1d3e092d19782a01d75dbe")})
 
 --Allgemein
 use 5BHIFS_BSD_Praktikumsverwaltung

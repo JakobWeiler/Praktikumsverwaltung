@@ -2,7 +2,6 @@
 using Praktikumsverwaltung_DesktopApp.pkgData;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,45 +17,46 @@ using System.Windows.Shapes;
 namespace Praktikumsverwaltung_DesktopApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ShowWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ShowWindow : Window
     {
         private GatewayDatabase gwDatabase = null;
-        private List<Entry> listAllEntries = null;      // needed for adminv
-        private List<string> listAdminEntryStrings = null;      // needed for admin
+        private List<Entry> listAllOwnEntries = null;
+        private List<string> listEntryStrings = null;
 
-        public MainWindow()
+        public ShowWindow()
         {
             InitializeComponent();
 
-            gwDatabase = GatewayDatabase.newInstance();
-            this.listAdminEntryStrings = new List<string>();
-            this.LoadEntries();
-            this.LoadAdminGuiElements();
-            lvEntries.SelectionChanged += lvEntries_SelectionChanged;
+            this.gwDatabase = GatewayDatabase.newInstance();
+            this.listEntryStrings = new List<string>();
+            this.LoadAllOwnEntries();
+            lvEntries.SelectionChanged += lvNewEntries_SelectionChanged;
         }
 
-        public void LoadEntries()
+        // public, because EditEntry needs to load them too
+        public void LoadAllOwnEntries()
         {
             StringBuilder strBuilderEntry;
             Company company = null;
             try
             {
                 Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
+
                 BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
                 BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
 
                 this.lvEntries.Items.Clear();
-                this.listAllEntries = gwDatabase.GetAllEntries();          // WebService get all entries
+                this.listAllOwnEntries = gwDatabase.GetAllOwnEntries();         // !!! loads only the own entries
                 List<Company> listCompanies = gwDatabase.GetAllCompanies();
-                this.listAdminEntryStrings = new List<string>();     // immer neu setzen, weil methode wird auch von update von EditEntry aufgerufen
+                this.listEntryStrings = new List<string>();     // immer neu setzen, weil methode wird auch von update von EditEntry aufgerufen
 
-                foreach (Entry entry in listAllEntries)
+                foreach (Entry entry in listAllOwnEntries)
                 {
                     company = listCompanies.Find(delegate (Company item) { return item.Id == entry.IdCompany; });
 
-                    strBuilderEntry = new StringBuilder();      // ACHTUNG: Unbedingt hier new StringBuilder machen, weil man ja für jedes ListViewItem einen neuen String braucht, weil sonst hängen sie zusammen und das WPF spinnt
+                    strBuilderEntry = new StringBuilder();
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
@@ -71,98 +71,24 @@ namespace Praktikumsverwaltung_DesktopApp
                     //StringBuilder strBuilderAddress = new StringBuilder();
                     //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
 
-                    this.listAdminEntryStrings.Add(strBuilderEntry.ToString());          // !!! um später zuzugreifen zu können
-
-                    // Entries only editable if admin
-                    if (gwDatabase.IsAdmin == false)
-                    {
-                        this.gvColumnEditAdmin.Width = 0;
-                        this.gvColumnRemoveAdmin.Width = 0;
-                    }
-                    else
-                    {
-                        this.gvColumnEditAdmin.Width = 60;
-                        this.gvColumnRemoveAdmin.Width = 60;
-                    }
+                    this.listEntryStrings.Add(strBuilderEntry.ToString());          // !!! um später zuzugreifen zu können
 
                     lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in LoadEntries: " + ex.Message);
+                MessageBox.Show("Error in LoadAllOwnEntries: " + ex.Message);
             }
-        }
-
-        // if user is an admin, there are some additional "special" window elements
-        private void LoadAdminGuiElements()
-        {
-            if (gwDatabase.IsAdmin)
-            {    
-                MenuItem mItemNewEntries = new MenuItem();
-                mItemNewEntries.Header = "New Entries";
-
-                MenuItem mItemNewEntriesShow = new MenuItem();
-                mItemNewEntriesShow.Header = "Show";
-                mItemNewEntriesShow.Click += (s, e) => { mItemNewEntriesShow_Click(s, e); };
-                
-                mItemNewEntries.Items.Add(mItemNewEntriesShow);
-                this.menuBar.Items.Insert(2, mItemNewEntries);          // Insert... adds menuitem add a specific position
-
-                List<Entry> listUnacceptedAndUnseenEntries = this.gwDatabase.GetAllUnacceptedEntries();
-                this.lblAdminAmountOfNewEntries.Visibility = Visibility.Visible;
-                this.lblAdminAmountOfNewEntries.Content = listUnacceptedAndUnseenEntries.Count + " new entries";
-            }
-        }
-
-        public void SetAdminNewEntries()
-        {
-            List<Entry> listUnacceptedAndUnseenEntries = this.gwDatabase.GetAllUnacceptedEntries();
-            this.lblAdminAmountOfNewEntries.Content = listUnacceptedAndUnseenEntries.Count + " new entries";
         }
 
         // to disable the selection of each item of the listview
-        private void lvEntries_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void lvNewEntries_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             lvEntries.SelectedValue = false;
         }
 
-        private void mItemNewEntriesShow_Click(object sender, EventArgs e)
-        {
-            // Load new entries which have to be accepted or rejected
-            NewEntriesWindow newEntries = new NewEntriesWindow(this);
-            newEntries.Show();
-        }
-
-        private void mItemEntryAdd_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                AddEntryWindow addEntryWindow = new AddEntryWindow();
-                addEntryWindow.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message);
-            }
-        }
-
-        private void mItemEntryShow_Click(object sender, RoutedEventArgs e)
-        {
-            ShowWindow showEntry = new ShowWindow();
-            showEntry.Show();
-        }
-
-        private void mItemLogout_Click(object sender, EventArgs e)
-        {
-            LoginWindow loginWindow = new LoginWindow();
-            this.Close();
-            loginWindow.Show();
-        }
-
-        /************************************ Admin ****************************************/
-
-        private void ClickBtnEditAdmin(object sender, EventArgs e)
+        private void ClickBtnEdit(object sender, EventArgs e)
         {
             try
             {
@@ -175,8 +101,8 @@ namespace Praktikumsverwaltung_DesktopApp
                 selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
                 selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
 
-                index = this.listAdminEntryStrings.IndexOf(selectedEntryString);
-                Entry selectedEntry = this.listAllEntries.ElementAt(index);
+                index = this.listEntryStrings.IndexOf(selectedEntryString);
+                Entry selectedEntry = this.listAllOwnEntries.ElementAt(index);
 
                 jsonString = JsonConvert.SerializeObject(selectedEntry);
 
@@ -185,11 +111,11 @@ namespace Praktikumsverwaltung_DesktopApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in ClickBtnAdminEdit: " + ex.Message);
-            }
+                MessageBox.Show("Error in ClickBtnEdit: " + ex.Message);
+            }            
         }
 
-        private void ClickBtnRemoveAdmin(object sender, EventArgs e)
+        private void ClickBtnRemove(object sender, EventArgs e)
         {
             try
             {
@@ -202,16 +128,16 @@ namespace Praktikumsverwaltung_DesktopApp
                 selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
                 selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
 
-                index = this.listAdminEntryStrings.IndexOf(selectedEntryString);
-                Entry selectedEntry = this.listAllEntries.ElementAt(index);
+                index = this.listEntryStrings.IndexOf(selectedEntryString);
+                Entry selectedEntry = this.listAllOwnEntries.ElementAt(index);
 
                 successfull = gwDatabase.DeleteEntry(selectedEntry.Id);
 
                 if (successfull)
                 {
                     // Delete entry of the lists
-                    this.listAllEntries.RemoveAt(index);
-                    this.listAdminEntryStrings.RemoveAt(index);
+                    this.listAllOwnEntries.RemoveAt(index);
+                    this.listEntryStrings.RemoveAt(index);
                     this.lvEntries.Items.RemoveAt(index);
                 }
                 else
@@ -221,7 +147,7 @@ namespace Praktikumsverwaltung_DesktopApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error in ClickAdminBtnRemove: " + ex.Message);
+                MessageBox.Show("Error in ClickBtnEdit: " + ex.Message);
             }
         }
 

@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import pkgData.Database;
 import pkgData.Class;
@@ -43,10 +44,24 @@ public class ClassResource {
         try {
             allClasses = db.getAllClasses();
         } catch (Exception ex) {
-            ex.printStackTrace();
             allClasses = new ArrayList<>();
             allClasses.add(new Class(ex.getMessage(), "", ""));
         }
         return allClasses;
+    }
+    
+    @GET
+    @Path("{classId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Class getCompanyById(@PathParam("classId") String id) {
+        Class company = null;
+         
+        try{
+            company = Database.newInstance().getClassById(id);
+        }     
+	catch(Exception ex){ 
+                company = new Class(ex.getMessage(), "", "");       
+            }
+        return company;
     }
 }

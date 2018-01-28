@@ -11,9 +11,7 @@
         <Menu x:Name="menuBar" DockPanel.Dock="Top" Height="19" VerticalAlignment="Top" Margin="0,0,10,0">
             <MenuItem Header="Entry" >
                 <MenuItem x:Name="mItemEntryAdd" Header="Add" Click="mItemEntryAdd_Click" />
-                <MenuItem x:Name="mItemEntryRemove" Header="Remove" />
-                <MenuItem x:Name="mItemEntryEdit" Header="Edit" Click="mItemEntryEdit_Click" />
-                <MenuItem x:Name="mItemEntryShow" Header="Show" />
+                <MenuItem x:Name="mItemEntryShow" Header="Show" Click="mItemEntryShow_Click" />
             </MenuItem>
             <MenuItem Header="Profile" >
                 <MenuItem x:Name="mItemProfileEdit" Header="Edit" />
@@ -21,10 +19,11 @@
             </MenuItem>
             <MenuItem x:Name="mItemLogout" Header="Logout" Click="mItemLogout_Click" />
         </Menu>
+        
         <ListView x:Name="lvEntries" Margin="10,54,10,10">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Entry" Width="500" >
+                    <GridViewColumn Header="Entry" Width="600" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Label Content="{Binding Col1}" FontSize="14" />
@@ -66,5 +65,6 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+        <Label x:Name="lblAdminAmountOfNewEntries" Visibility="Hidden" Content="0 new entries." HorizontalAlignment="Left" Margin="90,23,0,0" VerticalAlignment="Top" Width="170"/>
     </Grid>
 </Window>
