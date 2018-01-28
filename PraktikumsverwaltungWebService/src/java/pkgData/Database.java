@@ -40,6 +40,7 @@ public class Database {
         private String dbName;
  
         private Database() {
+            
             //connStr = "mongodb://192.168.142.144:27017";  //intern
             connStr = "mongodb://212.152.179.118:27017";   //extern
             dbName = "5BHIFS_BSD_Praktikumsverwaltung";
