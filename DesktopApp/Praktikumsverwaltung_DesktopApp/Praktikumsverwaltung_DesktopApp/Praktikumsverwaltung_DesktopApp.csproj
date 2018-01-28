@@ -72,6 +72,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCompanyWindow.xaml.cs">
+      <DependentUpon>AddCompanyWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddEntryWindow.xaml.cs">
       <DependentUpon>AddEntryWindow.xaml</DependentUpon>
     </Compile>
@@ -97,6 +100,10 @@
       <DependentUpon>ShowWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WebBrowserUtility.cs" />
+    <Page Include="AddCompanyWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddEntryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

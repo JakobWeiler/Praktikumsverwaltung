@@ -21,18 +21,51 @@ namespace Praktikumsverwaltung_DesktopApp
     /// </summary>
     public partial class AddEntryWindow : Window
     {
+        private GatewayDatabase gwDatabase = null;
+        private List<Company> listCompanies = null;
+        private List<string> listStringCompanies = null;
+
         public AddEntryWindow()
         {
             InitializeComponent();
+
+            this.gwDatabase = GatewayDatabase.newInstance();
+            this.listStringCompanies = new List<string>();
+            LoadCompanies();
+        }
+
+        public void LoadCompanies()
+        {
+            string companyString = null;
+            try
+            {
+                this.listCompanies = gwDatabase.GetAllCompanies();
+
+                // Weil die LoadCompanies() Methode auch von AddCompany aufgerufen wird
+                this.cbCompany.Items.Clear();
+                this.listStringCompanies = new List<string>();
+
+                foreach (Company c in listCompanies)
+                {
+                    companyString = c.Name + ", " + c.Location + ", " + c.ContactPerson;
+                    this.cbCompany.Items.Add(companyString);
+                    this.listStringCompanies.Add(companyString);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in LoadCompanies: " + ex.Message);
+            }
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            String title = "", description = "", dpStart = "", dpEnd = "";
+            string title = "", description = "", dpStart = "", dpEnd = "", companyString = "";
             double salary = -1;
             bool salaryOk = false, successfullySaved = false;
             DateTime startDate = new DateTime();
             DateTime endDate = new DateTime();
+            Company company = null;
 
             
             try
@@ -42,6 +75,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 lblErrorSalary.Foreground = Brushes.Red;
                 lblErrorStartDate.Foreground = Brushes.Red;
                 lblErrorEndDate.Foreground = Brushes.Red;
+                lblErrorCompany.Foreground = Brushes.Red;
 
                 if (txtTitle.Text.Length > 0)
                 {
@@ -112,13 +146,26 @@ namespace Praktikumsverwaltung_DesktopApp
                     lblErrorEndDate.Content = "select a date";
                 }
 
+                if (cbCompany.Text.Length > 0)
+                {
+                    companyString = cbCompany.Text;
+                    int index = this.listStringCompanies.IndexOf(companyString);
+                    company = this.listCompanies.ElementAt(index);
+                    
+                    lblErrorCompany.Content = "";
+                }
+                else
+                {
+                    lblErrorCompany.Content = "select a company";
+                }
+
                 // salary > -1, because it can be 0
-                if (title != null && description != null && salary > -1 && salaryOk == true && dpStart != null && dpEnd != null)
+                if (title != null && description != null && salary > -1 && salaryOk == true && dpStart != null && dpEnd != null && company != null)
                 {
                     // id's are going to be set in GatewayDatabase AddEntry()
-                    Entry entry = new Entry("id-1", startDate, endDate, title, description, salary, false, false, false, "id-1", "id-1", "id-1");
-                    GatewayDatabase gatewayDatabase = GatewayDatabase.newInstance();
-                    successfullySaved = gatewayDatabase.AddEntry(entry);
+                    Entry entry = new Entry("id-1", startDate, endDate, title, description, salary, false, false, false, "id-1", "id-1", company.Id);
+                    
+                    successfullySaved = gwDatabase.AddEntry(entry);
 
                     if (successfullySaved == true)
                     {
@@ -133,6 +180,19 @@ namespace Praktikumsverwaltung_DesktopApp
             catch (Exception ex)
             {
                 MessageBox.Show("Error in AddEntry: " + ex.Message);
+            }
+        }
+
+        private void btnCompanyNew_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                AddCompanyWindow addCompany = new AddCompanyWindow(this);           // !!!!!! this ... gibt dieses Window mit, um die ComboBox im anderen Window zu reloaden
+                addCompany.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in AddCompany: " + ex.Message);
             }
         }
     }

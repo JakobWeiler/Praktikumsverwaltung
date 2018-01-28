@@ -23,13 +23,16 @@ namespace Praktikumsverwaltung_DesktopApp
         private GatewayDatabase gatewayDatabase = null;
         private List<Entry> listUnacceptedEntries = null;
         private List<string> listEntryStrings = null;
+        private MainWindow myMainWindow = null;
 
-        public NewEntriesWindow()
+        public NewEntriesWindow(MainWindow mainWindow)
         {
             InitializeComponent();
 
             gatewayDatabase = GatewayDatabase.newInstance();
             this.listEntryStrings = new List<string>();
+            this.myMainWindow = mainWindow;
+
             this.LoadNewEntries();
             lvNewEntries.SelectionChanged += lvNewEntries_SelectionChanged;
         }
@@ -38,20 +41,28 @@ namespace Praktikumsverwaltung_DesktopApp
         {
             BitmapImage imgGreenCheckMark = new BitmapImage(new Uri("../pkgImages/GreenCheckMark.jpg", UriKind.Relative));
             BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
+            
+            Company company = null;
 
             try {
                 StringBuilder strBuilderEntry;
 
                 this.listUnacceptedEntries = gatewayDatabase.GetAllUnacceptedEntries();
+                List<Company> listCompanies = gatewayDatabase.GetAllCompanies();
 
                 foreach (Entry entry in this.listUnacceptedEntries)
                 {
+                    company = listCompanies.Find(delegate (Company item) { return item.Id == entry.IdCompany; });
+
                     strBuilderEntry = new StringBuilder();
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("Dauer: " + entry.StartDate.ToString("dd.MM.yyyy") + " bis " + entry.EndDate.ToString("dd.MM.yyyy") + Environment.NewLine);
-                    strBuilderEntry.Append("Gehalt: " + entry.Salary + " €" + Environment.NewLine);
+                    strBuilderEntry.Append("Gehalt: " + entry.Salary + " €" + Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append("Firma: " + company.Name + Environment.NewLine);
+                    strBuilderEntry.Append("Standort: " + company.Location + Environment.NewLine);
+                    strBuilderEntry.Append("Kontakt: " + company.ContactPerson);
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("---------------------------------------------------------------------------");
 
@@ -84,7 +95,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 {
                     string selectedEntryString = selectedLvItem.Content.ToString();
                     selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
-                    selectedEntryString = selectedEntryString.Split(',')[0];        // hinterer Teil ebenfalls
+                    selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
 
                     index = this.listEntryStrings.IndexOf(selectedEntryString);
                     Entry selectedEntry = this.listUnacceptedEntries.ElementAt(index);
@@ -99,6 +110,10 @@ namespace Praktikumsverwaltung_DesktopApp
                     this.listUnacceptedEntries.RemoveAt(index);
                     this.listEntryStrings.RemoveAt(index);
                     this.lvNewEntries.Items.RemoveAt(index);
+
+                    // MainWindow aktualisieren
+                    this.myMainWindow.SetAdminNewEntries();
+                    this.myMainWindow.LoadEntries();
                 }            
                 else
                 {
@@ -109,8 +124,6 @@ namespace Praktikumsverwaltung_DesktopApp
             {
                 MessageBox.Show("Error in ClickBtnAccept: " + ex.Message);
             }
-           
-            MessageBox.Show("in accept");
         }
 
         private void ClickBtnDecline(object sender, EventArgs e)
@@ -125,7 +138,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 {
                     string selectedEntryString = selectedLvItem.Content.ToString();
                     selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
-                    selectedEntryString = selectedEntryString.Split(',')[0];        // hinterer Teil ebenfalls
+                    selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
 
                     index = this.listEntryStrings.IndexOf(selectedEntryString);
                     Entry selectedEntry = this.listUnacceptedEntries.ElementAt(index);
@@ -140,6 +153,9 @@ namespace Praktikumsverwaltung_DesktopApp
                     this.listUnacceptedEntries.RemoveAt(index);
                     this.listEntryStrings.RemoveAt(index);
                     this.lvNewEntries.Items.RemoveAt(index);
+
+                    // MainWindow aktualisieren
+                    this.myMainWindow.SetAdminNewEntries();
                 }
                 else
                 {

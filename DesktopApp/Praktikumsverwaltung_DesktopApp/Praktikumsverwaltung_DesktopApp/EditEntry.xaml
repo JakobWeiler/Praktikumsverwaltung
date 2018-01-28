@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Praktikumsverwaltung_DesktopApp"
         mc:Ignorable="d"
-        Title="EditEntry" Height="627.348" Width="1194.531"
+        Title="Edit Entry" Height="692.456" Width="1194.531"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Label x:Name="lblTitle" Content="Title:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="27" Width="115"/>
@@ -18,12 +18,15 @@
         <Label x:Name="lblEndDate" Content="End date:" HorizontalAlignment="Left" Margin="0,480,0,0" VerticalAlignment="Top" Width="115"/>
         <DatePicker x:Name="datePickerStartDate" HorizontalAlignment="Left" Margin="120,450,0,0" VerticalAlignment="Top" Width="603" Height="26"/>
         <DatePicker x:Name="datePickerEndDate" HorizontalAlignment="Left" Margin="120,481,0,0" VerticalAlignment="Top" Height="26" Width="603"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="535,564,0,0" VerticalAlignment="Top" Width="188" Height="26" Click="btnUpdate_Click"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="535,625,0,0" VerticalAlignment="Top" Width="188" Height="26" Click="btnUpdate_Click"/>
         <Label x:Name="lblErrorTitle" Content="" Margin="728,1,10,0" VerticalAlignment="Top"/>
         <Label x:Name="lblErrorDescription" Content="" Margin="728,31,10,0" VerticalAlignment="Top"/>
         <Label x:Name="lblErrorSalary" Content="" Margin="728,418,10,0" VerticalAlignment="Top" Height="27"/>
         <Label x:Name="lblErrorStartDate" Content="" Margin="728,450,10,0" VerticalAlignment="Top" Height="25"/>
         <Label x:Name="lblErrorEndDate" Content="" Margin="728,480,10,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="342,564,0,0" VerticalAlignment="Top" Width="188" Height="26" Click="btnCancel_Click"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="342,625,0,0" VerticalAlignment="Top" Width="188" Height="26" Click="btnCancel_Click"/>
+        <Label x:Name="label" Content="Company:" HorizontalAlignment="Left" Margin="0,533,0,0" VerticalAlignment="Top" Width="115"/>
+        <ComboBox x:Name="cbCompany" HorizontalAlignment="Left" Margin="120,533,0,0" VerticalAlignment="Top" Width="603" Height="26"/>
+        <Label x:Name="lblErrorCompany" Content="" HorizontalAlignment="Left" Margin="728,533,0,0" VerticalAlignment="Top" Width="449"/>
     </Grid>
 </Window>

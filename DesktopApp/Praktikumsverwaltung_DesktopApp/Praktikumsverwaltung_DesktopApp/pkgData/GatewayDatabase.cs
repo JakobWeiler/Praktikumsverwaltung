@@ -48,7 +48,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         private string GETWebService(string myPath)
         {
             string responseText;
-            var encoding = ASCIIEncoding.ASCII;
+            Encoding encoding = new UTF8Encoding();
 
             try
             {
@@ -76,7 +76,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         private string POSTWebService(string myPath, string jsonString)
         {
             string responseText;
-            var encoding = ASCIIEncoding.ASCII;
+            Encoding encoding = new UTF8Encoding();
 
             try
             {
@@ -111,7 +111,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         private string PUTWebService(string myPath, string jsonString)
         {
             string responseText;
-            var encoding = ASCIIEncoding.ASCII;
+            Encoding encoding = new UTF8Encoding();
 
             try
             {
@@ -146,7 +146,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         private string DELETEWebService(string myPath)
         {
             string responseText;
-            var encoding = ASCIIEncoding.ASCII;
+            Encoding encoding = new UTF8Encoding();
 
             try
             {
@@ -174,7 +174,6 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         {
             bool successful = false;
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -226,9 +225,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public List<Entry> GetAllEntries()
         {
             List<Entry> listEntries;
-
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -248,9 +245,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public List<Entry> GetAllOwnEntries()
         {
             List<Entry> listEditableEntries;
-
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -270,9 +265,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public List<Pupil> GetAllActivePupils()
         {
             List<Pupil> listPupils;
-
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -292,9 +285,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public List<Teacher> GetAllActiveTeachers()
         {
             List<Teacher> listTeacher;
-
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -314,9 +305,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public List<Company> GetAllCompanies()
         {
             List<Company> listCompanies;
-
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -337,7 +326,6 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         {
             bool successful = false;
             string myPath, mySpecialJavaAndMongoDbDouble, jsonStringResponse;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -345,7 +333,6 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 entry.Id = (ObjectId.GenerateNewId()).ToString();
                 entry.IdPupil = this.idUserBsonId;
                 entry.IdClass = this.idUserClassBsonId;
-                entry.IdCompany = "5a1d38902d19782a01d75dad";
 
                 myPath = this.urlWebService + "/Entry";       // path to the webservice with the params
 
@@ -405,9 +392,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public List<Entry> GetAllUnacceptedEntries()
         {
             List<Entry> listUnacceptedEntries;
-
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -428,7 +413,6 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         {
             bool successful = false;
             string myPath, mySpecialJavaAndMongoDbDouble, jsonStringResponse;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -490,9 +474,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public Entry GetEntry(string idOfEntry)
         {
             Entry entry;
-
             string myPath, jsonString;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -567,7 +549,6 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         {
             bool successful = false;
             string myPath, jsonResponse;
-            var encoding = ASCIIEncoding.ASCII;
 
             try
             {
@@ -582,6 +563,51 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             catch (Exception ex)
             {
                 throw new Exception("Error in GatewayDB_IsLoginOk: " + ex.Message);
+            }
+
+            return successful;
+        }
+
+        public bool AddCompany(Company company)
+        {
+            bool successful = false;
+            string myPath, jsonString, jsonStringResponse;
+
+            try
+            {
+                // setting the id's here, because in AddCompanyWindow the id isn't stored
+                company.Id = (ObjectId.GenerateNewId()).ToString();
+
+                myPath = this.urlWebService + "/Company";       // path to the webservice with the params                
+                //jsonString = JsonConvert.SerializeObject(company);      
+
+
+                // !!! Creating own json String because of the date and double
+                StringBuilder jsonStringBuilder = new StringBuilder();
+                jsonStringBuilder.Append("{ \"_id\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(company.Id);
+                jsonStringBuilder.Append("\" }, \"name\" : \"");
+                jsonStringBuilder.Append(company.Name);
+                jsonStringBuilder.Append("\", \"location\" : \"");
+                jsonStringBuilder.Append(company.Location);
+                jsonStringBuilder.Append("\", \"numberOfEmployees\" : ");
+                jsonStringBuilder.Append(company.NumberOfEmployees);
+                jsonStringBuilder.Append(", \"contactPerson\" : \"");
+                jsonStringBuilder.Append(company.ContactPerson);
+                jsonStringBuilder.Append("\" }");
+
+                jsonString = jsonStringBuilder.ToString();
+
+                jsonStringResponse = this.POSTWebService(myPath, jsonString);
+
+                if (jsonStringResponse.Equals("ok"))
+                {
+                    successful = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GatewayDB_AddCompany: " + ex.Message);
             }
 
             return successful;

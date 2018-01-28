@@ -35,34 +35,43 @@ namespace Praktikumsverwaltung_DesktopApp
             lvEntries.SelectionChanged += lvNewEntries_SelectionChanged;
         }
 
-        private void LoadAllOwnEntries()
+        // public, because EditEntry needs to load them too
+        public void LoadAllOwnEntries()
         {
             StringBuilder strBuilderEntry;
+            Company company = null;
             try
             {
-                GatewayDatabase gatewayDatabase = GatewayDatabase.newInstance();
                 Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
 
                 BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
                 BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
 
-                this.listAllOwnEntries = gatewayDatabase.GetAllOwnEntries();         // !!! loads only the own entries
+                this.lvEntries.Items.Clear();
+                this.listAllOwnEntries = gwDatabase.GetAllOwnEntries();         // !!! loads only the own entries
+                List<Company> listCompanies = gwDatabase.GetAllCompanies();
+                this.listEntryStrings = new List<string>();     // immer neu setzen, weil methode wird auch von update von EditEntry aufgerufen
 
                 foreach (Entry entry in listAllOwnEntries)
                 {
+                    company = listCompanies.Find(delegate (Company item) { return item.Id == entry.IdCompany; });
+
                     strBuilderEntry = new StringBuilder();
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Title + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append(entry.Description + Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("Dauer: " + entry.StartDate.ToString("dd.MM.yyyy") + " bis " + entry.EndDate.ToString("dd.MM.yyyy") + Environment.NewLine);
-                    strBuilderEntry.Append("Gehalt: " + entry.Salary + " €" + Environment.NewLine);
+                    strBuilderEntry.Append("Gehalt: " + entry.Salary + " €" + Environment.NewLine + Environment.NewLine);
+                    strBuilderEntry.Append("Firma: " + company.Name + Environment.NewLine);
+                    strBuilderEntry.Append("Standort: " + company.Location + Environment.NewLine);
+                    strBuilderEntry.Append("Kontakt: " + company.ContactPerson);
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("---------------------------------------------------------------------------");
 
                     //StringBuilder strBuilderAddress = new StringBuilder();
                     //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
 
-                    this.listEntryStrings.Add(strBuilderEntry.ToString());
+                    this.listEntryStrings.Add(strBuilderEntry.ToString());          // !!! um später zuzugreifen zu können
 
                     lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
                 }
@@ -90,14 +99,14 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 string selectedEntryString = selectedLvItem.Content.ToString();
                 selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
-                selectedEntryString = selectedEntryString.Split(',')[0];        // hinterer Teil ebenfalls
+                selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
 
                 index = this.listEntryStrings.IndexOf(selectedEntryString);
                 Entry selectedEntry = this.listAllOwnEntries.ElementAt(index);
 
                 jsonString = JsonConvert.SerializeObject(selectedEntry);
 
-                EditEntry editEntry = new EditEntry(jsonString);
+                EditEntry editEntry = new EditEntry(jsonString, this);
                 editEntry.Show();
             }
             catch (Exception ex)
@@ -117,7 +126,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 string selectedEntryString = selectedLvItem.Content.ToString();
                 selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
-                selectedEntryString = selectedEntryString.Split(',')[0];        // hinterer Teil ebenfalls
+                selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
 
                 index = this.listEntryStrings.IndexOf(selectedEntryString);
                 Entry selectedEntry = this.listAllOwnEntries.ElementAt(index);
