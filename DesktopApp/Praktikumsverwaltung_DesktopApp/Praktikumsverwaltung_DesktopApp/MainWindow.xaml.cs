@@ -191,7 +191,38 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void ClickBtnRemoveAdmin(object sender, EventArgs e)
         {
-            MessageBox.Show("in remove");
+            try
+            {
+                int index = -1;
+                bool successfull = false;
+                Button clickedButton = (Button)sender;
+                var selectedLvItem = GetAncestorOfType<ListViewItem>(sender as Button);
+
+                string selectedEntryString = selectedLvItem.Content.ToString();
+                selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
+                selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
+
+                index = this.listAdminEntryStrings.IndexOf(selectedEntryString);
+                Entry selectedEntry = this.listAllEntries.ElementAt(index);
+
+                successfull = gwDatabase.DeleteEntry(selectedEntry.Id);
+
+                if (successfull)
+                {
+                    // Delete entry of the lists
+                    this.listAllEntries.RemoveAt(index);
+                    this.listAdminEntryStrings.RemoveAt(index);
+                    this.lvEntries.Items.RemoveAt(index);
+                }
+                else
+                {
+                    MessageBox.Show("not successfully removed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error in ClickAdminBtnRemove: " + ex.Message);
+            }
         }
 
         // Rekursive Methode. Geht solange in der Treearchitektur zu den Parents hinauf bis es den angegebenen Typ gefunden hat
