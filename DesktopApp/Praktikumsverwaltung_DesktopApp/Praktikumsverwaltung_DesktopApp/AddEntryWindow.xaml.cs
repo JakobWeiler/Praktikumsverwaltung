@@ -60,7 +60,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            string title = "", description = "", dpStart = "", dpEnd = "", companyString = "";
+            string title = null, description = null, dpStart = null, dpEnd = null, companyString = null;
             double salary = -1;
             bool salaryOk = false, successfullySaved = false;
             DateTime startDate = new DateTime();

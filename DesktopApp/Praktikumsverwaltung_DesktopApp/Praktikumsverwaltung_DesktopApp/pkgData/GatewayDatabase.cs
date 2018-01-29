@@ -31,7 +31,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool IsTeacher { get; set; }
 
         /***********************/
-        private string urlWebService = "http://10.0.0.19:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.246  daheim: 10.0.0.19
+        private string urlWebService = "http://192.168.195.6:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.246  daheim: 10.0.0.19
         private static readonly HttpClient client = new HttpClient();
 
         // Singleton
