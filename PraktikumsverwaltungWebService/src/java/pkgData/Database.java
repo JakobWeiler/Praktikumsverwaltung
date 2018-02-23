@@ -6,26 +6,14 @@
 package pkgData;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.eq;
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -41,8 +29,9 @@ public class Database {
         private String dbName;
  
         private Database() {
-            //connStr = "mongodb://192.168.142.144:27017";  //intern
-            connStr = "mongodb://212.152.179.118:27017";   //extern
+            
+            connStr = "mongodb://192.168.142.144:27017";  //intern
+            //connStr = "mongodb://212.152.179.118:27017";   //extern
             dbName = "5BHIFS_BSD_Praktikumsverwaltung";
         }
         
@@ -216,6 +205,7 @@ public class Database {
                 e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
                 e.setAllowedAV(d.getBoolean("allowedAV"));
                 e.setSeenByAdmin(d.getBoolean("seenByAdmin"));
+                e.setAdminNote(d.getString("adminNote"));
                 e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"                
                 e.setIdPupil(d.getObjectId("idPupil").toString());
                 e.setIdCompany(d.getObjectId("idCompany").toString());
@@ -245,6 +235,7 @@ public class Database {
                 e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
                 e.setAllowedAV(d.getBoolean("allowedAV"));
                 e.setSeenByAdmin(d.getBoolean("seenByAdmin"));
+                e.setAdminNote(d.getString("adminNote"));
                 e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
                 e.setIdPupil(d.getObjectId("idPupil").toString());
                 e.setIdCompany(d.getObjectId("idCompany").toString());
@@ -264,6 +255,7 @@ public class Database {
             
             disconnect();
         }
+        
         
         // Replaces the whole "old" document with the new document because we don't know what exactly changed. Don't forget the query which ensures
         // that the "old" Entry is selected and replaced (_id of the entry remains equal)
@@ -315,6 +307,7 @@ public class Database {
                 e.setDescription(d.getString("description"));
                 e.setAllowedTeacher(d.getBoolean("allowedTeacher"));
                 e.setAllowedAV(d.getBoolean("allowedAV"));
+                e.setAdminNote(d.getString("adminNote"));
                 e.setId(d.getObjectId("_id").toString());            // to make the id's "visible"
                 e.setIdPupil(d.getObjectId("idPupil").toString());
                 e.setIdCompany(d.getObjectId("idCompany").toString());
@@ -346,6 +339,7 @@ public class Database {
             entry.setAllowedTeacher(d.getBoolean("allowedTeacher"));
             entry.setAllowedAV(d.getBoolean("allowedAV"));
             entry.setSeenByAdmin(d.getBoolean("seenByAdmin"));
+            entry.setAdminNote(d.getString("adminNote"));
             entry.setId(d.getObjectId("_id").toString());            // to make the id's "visible"                
             entry.setIdPupil(d.getObjectId("idPupil").toString());
             entry.setIdCompany(d.getObjectId("idCompany").toString());

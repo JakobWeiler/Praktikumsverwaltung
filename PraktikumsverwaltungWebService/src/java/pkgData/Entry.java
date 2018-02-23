@@ -24,6 +24,7 @@ public class Entry {
     private boolean allowedTeacher;
     private boolean allowedAV;
     private boolean seenByAdmin;
+    private String adminNote;
     private String idPupil;
     private String idCompany;
     private String idClass;
@@ -31,7 +32,7 @@ public class Entry {
     public Entry() {
     }
 
-    public Entry(String id, LocalDate startDate, LocalDate endDate, double salary, String title, String description, boolean allowedTeacher, boolean allowedAV, boolean seenByAdmin, String idPupil, String idCompany, String idClass) {
+    public Entry(String id, LocalDate startDate, LocalDate endDate, double salary, String title, String description, boolean allowedTeacher, boolean allowedAV, boolean seenByAdmin, String adminNote, String idPupil, String idCompany, String idClass) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -41,6 +42,7 @@ public class Entry {
         this.allowedTeacher = allowedTeacher;
         this.allowedAV = allowedAV;
         this.seenByAdmin = seenByAdmin;
+        this.adminNote = adminNote;
         this.idPupil = idPupil;
         this.idCompany = idCompany;
         this.idClass = idClass;
@@ -116,6 +118,14 @@ public class Entry {
 
     public void setSeenByAdmin(boolean seenByAdmin) {
         this.seenByAdmin = seenByAdmin;
+    }
+
+    public String getAdminNote() {
+        return adminNote;
+    }
+
+    public void setAdminNote(String adminNote) {
+        this.adminNote = adminNote;
     }
 
     public String getIdPupil() {

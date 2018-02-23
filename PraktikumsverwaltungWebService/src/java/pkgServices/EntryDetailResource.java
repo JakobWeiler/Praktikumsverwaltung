@@ -45,7 +45,7 @@ public class EntryDetailResource {
             entry = db.getEntry(id);
         }     
 	catch(Exception ex) {
-            entry = new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", "");      
+            entry = new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", "", "");      
         }
         return entry;
     }    
