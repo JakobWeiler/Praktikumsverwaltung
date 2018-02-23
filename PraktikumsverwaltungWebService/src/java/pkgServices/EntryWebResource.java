@@ -12,6 +12,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
@@ -45,9 +46,24 @@ public class EntryWebResource {
         }
         catch (Exception ex) {
             listEntries = new ArrayList<>();
-            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));
+            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", "", ""));
         }
         
         return new Gson().toJson(listEntries);
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String addEntry(String jsonStringEntry) throws Exception {
+        String retValue ="ok";
+        Database db = Database.newInstance();
+        System.out.println("+++" + jsonStringEntry);
+        try{
+            db.addEntry(jsonStringEntry);                //gson.fromJson(jsonStringEntry, Entry.class
+        }catch(Exception e) {
+            retValue = e.getMessage();
+        }
+        
+        return retValue;
     }
 }

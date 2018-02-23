@@ -50,7 +50,7 @@ public class EntryResource {
         }
         catch (Exception ex) {
             listEntries = new ArrayList<>();
-            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));
+            listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", "", ""));
         }
         
         return listEntries;
@@ -68,7 +68,7 @@ public class EntryResource {
         }     
 	catch(Exception ex){ 
                 listEntries = new ArrayList<>();
-                listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", ""));      
+                listEntries.add(new Entry("", null, null, 0.0, ex.getMessage(), "", false, false, false, "", "", "", ""));      
             }
         return listEntries;
     }
@@ -77,6 +77,7 @@ public class EntryResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public String addEntry(String jsonStringEntry) throws Exception {
         String retValue ="ok";
+        System.out.println("###" + jsonStringEntry);
         Database db = Database.newInstance();
         try{
             db.addEntry(jsonStringEntry);                //gson.fromJson(jsonStringEntry, Entry.class
