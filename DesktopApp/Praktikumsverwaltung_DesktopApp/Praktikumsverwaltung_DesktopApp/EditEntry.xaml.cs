@@ -125,7 +125,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            string title = "", description = "", dpStart = "", dpEnd = "", companyString = "";
+            string title = null, description = null, dpStart = null, dpEnd = null, companyString = null;
             double salary = -1;
             bool salaryOk = false, successfullyUpdated = false;
             DateTime startDate = new DateTime();
@@ -231,12 +231,12 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     if (flagShowWindow == true)
                     {
-                        entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, false, false, false, selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
+                        entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, false, false, false, "Admin needs to accept.", selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
                     }
                     else
                         if (flagMainWindow == true)     // Bei Admin braucht man allowedKV, allowedAV und seenByAdmin nicht auf false setzen, sonst müsste der Admin es sich selbst akzeptiern
                         {
-                            entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, true, true, true, selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
+                            entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, true, true, true, "Admin needs to accept.", selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
                         }
 
                     successfullyUpdated = gwDatabase.UpdateEntry(entry);

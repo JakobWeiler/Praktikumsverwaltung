@@ -24,13 +24,15 @@ namespace Praktikumsverwaltung_DesktopApp
         private GatewayDatabase gwDatabase = null;
         private List<Entry> listAllOwnEntries = null;
         private List<string> listEntryStrings = null;
+        private MainWindow myMainWindow = null;
 
-        public ShowWindow()
+        public ShowWindow(MainWindow mainWindow)
         {
             InitializeComponent();
 
             this.gwDatabase = GatewayDatabase.newInstance();
             this.listEntryStrings = new List<string>();
+            this.myMainWindow = mainWindow;
             this.LoadAllOwnEntries();
             lvEntries.SelectionChanged += lvNewEntries_SelectionChanged;
         }
@@ -73,7 +75,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     this.listEntryStrings.Add(strBuilderEntry.ToString());          // !!! um später zuzugreifen zu können
 
-                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
+                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = entry.AdminNote, Col4 = imgPencilEdit, Col5 = imgRedCross });
                 }
             }
             catch (Exception ex)
@@ -139,6 +141,7 @@ namespace Praktikumsverwaltung_DesktopApp
                     this.listAllOwnEntries.RemoveAt(index);
                     this.listEntryStrings.RemoveAt(index);
                     this.lvEntries.Items.RemoveAt(index);
+                    this.myMainWindow.LoadEntries();
                 }
                 else
                 {

@@ -149,7 +149,7 @@ namespace Praktikumsverwaltung_DesktopApp
 
         private void mItemEntryShow_Click(object sender, RoutedEventArgs e)
         {
-            ShowWindow showEntry = new ShowWindow();
+            ShowWindow showEntry = new ShowWindow(this);
             showEntry.Show();
         }
 

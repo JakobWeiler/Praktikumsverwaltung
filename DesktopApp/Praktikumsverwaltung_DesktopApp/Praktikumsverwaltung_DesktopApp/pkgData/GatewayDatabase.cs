@@ -31,7 +31,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool IsTeacher { get; set; }
 
         /***********************/
-        private string urlWebService = "http://192.168.195.6:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.246  daheim: 10.0.0.19
+        private string urlWebService = "http://192.168.195.126:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.246  daheim: 10.0.0.19
         private static readonly HttpClient client = new HttpClient();
 
         // Singleton
@@ -366,7 +366,9 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());
                 jsonStringBuilder.Append(", \"seenByAdmin\" : ");
                 jsonStringBuilder.Append(entry.SeenByAdmin.ToString().ToLower());
-                jsonStringBuilder.Append(", \"idPupil\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(", \"adminNote\" : \"");
+                jsonStringBuilder.Append(entry.AdminNote);
+                jsonStringBuilder.Append("\", \"idPupil\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(entry.IdPupil);
                 jsonStringBuilder.Append("\" }, \"idCompany\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(entry.IdCompany);
@@ -448,7 +450,9 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append(editedEntry.AllowedTeacher.ToString().ToLower());
                 jsonStringBuilder.Append(", \"seenByAdmin\" : ");
                 jsonStringBuilder.Append(editedEntry.SeenByAdmin.ToString().ToLower());
-                jsonStringBuilder.Append(", \"idPupil\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(", \"adminNote\" : \"");
+                jsonStringBuilder.Append(editedEntry.AdminNote);
+                jsonStringBuilder.Append("\", \"idPupil\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(editedEntry.IdPupil);
                 jsonStringBuilder.Append("\" }, \"idCompany\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(editedEntry.IdCompany);
@@ -527,7 +531,9 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                 jsonStringBuilder.Append(entry.AllowedTeacher.ToString().ToLower());
                 jsonStringBuilder.Append(", \"seenByAdmin\" : ");
                 jsonStringBuilder.Append(entry.SeenByAdmin.ToString().ToLower());
-                jsonStringBuilder.Append(", \"idPupil\" : { \"$oid\" : \"");
+                jsonStringBuilder.Append(", \"adminNote\" : \"");
+                jsonStringBuilder.Append(entry.AdminNote);
+                jsonStringBuilder.Append("\", \"idPupil\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(entry.IdPupil);
                 jsonStringBuilder.Append("\" }, \"idCompany\" : { \"$oid\" : \"");
                 jsonStringBuilder.Append(entry.IdCompany);

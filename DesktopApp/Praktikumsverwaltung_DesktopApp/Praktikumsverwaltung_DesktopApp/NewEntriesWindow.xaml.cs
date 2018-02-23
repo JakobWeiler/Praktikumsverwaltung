@@ -24,6 +24,7 @@ namespace Praktikumsverwaltung_DesktopApp
         private List<Entry> listUnacceptedEntries = null;
         private List<string> listEntryStrings = null;
         private MainWindow myMainWindow = null;
+        private string note = "";               // for decline (message for the user)
 
         public NewEntriesWindow(MainWindow mainWindow)
         {
@@ -100,6 +101,7 @@ namespace Praktikumsverwaltung_DesktopApp
                     index = this.listEntryStrings.IndexOf(selectedEntryString);
                     Entry selectedEntry = this.listUnacceptedEntries.ElementAt(index);
 
+                    selectedEntry.AdminNote = "Admin accepted.";
                     selectedEntry.AllowedTeacher = true;
                     selectedEntry.AllowedAV = true;
                     selectedEntry.SeenByAdmin = true;
@@ -136,6 +138,10 @@ namespace Praktikumsverwaltung_DesktopApp
 
                 if (selectedLvItem != null)
                 {
+                    // get note of the admin
+                    NewEntriesDeclineWindow declineNoteWindow = new NewEntriesDeclineWindow(this);
+                    declineNoteWindow.Show();
+
                     string selectedEntryString = selectedLvItem.Content.ToString();
                     selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist
                     selectedEntryString = selectedEntryString.Split(new string[] { ", Col2 = " }, StringSplitOptions.None)[0];        // hinterer Teil ebenfalls
@@ -143,6 +149,7 @@ namespace Praktikumsverwaltung_DesktopApp
                     index = this.listEntryStrings.IndexOf(selectedEntryString);
                     Entry selectedEntry = this.listUnacceptedEntries.ElementAt(index);
 
+                    selectedEntry.AdminNote = this.note;
                     selectedEntry.AllowedTeacher = false;
                     selectedEntry.AllowedAV = false;
                     selectedEntry.SeenByAdmin = true;
@@ -175,6 +182,11 @@ namespace Praktikumsverwaltung_DesktopApp
             if (parent != null && !(parent is T))
                 return (T)GetAncestorOfType<T>((FrameworkElement)parent);
             return (T)parent;
+        }
+
+        public void SaveNote(string _note)
+        {
+            this.note = _note;
         }
     }
 }

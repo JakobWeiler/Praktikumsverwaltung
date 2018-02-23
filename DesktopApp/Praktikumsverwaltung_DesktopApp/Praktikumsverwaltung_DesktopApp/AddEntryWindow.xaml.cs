@@ -163,7 +163,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 if (title != null && description != null && salary > -1 && salaryOk == true && dpStart != null && dpEnd != null && company != null)
                 {
                     // id's are going to be set in GatewayDatabase AddEntry()
-                    Entry entry = new Entry("id-1", startDate, endDate, title, description, salary, false, false, false, "id-1", "id-1", company.Id);
+                    Entry entry = new Entry("id-1", startDate, endDate, title, description, salary, false, false, false, "Admin needs to accept.", "id-1", "id-1", company.Id);
                     
                     successfullySaved = gwDatabase.AddEntry(entry);
 

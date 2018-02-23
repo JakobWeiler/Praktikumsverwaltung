@@ -33,7 +33,7 @@ namespace Praktikumsverwaltung_DesktopApp
         
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            string name = "", location = "", contactPerson = "";
+            string name = null, location = null, contactPerson = null;
             int numberOfEmployees = -1;
             bool numberOfEmployeesOk = false, successfullySaved = false;
             Company company = null;

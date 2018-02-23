@@ -32,11 +32,18 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
+                    <GridViewColumn Header="Note" Width="200" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Col3}" FontSize="14" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Width="60" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Height="40" Width="40" Click="ClickBtnEdit" >
-                                    <Image Source="{Binding Col3}" />
+                                    <Image Source="{Binding Col4}" />
                                 </Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -45,7 +52,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Height="40" Width="40" Click="ClickBtnRemove" >
-                                    <Image Source="{Binding Col4}" />
+                                    <Image Source="{Binding Col5}" />
                                 </Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

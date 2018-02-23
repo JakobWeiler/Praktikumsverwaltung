@@ -84,6 +84,9 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewEntriesDeclineWindow.xaml.cs">
+      <DependentUpon>NewEntriesDeclineWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewEntriesWindow.xaml.cs">
       <DependentUpon>NewEntriesWindow.xaml</DependentUpon>
     </Compile>
@@ -125,6 +128,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewEntriesDeclineWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
