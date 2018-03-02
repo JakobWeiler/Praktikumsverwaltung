@@ -50,6 +50,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.DirectoryServices.Protocols" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
@@ -96,6 +99,7 @@
     <Compile Include="pkgData\Person.cs" />
     <Compile Include="pkgData\Pupil.cs" />
     <Compile Include="pkgData\Teacher.cs" />
+    <Compile Include="pkgMisc\LdapAuthentication.cs" />
     <Compile Include="Registration.xaml.cs">
       <DependentUpon>Registration.xaml</DependentUpon>
     </Compile>
@@ -183,7 +187,6 @@
     <Resource Include="pkgImages\RedCross.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="pkgMisc\" />
     <Folder Include="pkgWebService\" />
   </ItemGroup>
   <ItemGroup>

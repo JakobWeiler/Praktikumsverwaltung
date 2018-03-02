@@ -1,4 +1,5 @@
 ﻿using Praktikumsverwaltung_DesktopApp.pkgData;
+using Praktikumsverwaltung_DesktopApp.pkgMisc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,8 +62,14 @@ namespace Praktikumsverwaltung_DesktopApp
                 {
                     bool successful = false;
 
-                    GatewayDatabase gatewayDb = GatewayDatabase.newInstance();      // Singleton
-                    successful = gatewayDb.IsLoginOk(username, password);       // calls the webservice
+                    //GatewayDatabase gatewayDb = GatewayDatabase.newInstance();      // Singleton
+                    //successful = gatewayDb.IsLoginOk(username, password);       // calls the webservice
+                    
+                    //Init der Klasse mit ip vom server 
+                    LdapAuthentication ldap = new LdapAuthentication("192.168.128.252");//minerva server, due to slow dns use the IP
+
+                    //überprüfung 
+                    successful = ldap.IsAuthenticatednew("ou=Users,dc=htl-vil,dc=local", username, password);
 
                     if (successful)
                     {

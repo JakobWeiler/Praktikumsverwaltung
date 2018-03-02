@@ -10,11 +10,11 @@
         <Label x:Name="lblUsername" Content="Username:" HorizontalAlignment="Left" Height="23" Margin="35,33,0,0" VerticalAlignment="Top" Width="95"/>
         <Label x:Name="lblPassword" Content="Password:" HorizontalAlignment="Left" Height="23" Margin="35,61,0,0" VerticalAlignment="Top" Width="95"/>
         <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="23" Margin="135,33,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="165"/>
-        <Button x:Name="btnLogin" Content="SIGN IN" HorizontalAlignment="Left" Height="22" Margin="35,116,0,0" VerticalAlignment="Top" Width="265" Click="btnLogin_Click"/>
+        <Button x:Name="btnLogin" Content="SIGN IN" HorizontalAlignment="Left" Height="22" Margin="35,126,0,0" VerticalAlignment="Top" Width="265" Click="btnLogin_Click"/>
         <Label x:Name="lblErrorUsername" Content="" HorizontalAlignment="Left" Margin="305,33,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
         <Label x:Name="lblErrorPassword" Content="" HorizontalAlignment="Left" Margin="305,61,0,0" VerticalAlignment="Top" Height="23" Width="202"/>
         <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Margin="135,61,0,0" VerticalAlignment="Top" Width="165" Height="23"/>
-        <Button x:Name="btnRegister" Content="Not registered? Click here." HorizontalAlignment="Left" Margin="35,143,0,0" VerticalAlignment="Top" Width="265" Height="22" FontSize="9.333" Click="btnRegister_Click"/>
+        <Button x:Name="btnRegister" Content="Not registered? Click here." HorizontalAlignment="Left" Margin="35,153,0,0" VerticalAlignment="Top" Width="265" Height="22" FontSize="9.333" Click="btnRegister_Click"/>
         <Label x:Name="lblMessageLogin" Content="" HorizontalAlignment="Left" Margin="35,225,0,0" VerticalAlignment="Top" Width="265"/>
 
     </Grid>

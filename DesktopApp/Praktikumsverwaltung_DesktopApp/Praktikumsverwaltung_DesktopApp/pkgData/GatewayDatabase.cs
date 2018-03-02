@@ -1,17 +1,10 @@
 ﻿using MongoDB.Bson;         // !!!
-using MongoDB.Bson.Serialization;
-using MongoDB.Driver;       // !!!
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.IO;
 
 namespace Praktikumsverwaltung_DesktopApp.pkgData
