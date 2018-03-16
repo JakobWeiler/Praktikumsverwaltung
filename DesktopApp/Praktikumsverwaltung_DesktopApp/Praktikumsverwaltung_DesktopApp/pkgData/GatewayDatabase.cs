@@ -84,7 +84,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
                     streamWriter.Close();
                 }
 
-                HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();        //Get the response 
+                HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();        // Get the response 
 
                 // reads every byte of the response message
                 using (var reader = new System.IO.StreamReader(httpWebResponse.GetResponseStream(), encoding))
