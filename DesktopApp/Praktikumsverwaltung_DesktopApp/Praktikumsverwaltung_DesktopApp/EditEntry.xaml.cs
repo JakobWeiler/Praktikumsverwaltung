@@ -231,14 +231,14 @@ namespace Praktikumsverwaltung_DesktopApp
 
                     if (flagShowWindow == true)
                     {
-                        entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, false, false, false, "Admin needs to accept.", selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
+                        entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, false, false, false, "Admin has to accept.", selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
                     }
                     else
                         if (flagMainWindow == true)     // Bei Admin braucht man allowedKV, allowedAV und seenByAdmin nicht auf false setzen, sonst müsste der Admin es sich selbst akzeptiern
                         {
-                            entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, true, true, true, "Admin needs to accept.", selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
+                            entry = new Entry(selectedEntry.Id, startDate, endDate, title, description, salary, true, true, true, "Accepted.", selectedEntry.IdPupil, selectedEntry.IdClass, company.Id);
                         }
-
+                    
                     successfullyUpdated = gwDatabase.UpdateEntry(entry);
 
                     if (successfullyUpdated == true)

@@ -62,17 +62,19 @@ namespace Praktikumsverwaltung_DesktopApp
                 {
                     bool successful = false;
 
-                    //GatewayDatabase gatewayDb = GatewayDatabase.newInstance();      // Singleton
-                    //successful = gatewayDb.IsLoginOk(username, password);       // calls the webservice
+                    GatewayDatabase gatewayDb = GatewayDatabase.newInstance();      // Singleton
+                    successful = gatewayDb.IsLoginOk(username, password);       // calls the webservice
                     
-                    //Init der Klasse mit ip vom server 
-                    LdapAuthentication ldap = new LdapAuthentication("192.168.128.252");//minerva server, due to slow dns use the IP
+                    //Init der Klasse mit ip vom server
+                    // !!!! ACHTUNG: Greift auf Benutzer von der HTL zu und funktioniert, allerdings haben diese Benutzer ja keine BSON ID's und passen überhaupt nicht mit der MongoDB architektur überein, deshalb verwenden wir unsere MongoDB user
+                    //LdapAuthentication ldap = new LdapAuthentication("192.168.128.252");//minerva server, due to slow dns use the IP
 
                     //überprüfung 
-                    successful = ldap.IsAuthenticatednew("ou=Users,dc=htl-vil,dc=local", username, password);
+                    //successful = ldap.IsAuthenticatednew("ou=Users,dc=htl-vil,dc=local", username, password);
 
                     if (successful)
                     {
+
                         MainWindow mainWindow = new MainWindow();
                         mainWindow.Show();
                         this.Close();

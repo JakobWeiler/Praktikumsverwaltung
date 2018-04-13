@@ -24,7 +24,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
         public bool IsTeacher { get; set; }
 
         /***********************/
-        private string urlWebService = "http://192.168.195.126:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.246  daheim: 10.0.0.19
+        private string urlWebService = "http://192.168.195.35:8080/PraktikumsverwaltungWebService/resources";     //schule: 192.168.195.35  daheim: 10.0.0.19
         private static readonly HttpClient client = new HttpClient();
 
         // Singleton
@@ -241,7 +241,7 @@ namespace Praktikumsverwaltung_DesktopApp.pkgData
             string myPath, jsonString;
 
             try
-            {
+            {                
                 myPath = this.urlWebService + "/Entry/" + this.idUserBsonId;       // path to the webservice with the params
                 jsonString = this.GETWebService(myPath);
 
