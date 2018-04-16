@@ -19,7 +19,13 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Entry" DisplayMemberBinding="{Binding Col1}" Width="600"/>
+                    <GridViewColumn Header="Entry" Width="600" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Col1}" FontSize="14" Foreground="Black" TextWrapping="Wrap" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="Accept" Width="60" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

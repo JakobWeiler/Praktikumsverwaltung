@@ -101,7 +101,7 @@ namespace Praktikumsverwaltung_DesktopApp
                     index = this.listEntryStrings.IndexOf(selectedEntryString);
                     Entry selectedEntry = this.listUnacceptedEntries.ElementAt(index);
 
-                    selectedEntry.AdminNote = "Admin accepted.";
+                    selectedEntry.AdminNote = "Accepted.";
                     selectedEntry.AllowedTeacher = true;
                     selectedEntry.AllowedAV = true;
                     selectedEntry.SeenByAdmin = true;
@@ -140,7 +140,7 @@ namespace Praktikumsverwaltung_DesktopApp
                 {
                     // get note of the admin
                     NewEntriesDeclineWindow declineNoteWindow = new NewEntriesDeclineWindow(this);
-                    declineNoteWindow.Show();
+                    declineNoteWindow.ShowDialog();
 
                     string selectedEntryString = selectedLvItem.Content.ToString();
                     selectedEntryString = selectedEntryString.Remove(0, 9);           // weil vorderer Teil von listview ein stringteil ist

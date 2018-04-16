@@ -34,6 +34,8 @@ namespace Praktikumsverwaltung_DesktopApp
 
             note = this.txtNote.Text;
             this.newEntriesWindow.SaveNote(note);
+
+            this.Close();
         }
     }
 }
