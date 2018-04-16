@@ -43,7 +43,6 @@ namespace Praktikumsverwaltung_DesktopApp
             Company company = null;
             try
             {
-                Uri locationUri = new Uri("https://www.google.at/maps/place/Villach/");
                 BitmapImage imgPencilEdit = new BitmapImage(new Uri("../pkgImages/Pencil.jpg", UriKind.Relative));
                 BitmapImage imgRedCross = new BitmapImage(new Uri("../pkgImages/RedCross.jpg", UriKind.Relative));
 
@@ -68,8 +67,10 @@ namespace Praktikumsverwaltung_DesktopApp
                     strBuilderEntry.Append(Environment.NewLine + Environment.NewLine);
                     strBuilderEntry.Append("---------------------------------------------------------------------------");
 
-                    //StringBuilder strBuilderAddress = new StringBuilder();
-                    //strBuilderAddress.Append("https://www.google.ca/maps/place/Tschinowitscher+Weg+20,+9500+Villach");
+                    // To display the location in the webbrowser
+                    StringBuilder strBuilderAddress = new StringBuilder();
+                    strBuilderAddress.Append("https://www.google.ca/maps/place/");
+                    strBuilderAddress.Append(company.Location);
 
                     this.listAdminEntryStrings.Add(strBuilderEntry.ToString());          // !!! um später zuzugreifen zu können
 
@@ -85,7 +86,7 @@ namespace Praktikumsverwaltung_DesktopApp
                         this.gvColumnRemoveAdmin.Width = 60;
                     }
 
-                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = locationUri, Col3 = imgPencilEdit, Col4 = imgRedCross });
+                    lvEntries.Items.Add(new { Col1 = strBuilderEntry.ToString(), Col2 = strBuilderAddress.ToString(), Col3 = imgPencilEdit, Col4 = imgRedCross });
                 }
             }
             catch (Exception ex)

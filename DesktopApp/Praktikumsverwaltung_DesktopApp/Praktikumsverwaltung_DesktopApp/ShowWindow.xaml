@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Praktikumsverwaltung_DesktopApp"
+        xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
         Title="ShowWindow" Height="446.834" Width="1059.696"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
@@ -25,10 +26,11 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Location" Width="400" >
+                    <GridViewColumn Header="Location" Width="500" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <WebBrowser local:WebBrowserUtility.BindableSource="{Binding Col2}" Height="200" Width="380" />
+                                <!--<WebBrowser local:WebBrowserUtility.BindableSource="{Binding Col2}" Height="200" Width="380" /> -->
+                                <cefSharp:ChromiumWebBrowser Height="200" Width="500"  Address="{Binding Col2}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
